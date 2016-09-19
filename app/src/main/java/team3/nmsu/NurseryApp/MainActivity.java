@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.nav_fist_layout) {
+        if (id == R.id.mainpage) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
 
