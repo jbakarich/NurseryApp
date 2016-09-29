@@ -1,3 +1,6 @@
+
+# The gitignore I found in the project, I assume it came straight from android studio 
+=======
 gitignore I found in the project, I assume it came straight from android studio
 *.iml
 .gradle
@@ -45,9 +48,14 @@ Thumbs.db
 build/
 
 #additional from stackoverflow
+# Android Studio / IntelliJ IDEA 
+*.iws
+.idea/libraries
+=======
 # Android Studio / IntelliJ IDEA
 *.iws
 .idea/libraries/
+>>>>>>> dev
 .idea/tasks.xml
 .idea/vcs.xml
 .idea/workspace.xml
@@ -55,4 +63,3 @@ build/
 
 #NDK
 obj/
-
