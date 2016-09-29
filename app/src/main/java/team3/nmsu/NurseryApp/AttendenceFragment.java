@@ -20,7 +20,7 @@ public class AttendenceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
+        myView = inflater.inflate(R.layout.attendence_layout, container, false);
         return myView;
     }
 }

@@ -101,6 +101,10 @@ public class MainActivity extends AppCompatActivity
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
 
+        } else if (id == R.id.attendence_layout) {
+
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new AttendenceFragment()).commit();
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
