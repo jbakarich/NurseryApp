@@ -1,4 +1,7 @@
+
 # The gitignore I found in the project, I assume it came straight from android studio 
+=======
+gitignore I found in the project, I assume it came straight from android studio
 *.iml
 .gradle
 /local.properties
@@ -48,6 +51,11 @@ build/
 # Android Studio / IntelliJ IDEA 
 *.iws
 .idea/libraries
+=======
+# Android Studio / IntelliJ IDEA
+*.iws
+.idea/libraries/
+>>>>>>> dev
 .idea/tasks.xml
 .idea/vcs.xml
 .idea/workspace.xml

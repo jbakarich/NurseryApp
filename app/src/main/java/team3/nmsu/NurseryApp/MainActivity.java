@@ -1,5 +1,6 @@
 package team3.nmsu.NurseryApp;
 
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -8,14 +9,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-
 import team3.nmsu.NurseryApp.test.R;
 
 
 /*Hello git*/
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+
+        implements NavigationView.OnNavigationItemSelectedListener{
+
+        ProfileHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,13 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         setTitle("Mesilla Valley Daycare");
+
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new LoginFragment()).commit();
+
+        myDB = new ProfileHelper(this);
+
+
 
 
     }
@@ -78,7 +88,7 @@ public class MainActivity extends AppCompatActivity
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.nav_fist_layout) {
+        if (id == R.id.mainpage) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
 
@@ -98,3 +108,5 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 }
+
+

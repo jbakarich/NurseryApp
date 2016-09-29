@@ -11,6 +11,7 @@ import team3.nmsu.NurseryApp.test.R;
 
 /**
  * Created by jacob on 9/15/2016.
+ * Edited by Cyrille on 9/19/2016
  */
 public class FirstFragment extends Fragment {
 
@@ -21,7 +22,7 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        myView = inflater.inflate(R.layout.first_layout, container, false);
+        myView = inflater.inflate(R.layout.mainpage, container, false);
 
 
 

@@ -3,7 +3,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_fist_layout"
+            android:id="@+id/mainpage"
 
             android:title="Home" />
         <item
