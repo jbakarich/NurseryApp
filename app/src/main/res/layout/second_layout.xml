@@ -12,12 +12,4 @@
         android:layout_centerHorizontal="true"
         android:autoText="true" />
 
-    <CalendarView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/calendarView"
-        android:layout_below="@+id/PaymentHistoryText"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="52dp" />
-
 </RelativeLayout>

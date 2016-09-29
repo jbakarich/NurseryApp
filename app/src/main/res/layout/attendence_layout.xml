@@ -4,6 +4,15 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <DatePicker
+        android:layout_width="match_parent"
+        android:layout_height="105dp"
+        android:id="@+id/datePicker"
+        android:background="@android:color/holo_blue_bright"
+        android:headerBackground="@android:color/holo_blue_bright"
+        android:calendarViewShown="false"
+        android:clickable="true" />
+
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="352dp"
@@ -14,7 +23,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
+            <CheckBox
+                android:text="student1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox1" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <CheckBox
+                android:text="student2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox2" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <CheckBox
+                android:text="student3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox3" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <CheckBox
+                android:text="student4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/checkBox4" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:text="Save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_submit" />
 
        
 

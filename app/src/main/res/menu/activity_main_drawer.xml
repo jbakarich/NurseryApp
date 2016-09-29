@@ -15,10 +15,10 @@
 
             android:title="Settings" />
 
-        <!--<item-->
-            <!--android:id="@+id/attendence_layout"-->
+        <item
+            android:id="@+id/attendence_layout"
 
-            <!--android:title="Attendence" />-->
+            android:title="Attendence" />
     </group>
 
 </menu>
