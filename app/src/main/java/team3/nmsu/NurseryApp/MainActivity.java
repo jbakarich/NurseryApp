@@ -11,10 +11,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import team3.nmsu.NurseryApp.test.R;
 
-
-/*Hello git*/
-//hi
-
 public class MainActivity extends AppCompatActivity
 
         implements NavigationView.OnNavigationItemSelectedListener{
