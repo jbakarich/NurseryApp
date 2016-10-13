@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".PaymentActivity">
+
+    <FrameLayout
+        android:id="@+id/wallet_button_holder"
+        android:layout_height="48dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Confirm"
+        android:onClick="requestFullWallet" />
+
+    <!--<fragment-->
+        <!--android:id="@+id/wallet_fragment"-->
+        <!--android:name="com.google.android.gms.wallet.fragment.SupportWalletFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--wallet:environment="test"-->
+        <!--wallet:fragmentMode="buyButton" />-->
+<!---->
+</LinearLayout>
