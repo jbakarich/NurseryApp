@@ -1,113 +1,80 @@
 package team3.nmsu.NurseryApp;
-/**
- * Created by Rick on 10/13/2016.
- */
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-//import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.ActionBarActivity;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
-import static com.google.android.gms.R.attr.environment;
-import static team3.nmsu.NurseryApp.test.R.attr.fragmentMode;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
+
 import com.google.android.gms.wallet.Cart;
-import com.google.android.gms.wallet.FullWallet;
-import com.google.android.gms.wallet.FullWalletRequest;
 import com.google.android.gms.wallet.LineItem;
 import com.google.android.gms.wallet.MaskedWallet;
 import com.google.android.gms.wallet.MaskedWalletRequest;
-import com.google.android.gms.wallet.NotifyTransactionStatusRequest;
-import com.google.android.gms.wallet.Wallet;
+import com.google.android.gms.wallet.PaymentMethodTokenizationParameters;
+import com.google.android.gms.wallet.PaymentMethodTokenizationType;
 import com.google.android.gms.wallet.WalletConstants;
-import com.google.android.gms.wallet.fragment.BuyButtonText;
 import com.google.android.gms.wallet.fragment.SupportWalletFragment;
 import com.google.android.gms.wallet.fragment.WalletFragmentInitParams;
 import com.google.android.gms.wallet.fragment.WalletFragmentMode;
 import com.google.android.gms.wallet.fragment.WalletFragmentOptions;
 import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
-
+import android.app.Fragment;
 import team3.nmsu.NurseryApp.test.R;
 
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
-public class PaymentActivity extends ActionBarActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
-
-    private MaskedWalletRequest generateMaskedWalletRequest() {
-        MaskedWalletRequest maskedWalletRequest =
-                MaskedWalletRequest.newBuilder()
-                        .setMerchantName("Ballers")
-                        .setPhoneNumberRequired(true)
-                        .setShippingAddressRequired(true)
-                        .setCurrencyCode("USD")
-                        .setCart(Cart.newBuilder()
-                                .setCurrencyCode("USD")
-                                .setTotalPrice("10.00")
-                                .addLineItem(LineItem.newBuilder()
-                                        .setCurrencyCode("USD")
-                                        .setDescription("Google Sticker")
-                                        .setQuantity("1")
-                                        .setUnitPrice("10.00")
-                                        .setTotalPrice("10.00")
-                                        .build())
-                                .build())
-                        .setEstimatedTotalPrice("15.00")
-                        .build();
-        return maskedWalletRequest;
-    }
-
+public class PaymentActivity extends Fragment {
+    View myView;
     private SupportWalletFragment mWalletFragment;
-    private MaskedWallet mMaskedWallet;
-    private FullWallet mFullWallet;
-    private GoogleApiClient mGoogleApiClient;
-    public static final String WALLET_FRAGMENT_ID = "wallet_fragment";
     public static final int MASKED_WALLET_REQUEST_CODE = 888;
-    public static final int FULL_WALLET_REQUEST_CODE = 889;
+    public static final String WALLET_FRAGMENT_ID = "wallet_fragment";
+    private MaskedWallet mMaskedWallet;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        myView = inflater.inflate(R.layout.attendence_layout, container, false);
 
-        // Wallet fragment style
-        WalletFragmentStyle walletFragmentStyle = new WalletFragmentStyle()
-                .setBuyButtonText(BuyButtonText.BUY_NOW)
-                .setBuyButtonWidth(WalletFragmentStyle.Dimension.MATCH_PARENT);
+        // Check if WalletFragment exists
+        mWalletFragment = (SupportWalletFragment) mWalletFragment.getFragmentManager()
+                .findFragmentByTag(WALLET_FRAGMENT_ID);
 
-        // Wallet fragment options
-        WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
-                .setEnvironment(WalletConstants.ENVIRONMENT_SANDBOX)
-                .setFragmentStyle(walletFragmentStyle)
-                .setTheme(WalletConstants.THEME_LIGHT)
-                .setMode(WalletFragmentMode.BUY_BUTTON)
-                .build();
 
-        // Instantiate the WalletFragment
-        mWalletFragment = SupportWalletFragment.newInstance(walletFragmentOptions);
+        if (mWalletFragment == null) {
+            // Wallet fragment style
+            WalletFragmentStyle walletFragmentStyle = new WalletFragmentStyle()
+                    .setBuyButtonText(WalletFragmentStyle.BuyButtonText.BUY_WITH)
+                    .setBuyButtonWidth(WalletFragmentStyle.Dimension.MATCH_PARENT);
 
-        // Initialize the WalletFragment
-        WalletFragmentInitParams.Builder startParamsBuilder =
-                WalletFragmentInitParams.newBuilder()
-                        .setMaskedWalletRequest(generateMaskedWalletRequest())
-                        .setMaskedWalletRequestCode(MASKED_WALLET_REQUEST_CODE)
-                        .setAccountName("Google I/O Codelab");
-        mWalletFragment.initialize(startParamsBuilder.build());
+            // Wallet fragment options
+            WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
+                    .setEnvironment(WalletConstants.ENVIRONMENT_TEST)
+                    .setFragmentStyle(walletFragmentStyle)
+                    .setTheme(WalletConstants.THEME_LIGHT)
+                    .setMode(WalletFragmentMode.BUY_BUTTON)
+                    .build();
 
-        // Add the WalletFragment to the UI
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.wallet_button_holder, mWalletFragment, WALLET_FRAGMENT_ID)
-                .commit();
+            // Initialize the WalletFragment
+            WalletFragmentInitParams.Builder startParamsBuilder =
+                    WalletFragmentInitParams.newBuilder()
+                            .setMaskedWalletRequest(generateMaskedWalletRequest())
+                            .setMaskedWalletRequestCode(MASKED_WALLET_REQUEST_CODE)
+                            .setAccountName("Google I/O Codelab");
+            mWalletFragment = SupportWalletFragment.newInstance(walletFragmentOptions);
+            mWalletFragment.initialize(startParamsBuilder.build());
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Wallet.API, new Wallet.WalletOptions.Builder()
-                        .setEnvironment(WalletConstants.ENVIRONMENT_SANDBOX)
-                        .setTheme(WalletConstants.THEME_LIGHT)
-                        .build())
-                .build();
+            // Add the WalletFragment to the UI
+            mWalletFragment.getFragmentManager().beginTransaction()
+                    .replace(R.id.wallet_button_holder, mWalletFragment, WALLET_FRAGMENT_ID)
+                    .commit();
+        }
+        return myView;
     }
 
     @Override
@@ -116,111 +83,55 @@ public class PaymentActivity extends ActionBarActivity implements GoogleApiClien
         switch (requestCode) {
             case MASKED_WALLET_REQUEST_CODE:
                 switch (resultCode) {
-                    case Activity.RESULT_OK:
+                    case RESULT_OK:
                         mMaskedWallet =  data
                                 .getParcelableExtra(WalletConstants.EXTRA_MASKED_WALLET);
-                        Toast.makeText(this, "Got Masked Wallet", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Got Masked Wallet", Toast.LENGTH_SHORT).show();
                         break;
-                    case Activity.RESULT_CANCELED:
+                    case RESULT_CANCELED:
                         // The user canceled the operation
                         break;
                     case WalletConstants.RESULT_ERROR:
-                        Toast.makeText(this, "An Error Occurred", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                break;
-            case FULL_WALLET_REQUEST_CODE:
-                switch (resultCode) {
-                    case Activity.RESULT_OK:
-                        mFullWallet = data
-                                .getParcelableExtra(WalletConstants.EXTRA_FULL_WALLET);
-                        // Show the credit card number
-                        Toast.makeText(this,
-                                mFullWallet.getProxyCard().getPan().toString(),
-                                Toast.LENGTH_SHORT).show();
-                        // Update transaction status
-                        Wallet.Payments.notifyTransactionStatus(mGoogleApiClient,
-                                generateNotifyTransactionStatusRequest(
-                                        mFullWallet.getGoogleTransactionId(),
-                                        NotifyTransactionStatusRequest.Status.SUCCESS));
-                        break;
-                    case WalletConstants.RESULT_ERROR:
-                        Toast.makeText(this, "An Error Occurred", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "An Error Occurred", Toast.LENGTH_SHORT).show();
                         break;
                 }
                 break;
         }
-        mFullWallet.getProxyCard().getPan(); //Maybe this goes here?
     }
 
-    private FullWalletRequest generateFullWalletRequest(String googleTransactionId) {
-        FullWalletRequest fullWalletRequest = FullWalletRequest.newBuilder()
-                .setGoogleTransactionId(googleTransactionId)
-                .setCart(Cart.newBuilder()
+    private MaskedWalletRequest generateMaskedWalletRequest() {
+        // This is just an example publicKey for the purpose of this codelab.
+        // To learn how to generate your own visit:
+        // https://github.com/android-pay/androidpay-quickstart
+        String publicKey = "BO39Rh43UGXMQy5PAWWe7UGWd2a9YRjNLPEEVe+zWIbdIgALcDcnYCuHbmrrzl7h8FZjl6RCzoi5/cDrqXNRVSo=";
+        PaymentMethodTokenizationParameters parameters =
+                PaymentMethodTokenizationParameters.newBuilder()
+                        .setPaymentMethodTokenizationType(
+                                PaymentMethodTokenizationType.NETWORK_TOKEN)
+                        .addParameter("publicKey", publicKey)
+                        .build();
+
+        MaskedWalletRequest maskedWalletRequest =
+                MaskedWalletRequest.newBuilder()
+                        .setMerchantName("Google I/O Codelab")
+                        .setPhoneNumberRequired(true)
+                        .setShippingAddressRequired(true)
                         .setCurrencyCode("USD")
-                        .setTotalPrice("10.10")
-                        .addLineItem(LineItem.newBuilder()
+                        .setCart(Cart.newBuilder()
                                 .setCurrencyCode("USD")
-                                .setDescription("Google I/O Sticker")
-                                .setQuantity("1")
-                                .setUnitPrice("10.00")
                                 .setTotalPrice("10.00")
+                                .addLineItem(LineItem.newBuilder()
+                                        .setCurrencyCode("USD")
+                                        .setDescription("Google I/O Sticker")
+                                        .setQuantity("1")
+                                        .setUnitPrice("10.00")
+                                        .setTotalPrice("10.00")
+                                        .build())
                                 .build())
-                        .addLineItem(LineItem.newBuilder()
-                                .setCurrencyCode("USD")
-                                .setDescription("Tax")
-                                .setRole(LineItem.Role.TAX)
-                                .setTotalPrice(".10")
-                                .build())
-                        .build())
-                .build();
-        return fullWalletRequest;
-    }
+                        .setEstimatedTotalPrice("15.00")
+                        .setPaymentMethodTokenizationParameters(parameters)
+                        .build();
+        return maskedWalletRequest;
 
-    public void requestFullWallet(View view) {
-        if (mMaskedWallet == null) {
-            Toast.makeText(this, "No masked wallet, can't confirm", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Wallet.Payments.loadFullWallet(mGoogleApiClient,
-                generateFullWalletRequest(mMaskedWallet.getGoogleTransactionId()),
-                FULL_WALLET_REQUEST_CODE);
-    }
-
-    public static NotifyTransactionStatusRequest generateNotifyTransactionStatusRequest(
-            String googleTransactionId, int status) {
-        return NotifyTransactionStatusRequest.newBuilder()
-                .setGoogleTransactionId(googleTransactionId)
-                .setStatus(status)
-                .build();
-    }
-
-
-    @Override
-    public void onStart() {
-        mGoogleApiClient.connect();
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        // GoogleApiClient is connected, we don't need to do anything here
-    }
-
-    @Override
-    public void onConnectionSuspended(int cause) {
-        // GoogleApiClient is temporarily disconnected, no action needed
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult result) {
-        // GoogleApiClient failed to connect, we should log the error and retry
     }
 }
-

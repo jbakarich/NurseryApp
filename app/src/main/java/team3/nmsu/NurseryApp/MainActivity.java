@@ -90,17 +90,22 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
 
 
-        } else if (id == R.id.nav_second_layout) {
-
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
-
-        } else if (id == R.id.nav_third_layout) {
+//        } else if (id == R.id.nav_second_layout) {
+//
+//            fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
+//
+//        }
+         }else if (id == R.id.nav_third_layout) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
 
         } else if (id == R.id.attendence_layout) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, new AttendenceFragment()).commit();
+
+        } else if (id == R.id.payment_screen) {
+
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new PaymentActivity()).commit();
 
         }
 
