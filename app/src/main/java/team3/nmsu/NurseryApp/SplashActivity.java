@@ -14,6 +14,12 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
 
+        // Background Tasks
+
+//        for (int i = 0; i < 50000; i++) {
+//            Log.i("LOG", "i: " +i);
+//        }
+
         startActivity(new Intent(this, MainActivity.class));
     }
 }

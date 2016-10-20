@@ -7,9 +7,9 @@
 
             android:title="Home" />
         <item
-            android:id="@+id/payment_screen"
+            android:id="@+id/nav_second_layout"
 
-            android:title="Payment Screen" />
+            android:title="Payment History" />
         <item
             android:id="@+id/nav_third_layout"
 
