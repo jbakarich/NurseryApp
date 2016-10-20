@@ -5,7 +5,7 @@ android {
     buildToolsVersion '24.0.3'
 
     defaultConfig {
-        applicationId "team3.nmsu.NurseryApp.messingwithmenus"
+        applicationId "com.MispronouncedDevelopment.Homeroom"
         minSdkVersion 21
         targetSdkVersion 24
         versionCode 1
@@ -17,6 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets { main { assets.srcDirs = ['src/main/assets', 'src/main/assets/'] } }
 }
 
 dependencies {
