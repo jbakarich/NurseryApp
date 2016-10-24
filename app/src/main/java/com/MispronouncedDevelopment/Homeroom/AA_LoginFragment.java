@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,7 @@ import java.io.IOException;
  * Created by jacob on 9/15/2016.
  */
 public class AA_LoginFragment extends Fragment {
-
+    private static final String TAG = "MyActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     View myView;
     AA_DatabaseImport myDB;
     Button loginButton;
@@ -73,6 +74,7 @@ public class AA_LoginFragment extends Fragment {
                         //StringBuffer buffer = new StringBuffer();
                         while(res.moveToNext()){
                             //buffer.append("" + res.getString(1));
+                            Log.d(TAG, res.getString(1));
                            if(userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
                                Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
                                toast.show();
