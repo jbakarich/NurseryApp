@@ -15,71 +15,76 @@ import android.view.MenuItem;
 import java.io.IOException;
 
 
-public class AA_MainActivity extends AppCompatActivity
-
-        implements NavigationView.OnNavigationItemSelectedListener{
-        private static final String TAG = "MyActivity";
-        AA_DatabaseImport myDB;
+public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+    private static final String TAG = "MyActivity";//Use this for logging. ex: Log.d(TAG, "my message");
+    AA_DatabaseImport myDB;
+    boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.aa_activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-            this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        Toolbar toolbar;
+        DrawerLayout drawer;
+        NavigationView navigationView;
+
+        if(isAdmin){
+            setContentView(R.layout.admin_main);
+             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
+             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
+             navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
+        } else {
+            setContentView(R.layout.parent_main);
+             toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
+             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+             navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
+        }
+
+        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
 
         myDB = new AA_DatabaseImport(this, "app_data.db");
 
         try {
-
             myDB.createDataBase();
-
-        }catch (IOException ioe){
-
+        } catch (IOException ioe){
             throw new Error("UNABLE TO CREATE DATABASE");
         }
 
         try{
-
             myDB.openDataBase();
 
-        }catch(SQLiteException sqle){
-
+        } catch(SQLiteException sqle){
             throw sqle;
         }
 
-
         android.app.FragmentManager fragmentManager = getFragmentManager();
-
         Cursor res = myDB.getLoginStatus();
-
         res.moveToNext();
-
         String loginStatus = "0";
 
-        if(loginStatus.matches(res.getString(1).toLowerCase()))
-        {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new AA_LoginFragment()).commit();
-        } else{
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_HomeFragment()).commit();
+        if(loginStatus.matches(res.getString(1).toLowerCase())) {
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();//change this to a default view
+        } else if(isAdmin){
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+        } else {
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Admin_HomeFragment()).commit();
         }
-
-
-
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer;
+        if(isAdmin) {
+             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
+        } else {
+             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+        }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -118,27 +123,30 @@ public class AA_MainActivity extends AppCompatActivity
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (id == R.id.Admin_Home) {
-            Log.d(TAG, "home");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_HomeFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else if(id == R.id.Admin_Attendence){
-            Log.d(TAG, "attendence");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_AttendenceFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
         } else if(id == R.id.Admin_Payment){
-            Log.d(TAG, "payment");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_PaymentFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
         } else if(id == R.id.Admin_Settings){
-            Log.d(TAG, "settings");
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_SettingsFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
+        } else if(id == R.id.Parent_Home){
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+        } else if(id == R.id.Parent_Attendence){
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
+        } else if(id == R.id.Parent_Payment){
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
+        } else if(id == R.id.Parent_Settings){
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
         }
 
+        DrawerLayout drawer;
+        if(isAdmin){
+             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
+        } else {
+             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+        }
 
-
-
-
-
-
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

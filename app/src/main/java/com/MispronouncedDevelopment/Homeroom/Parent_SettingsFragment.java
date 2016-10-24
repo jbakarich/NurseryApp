@@ -8,16 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by jacob on 9/15/2016.
+ * Created by Cyrille on 10/24/16.
  */
-public class Parent_HomeFragment extends Fragment {
 
+public class Parent_SettingsFragment extends Fragment {
     View myView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.parent_home, container, false);
+        myView = inflater.inflate(R.layout.parent_settings, container, false);
         return myView;
     }
 }
