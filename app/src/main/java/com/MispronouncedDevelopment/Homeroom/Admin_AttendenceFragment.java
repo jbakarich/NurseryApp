@@ -1,4 +1,4 @@
-package team3.nmsu.NurseryApp;
+package com.MispronouncedDevelopment.Homeroom;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import team3.nmsu.NurseryApp.test.R;
+
 
 /**
- * Created by jacob on 9/15/2016.
+ * Created by cyrille on 9/29/2016.
  */
-public class SecondFragment extends Fragment {
+public class Admin_AttendenceFragment extends Fragment {
 
     View myView;
 
@@ -20,12 +20,7 @@ public class SecondFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-
-        myView = inflater.inflate(R.layout.second_layout, container, false);
-
-
-
-
+        myView = inflater.inflate(R.layout.admin_attendence, container, false);
         return myView;
     }
 }

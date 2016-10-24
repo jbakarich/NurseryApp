@@ -14,16 +14,16 @@ import android.view.MenuItem;
 import java.io.IOException;
 
 
-public class MainActivity extends AppCompatActivity
+public class AA_MainActivity extends AppCompatActivity
 
         implements NavigationView.OnNavigationItemSelectedListener{
 
-        DatabaseImport myDB;
+        AA_DatabaseImport myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.aa_activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        myDB = new DatabaseImport(this, "app_data.db");
+        myDB = new AA_DatabaseImport(this, "app_data.db");
 
         try {
 
@@ -67,10 +67,16 @@ public class MainActivity extends AppCompatActivity
 
         if(loginStatus.matches(res.getString(1).toLowerCase()))
         {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new LoginFragment()).commit();
-        }else{
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new AA_LoginFragment()).commit();
+        }
 
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
+
+
+
+        else{
+
+
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_HomeFragment()).commit();
         }
 
 
@@ -119,10 +125,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.mainpage) {
 
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
-
-
-        } else if (id == R.id.nav_second_layout) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_HomeFragment()).commit();
+        }
+/* Commented out because second and third fragment no longer exist
+        else if (id == R.id.nav_second_layout) {
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
 
@@ -130,11 +136,9 @@ public class MainActivity extends AppCompatActivity
 
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
 
-        } else if (id == R.id.attendence_layout) {
-
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new AttendenceFragment()).commit();
-
         }
+
+        */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

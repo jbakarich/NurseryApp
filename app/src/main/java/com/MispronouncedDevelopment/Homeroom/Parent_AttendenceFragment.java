@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 /**
  * Created by cyrille on 9/29/2016.
  */
-public class AttendenceFragment extends Fragment {
+public class Parent_AttendenceFragment extends Fragment {
 
     View myView;
 
@@ -20,7 +20,7 @@ public class AttendenceFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        myView = inflater.inflate(R.layout.attendence_layout, container, false);
+        myView = inflater.inflate(R.layout.parent_attendence, container, false);
         return myView;
     }
 }

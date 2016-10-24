@@ -5,12 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-public class SplashActivity extends AppCompatActivity {
+public class AA_SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        setContentView(R.layout.aa_splash_screen);
 
 
         // Background Tasks
@@ -19,6 +19,6 @@ public class SplashActivity extends AppCompatActivity {
 //            Log.i("LOG", "i: " +i);
 //        }
 
-        startActivity(new Intent(this, MainActivity.class));
+        startActivity(new Intent(this, AA_MainActivity.class));
     }
 }

@@ -17,7 +17,7 @@ import java.sql.SQLDataException;
  * Created by jacob on 10/5/2016.
  */
 
-public class DatabaseImport extends SQLiteOpenHelper {
+public class AA_DatabaseImport extends SQLiteOpenHelper {
 
 
     private static String DB_PATH = "/data/data/com.MispronouncedDevelopment.Homeroom/databases/";
@@ -28,7 +28,7 @@ public class DatabaseImport extends SQLiteOpenHelper {
 
     private final Context myContext;
 
-    public DatabaseImport(Context context, String database){
+    public AA_DatabaseImport(Context context, String database){
 
         super(context, database, null, 1);
 

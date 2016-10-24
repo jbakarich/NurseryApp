@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by jacob on 10/13/2016.
  */
 
-public class DatabaseOperations extends SQLiteOpenHelper{
+public class AA_DatabaseOperations extends SQLiteOpenHelper{
 
     public static final String DATABASE_NAME = "Profiles.db";
     public static final String TABLE_NAME = "profile_table";
@@ -17,7 +17,7 @@ public class DatabaseOperations extends SQLiteOpenHelper{
     public static final String COL_4 = "NAME";
     public static final String COL_5 = "TYPE";
 
-    public DatabaseOperations(Context context){
+    public AA_DatabaseOperations(Context context){
 
         super(context, DATABASE_NAME, null, 1);
 

@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.MispronouncedDevelopment.Homeroom.MainActivity;
+import com.MispronouncedDevelopment.Homeroom.AA_MainActivity;
 
 
 import java.io.IOException;
@@ -24,11 +24,11 @@ import java.io.IOException;
 /**
  * Created by jacob on 9/15/2016.
  */
-public class LoginFragment extends Fragment {
+public class AA_LoginFragment extends Fragment {
 
     View myView;
 
-    DatabaseImport myDB;
+    AA_DatabaseImport myDB;
 
     Button loginButton;
 
@@ -43,9 +43,9 @@ public class LoginFragment extends Fragment {
 
         Context context = getActivity();
 
-        myView = inflater.inflate(R.layout.login_layout, container, false);
+        myView = inflater.inflate(R.layout.aa_login, container, false);
 
-        myDB = new DatabaseImport(context, "DB1.db");
+        myDB = new AA_DatabaseImport(context, "DB1.db");
 
         try {
 
@@ -149,7 +149,7 @@ public class LoginFragment extends Fragment {
 
     public void successfulLogin(){
 
-        DatabaseImport apd = new DatabaseImport(this.getActivity(), "app_data");
+        AA_DatabaseImport apd = new AA_DatabaseImport(this.getActivity(), "app_data");
 
 
         ContentValues cv = new ContentValues();
@@ -159,7 +159,7 @@ public class LoginFragment extends Fragment {
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_HomeFragment()).commit();
 
     }
 

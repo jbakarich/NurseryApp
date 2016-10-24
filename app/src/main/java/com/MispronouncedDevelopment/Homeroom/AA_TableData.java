@@ -11,11 +11,11 @@ import android.provider.BaseColumns;
 
 
 
-public abstract class TableData implements BaseColumns {
+public abstract class AA_TableData implements BaseColumns {
 
 
 
-        private TableData()
+        private AA_TableData()
         {
 
         }

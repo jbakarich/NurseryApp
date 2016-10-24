@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 /**
  * Created by jacob on 9/15/2016.
  */
-public class HomeFragment extends Fragment {
+public class Admin_HomeFragment extends Fragment {
 
     View myView;
 

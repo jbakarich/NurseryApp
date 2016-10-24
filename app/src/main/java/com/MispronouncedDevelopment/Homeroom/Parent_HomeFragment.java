@@ -7,13 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-
 /**
  * Created by jacob on 9/15/2016.
- * Edited by Cyrille on 9/19/2016
  */
-public class FirstFragment extends Fragment {
+public class Parent_HomeFragment extends Fragment {
 
     View myView;
 
@@ -22,7 +19,7 @@ public class FirstFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
 
-        myView = inflater.inflate(R.layout.mainpage, container, false);
+       // myView = inflater.inflate(R.layout.HomeFragment, container, false);
 
 
 
