@@ -8,18 +8,12 @@ import android.provider.BaseColumns;
 
 
 
-
-
-
 public abstract class AA_TableData implements BaseColumns {
 
 
-
-        private AA_TableData()
-        {
+        private AA_TableData() {
 
         }
-
 
 
         public static abstract class TableInfo implements BaseColumns{

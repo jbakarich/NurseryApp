@@ -7,18 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+
 /**
- * Created by jacob on 9/15/2016.
+ * Created by Cyrille on 10/24/16.
  */
 
-public class Admin_HomeFragment extends Fragment {
-
+public class Parent_PaymentFragment extends Fragment {
     View myView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.admin_home, container, false);
+        myView = inflater.inflate(R.layout.parent_payment_history, container, false);
         return myView;
     }
 }

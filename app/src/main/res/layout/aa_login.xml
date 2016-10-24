@@ -24,15 +24,16 @@
         android:textAppearance="@android:style/TextAppearance.Material.Large"
         android:textSize="30sp" />
 
-    <Button
-        android:text="Login"
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="99dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/editUserNameText"
-        android:layout_alignStart="@+id/editUserNameText"
-        android:id="@+id/loginButton" />
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editUserNameText"
+        android:layout_marginTop="80dp"
+        android:layout_below="@+id/WelcomeText"
+        android:layout_alignStart="@+id/EditUserPIN"
+        android:hint="Username" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -47,15 +48,14 @@
         android:layout_below="@+id/editUserNameText"
         android:layout_centerHorizontal="true" />
 
-    <EditText
+    <Button
+        android:text="Login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editUserNameText"
-        android:layout_marginTop="80dp"
-        android:layout_below="@+id/WelcomeText"
-        android:layout_alignStart="@+id/EditUserPIN"
-        android:hint="Username" />
+        android:layout_marginBottom="99dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/editUserNameText"
+        android:layout_alignStart="@+id/editUserNameText"
+        android:id="@+id/loginButton" />
 
 </RelativeLayout>

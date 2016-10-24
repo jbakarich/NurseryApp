@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+
+            android:title="This is the parent menu" />
+        <item
+            android:id="@+id/Parent_Home"
+
+            android:title="Home" />
+        <item
+            android:id="@+id/Parent_Attendence"
+
+            android:title="Attendence" />
+        <item
+            android:id="@+id/Parent_Payment"
+
+            android:title="Payment Records" />
+
+        <item
+            android:id="@+id/Parent_Settings"
+
+            android:title="Settings" />
+    </group>
+
+</menu>

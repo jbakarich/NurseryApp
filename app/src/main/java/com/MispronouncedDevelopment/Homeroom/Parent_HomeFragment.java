@@ -17,13 +17,7 @@ public class Parent_HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
-       // myView = inflater.inflate(R.layout.HomeFragment, container, false);
-
-
-
-
+        myView = inflater.inflate(R.layout.parent_home, container, false);
         return myView;
     }
 }
