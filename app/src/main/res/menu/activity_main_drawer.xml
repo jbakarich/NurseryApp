@@ -3,22 +3,25 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/mainpage"
+
+            android:title="This is the admin menu" />
+        <item
+            android:id="@+id/Admin_Home"
 
             android:title="Home" />
         <item
-            android:id="@+id/nav_second_layout"
-
-            android:title="Payment History" />
-        <item
-            android:id="@+id/nav_third_layout"
-
-            android:title="Settings" />
-
-        <item
-            android:id="@+id/attendence_layout"
+            android:id="@+id/Admin_Attendence"
 
             android:title="Attendence" />
+        <item
+            android:id="@+id/Admin_Payment"
+
+            android:title="Payment Records" />
+
+        <item
+            android:id="@+id/Admin_Settings"
+
+            android:title="Settings" />
     </group>
 
 </menu>

@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class AA_MainActivity extends AppCompatActivity
 
         implements NavigationView.OnNavigationItemSelectedListener{
-
+        private static final String TAG = "MyActivity";
         AA_DatabaseImport myDB;
 
     @Override
@@ -68,14 +69,7 @@ public class AA_MainActivity extends AppCompatActivity
         if(loginStatus.matches(res.getString(1).toLowerCase()))
         {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new AA_LoginFragment()).commit();
-        }
-
-
-
-
-        else{
-
-
+        } else{
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_HomeFragment()).commit();
         }
 
@@ -123,22 +117,26 @@ public class AA_MainActivity extends AppCompatActivity
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.mainpage) {
-
+        if (id == R.id.Admin_Home) {
+            Log.d(TAG, "home");
             fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_HomeFragment()).commit();
+        } else if(id == R.id.Admin_Attendence){
+            Log.d(TAG, "attendence");
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_AttendenceFragment()).commit();
+        } else if(id == R.id.Admin_Payment){
+            Log.d(TAG, "payment");
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_PaymentFragment()).commit();
+        } else if(id == R.id.Admin_Settings){
+            Log.d(TAG, "settings");
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new Admin_SettingsFragment()).commit();
         }
-/* Commented out because second and third fragment no longer exist
-        else if (id == R.id.nav_second_layout) {
 
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
 
-        } else if (id == R.id.nav_third_layout) {
 
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
 
-        }
 
-        */
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -27,11 +27,8 @@ import java.io.IOException;
 public class AA_LoginFragment extends Fragment {
 
     View myView;
-
     AA_DatabaseImport myDB;
-
     Button loginButton;
-
     EditText editName, editPin;
 
 
@@ -78,8 +75,6 @@ public class AA_LoginFragment extends Fragment {
 
 
    public void login(){
-
-
 
         loginButton.setOnClickListener(
 
