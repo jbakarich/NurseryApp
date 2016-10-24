@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.MispronouncedDevelopment.Homeroom.SplashActivity"
+            android:name="com.MispronouncedDevelopment.Homeroom.AA_SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.MispronouncedDevelopment.Homeroom.MainActivity"
+            android:name="com.MispronouncedDevelopment.Homeroom.AA_MainActivity"
             android:label="Homeroom"
             android:theme="@style/AppTheme.NoActionBar" >
             <!--<intent-filter>-->
