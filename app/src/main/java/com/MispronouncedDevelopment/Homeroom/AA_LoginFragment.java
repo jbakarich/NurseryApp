@@ -72,19 +72,20 @@ public class AA_LoginFragment extends Fragment {
                         Context context1 = getActivity();
                         Cursor res = myDB.getAllData();
                         //StringBuffer buffer = new StringBuffer();
+                        boolean success = false;
                         while(res.moveToNext()){
                             //buffer.append("" + res.getString(1));
-                            Log.d(TAG, res.getString(1));
                            if(userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
                                Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
                                toast.show();
-                               Log.d(TAG, res.getString(4));
-                               successfulLogin();
+                               successfulLogin(res.getString(4));
+                               success = true;
                                break;
-                           }else{
-                               Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
-                               toast.show();
                            }
+                        }
+                        if(!success) {
+                            Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
+                            toast.show();
                         }
                        //showMessage("Data", buffer.toString());
                     }
@@ -102,15 +103,14 @@ public class AA_LoginFragment extends Fragment {
         builder.show();
     }
 
-    public void successfulLogin(){
+    public void successfulLogin(String type){
 
         AA_DatabaseImport apd = new AA_DatabaseImport(this.getActivity(), "app_data");
         ContentValues cv = new ContentValues();
         cv.put("STATUS", "'1'");
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        boolean isAdmin = false;
-        if(isAdmin) {
+        if(type == "ADMIN") {
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
