@@ -16,7 +16,7 @@ import java.io.IOException;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private static final String TAG = "MyActivity";//Use this for logging. ex: Log.d(TAG, "my message");
+    private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
     boolean isAdmin = false;
 
@@ -68,12 +68,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         res.moveToNext();
         String loginStatus = "0";
 
-        if(loginStatus.matches(res.getString(1).toLowerCase())) {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();//change this to a default view
-        } else if(isAdmin){
+            if(isAdmin){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Admin_HomeFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
     }
 

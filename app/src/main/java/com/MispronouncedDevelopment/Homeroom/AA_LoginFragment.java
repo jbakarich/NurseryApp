@@ -26,7 +26,7 @@ import java.io.IOException;
  * Created by jacob on 9/15/2016.
  */
 public class AA_LoginFragment extends Fragment {
-    private static final String TAG = "MyActivity";//Use this for logging. ex: Log.d(TAG, "my message");
+    private static final String TAG = "LoginFrag";//Use this for logging. ex: Log.d(TAG, "my message");
     View myView;
     AA_DatabaseImport myDB;
     Button loginButton;
@@ -35,7 +35,7 @@ public class AA_LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        Log.d(TAG, "Trying here");
         Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
         myDB = new AA_DatabaseImport(context, "DB1.db");
@@ -55,7 +55,7 @@ public class AA_LoginFragment extends Fragment {
         editPin = (EditText)myView.findViewById(R.id.EditUserPIN);
         loginButton = (Button)myView.findViewById(R.id.loginButton);
         login();
-
+        Log.d(TAG, "end of Create");
         return myView;
     }
 
@@ -78,6 +78,7 @@ public class AA_LoginFragment extends Fragment {
                            if(userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
                                Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
                                toast.show();
+                               Log.d(TAG, res.getString(4));
                                successfulLogin();
                                break;
                            }else{
