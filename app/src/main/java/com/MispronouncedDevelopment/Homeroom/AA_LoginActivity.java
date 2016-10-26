@@ -18,20 +18,13 @@ import android.view.MenuItem;
 import java.io.IOException;
 
 public class AA_LoginActivity extends AppCompatActivity{
-    private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
+    private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
     boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Log.d(TAG, "creating now");
-        if (isAdmin) {
-            setContentView(R.layout.admin_main);
-        } else {
-            setContentView(R.layout.parent_main);
-        }
 
         myDB = new AA_DatabaseImport(this, "app_data.db");
 
@@ -54,15 +47,16 @@ public class AA_LoginActivity extends AppCompatActivity{
         String loginStatus = "0";
 
         if (loginStatus.matches(res.getString(1).toLowerCase())) {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();//change this to a default view
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new AA_LoginFragment()).commit();//change this to a default view
+            setContentView(R.layout.default_main);
         } else if (isAdmin) {
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+            setContentView(R.layout.admin_main);
         } else {
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+            setContentView(R.layout.parent_main);
         }
     }
-    public void StartApp(){
-        startActivity(new Intent(this, AA_MainActivity.class));
-    }
+
 }
 

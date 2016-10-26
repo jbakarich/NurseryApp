@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import com.MispronouncedDevelopment.Homeroom.AA_MainActivity;
 
 
 import java.io.IOException;
@@ -36,37 +35,34 @@ public class AA_LoginFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(TAG, "Trying here");
         Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
         myDB = new AA_DatabaseImport(context, "DB1.db");
         try {
             myDB.createDataBase();
-        }catch (IOException ioe){
+        } catch (IOException ioe) {
             throw new Error("UNABLE TO CREATE DATABASE");
         }
 
-        try{
+        try {
             myDB.openDataBase();
-        }catch(SQLiteException sqle){
+        } catch (SQLiteException sqle) {
             throw sqle;
         }
 
-        editName = (EditText)myView.findViewById(R.id.editUserNameText);
-        editPin = (EditText)myView.findViewById(R.id.EditUserPIN);
-        loginButton = (Button)myView.findViewById(R.id.loginButton);
+        editName = (EditText) myView.findViewById(R.id.editUserNameText);
+        editPin = (EditText) myView.findViewById(R.id.EditUserPIN);
+        loginButton = (Button) myView.findViewById(R.id.loginButton);
         login();
-        Log.d(TAG, "end of Create");
         return myView;
     }
 
-   public void login(){
+    public void login() {
         loginButton.setOnClickListener(
-                new View.OnClickListener(){
+                new View.OnClickListener() {
 
 
-                    public void onClick(View v)
-                    {
+                    public void onClick(View v) {
                         String userName = editName.getText().toString();
                         String PIN = editPin.getText().toString();
                         boolean login = false;
@@ -74,28 +70,28 @@ public class AA_LoginFragment extends Fragment {
                         Cursor res = myDB.getAllData();
                         //StringBuffer buffer = new StringBuffer();
                         boolean success = false;
-                        while(res.moveToNext()){
+                        while (res.moveToNext()) {
                             //buffer.append("" + res.getString(1));
-                           if(userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
-                               Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
-                               toast.show();
-                               successfulLogin(res.getString(4));
-                               success = true;
-                               break;
-                           }
+                            if (userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
+                                Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
+                                toast.show();
+                                successfulLogin(res.getString(4));
+                                success = true;
+                                break;
+                            }
                         }
-                        if(!success) {
+                        if (!success) {
                             Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
                             toast.show();
                         }
-                       //showMessage("Data", buffer.toString());
+                        //showMessage("Data", buffer.toString());
                     }
 
                 }
         );
     }
 
-    public void showMessage(String title, String Message){
+    public void showMessage(String title, String Message) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
         builder.setCancelable(true);
@@ -104,21 +100,27 @@ public class AA_LoginFragment extends Fragment {
         builder.show();
     }
 
-    public void successfulLogin(String type){
+    public void successfulLogin(String type) {
 
         AA_DatabaseImport apd = new AA_DatabaseImport(this.getActivity(), "app_data");
         ContentValues cv = new ContentValues();
         cv.put("STATUS", "'1'");
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-
-        if(type == "ADMIN") {
-
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+        if (type.equals("ADMIN")) {
+            Log.d(TAG, "Admin success");
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+            Log.d(TAG, "parent success");
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
         Context context = getActivity();
-        context.startActivity(new Intent(context, AA_MainActivity.class));
+
+
+        Intent myIntent = new Intent(context, AA_MainActivity.class);
+        myIntent.putExtra("type", type);
+        startActivity(myIntent);
+        context.startActivity(myIntent);
+
     }
 }
