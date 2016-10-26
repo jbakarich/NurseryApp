@@ -31,22 +31,22 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         if(isAdmin){
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
-//             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
-//             navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
+             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
+             navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         } else {
             setContentView(R.layout.parent_main);
              toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
-//             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
-//             navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
+             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+             navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
         }
 
         setSupportActionBar(toolbar);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
 
-//        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setNavigationItemSelectedListener(this);
 
         myDB = new AA_DatabaseImport(this, "app_data.db");
 
@@ -68,9 +68,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         res.moveToNext();
         String loginStatus = "0";
 
-        if(loginStatus.matches(res.getString(1).toLowerCase())) {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();//change this to a default view
-        } else if(isAdmin){
+       if(isAdmin){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();

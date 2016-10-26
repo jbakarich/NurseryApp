@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -110,10 +111,14 @@ public class AA_LoginFragment extends Fragment {
         cv.put("STATUS", "'1'");
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
+
         if(type == "ADMIN") {
+
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
+        Context context = getActivity();
+        context.startActivity(new Intent(context, AA_MainActivity.class));
     }
 }
