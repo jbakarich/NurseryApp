@@ -16,24 +16,28 @@ import java.io.IOException;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    private static final String TAG = "MyActivity";//Use this for logging. ex: Log.d(TAG, "my message");
+    private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
-    boolean isAdmin = false;
-
+    String myType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Bundle extras = getIntent().getExtras();
+        myType = extras.getString("type");
+        Log.d(TAG, myType);
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
 
-        if(isAdmin){
+        if(myType.equals("ADMIN")){
+            Log.d(TAG, "making admin");
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
              navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         } else {
+            Log.d(TAG, "making parent");
             setContentView(R.layout.parent_main);
              toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -68,19 +72,17 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         res.moveToNext();
         String loginStatus = "0";
 
-        if(loginStatus.matches(res.getString(1).toLowerCase())) {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();//change this to a default view
-        } else if(isAdmin){
+       if(myType.equals("ADMIN")){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Admin_HomeFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer;
-        if(isAdmin) {
+        if(myType.equals("ADMIN")) {
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         } else {
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -141,7 +143,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         }
 
         DrawerLayout drawer;
-        if(isAdmin){
+        if(myType.equals("ADMIN")){
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         } else {
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
