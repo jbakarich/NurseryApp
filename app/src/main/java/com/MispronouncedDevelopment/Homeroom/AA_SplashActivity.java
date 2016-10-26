@@ -13,12 +13,6 @@ public class AA_SplashActivity extends AppCompatActivity {
         setContentView(R.layout.aa_splash_screen);
 
 
-        // Background Tasks
-
-//        for (int i = 0; i < 50000; i++) {
-//            Log.i("LOG", "i: " +i);
-//        }
-
-        startActivity(new Intent(this, AA_MainActivity.class));
+        startActivity(new Intent(this, AA_LoginActivity.class));
     }
 }
