@@ -30,7 +30,7 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/editUserNameText"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="17sp"
         android:layout_below="@+id/WelcomeText"
         android:layout_alignStart="@+id/EditUserPIN"
         android:hint="Username" />
@@ -40,10 +40,9 @@
         android:layout_height="wrap_content"
         android:inputType="numberPassword"
         android:ems="10"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="16sp"
         android:id="@+id/EditUserPIN"
         android:hint="PIN"
-        android:singleLine="false"
         android:selectAllOnFocus="false"
         android:layout_below="@+id/editUserNameText"
         android:layout_centerHorizontal="true" />
