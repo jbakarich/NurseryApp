@@ -35,7 +35,7 @@ public class Parent_HomeFragment extends Fragment {
 
         Button makePaymentButton = (Button)myView.findViewById(R.id.makePaymentButton);
 
-        attendaceHistory.setOnClickListener();
+        //attendaceHistory.setOnClickListener();
 
 
 
