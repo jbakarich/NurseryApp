@@ -18,23 +18,17 @@ import java.io.IOException;
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
-    public static final String PREFS_NAME = "PrefsFile";
     AA_DatabaseImport myDB;
     String myType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        boolean firstLogin = settings.getBoolean("login", false );
-
         Bundle extras = getIntent().getExtras();
         myType = extras.getString("type");
         Log.d(TAG, myType);
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
-
         if(myType.equals("admin")){
             Log.d(TAG, "making admin");
             setContentView(R.layout.admin_main);

@@ -20,5 +20,8 @@ public class Admin_SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.admin_settings, container, false);
         return myView;
+
+
+
     }
 }
