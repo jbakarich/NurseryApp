@@ -5,9 +5,11 @@ import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,6 +29,8 @@ import java.io.IOException;
  */
 public class AA_LoginFragment extends Fragment {
     private static final String TAG = "LoginFrag";//Use this for logging. ex: Log.d(TAG, "my message");
+    public static final String PREFS_NAME = "PrefsFile";
+    public boolean loginState = false;
     View myView;
     AA_DatabaseImport myDB;
     Button loginButton;
@@ -102,25 +106,41 @@ public class AA_LoginFragment extends Fragment {
 
     public void successfulLogin(String type) {
 
-        AA_DatabaseImport apd = new AA_DatabaseImport(this.getActivity(), "app_data");
-        ContentValues cv = new ContentValues();
-        cv.put("STATUS", "'1'");
+        loginState = true;
+        String loginStateKey = "login";
+        String loginTypeKey = "type";
+        String loginType = "";
+
+
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (type.equals("ADMIN")) {
             Log.d(TAG, "Admin success");
+            loginType = "admin";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
         } else {
             Log.d(TAG, "parent success");
+            loginType ="parent";
+            type = "parent";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
+
+        setDefault(loginStateKey, loginState, loginTypeKey, loginType, this.getActivity());
         Context context = getActivity();
-
-
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", type);
         startActivity(myIntent);
         context.startActivity(myIntent);
 
     }
+
+    public static void setDefault(String loginStateKey, boolean loginState, String loginTypeKey, String loginType,  Context context)
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(loginStateKey, loginState);
+        editor.putString(loginTypeKey, loginType);
+        editor.commit();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.MispronouncedDevelopment.Homeroom;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
@@ -17,11 +18,15 @@ import java.io.IOException;
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
+    public static final String PREFS_NAME = "PrefsFile";
     AA_DatabaseImport myDB;
     String myType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        boolean firstLogin = settings.getBoolean("login", false );
 
         Bundle extras = getIntent().getExtras();
         myType = extras.getString("type");
@@ -30,7 +35,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         DrawerLayout drawer;
         NavigationView navigationView;
 
-        if(myType.equals("ADMIN")){
+        if(myType.equals("admin")){
             Log.d(TAG, "making admin");
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
@@ -68,11 +73,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         }
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
-        Cursor res = myDB.getLoginStatus();
-        res.moveToNext();
-        String loginStatus = "0";
 
-       if(myType.equals("ADMIN")){
+       if(myType.equals("admin")){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
@@ -82,7 +84,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     public void onBackPressed() {
         DrawerLayout drawer;
-        if(myType.equals("ADMIN")) {
+        if(myType.equals("admin")) {
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         } else {
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -143,7 +145,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         }
 
         DrawerLayout drawer;
-        if(myType.equals("ADMIN")){
+        if(myType.equals("admin")){
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         } else {
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
