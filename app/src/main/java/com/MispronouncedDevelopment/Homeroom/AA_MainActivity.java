@@ -1,9 +1,12 @@
 package com.MispronouncedDevelopment.Homeroom;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +17,8 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import java.io.IOException;
+
+import static android.R.attr.type;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -136,6 +141,19 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
         } else if(id == R.id.Parent_Settings){
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
+        } else if(id == R.id.Parent_Logout || id == R.id.Admin_Logout){
+
+
+            SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = mySPrefs.edit();
+            editor.remove("login");
+            editor.apply();
+
+            Log.d(TAG, "logging out");
+            Context context = this;
+            Intent myIntent = new Intent(context, AA_LoginActivity.class);
+            startActivity(myIntent);
+            context.startActivity(myIntent);
         }
 
         DrawerLayout drawer;

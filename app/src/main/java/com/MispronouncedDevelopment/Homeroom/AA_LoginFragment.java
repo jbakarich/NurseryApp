@@ -134,8 +134,7 @@ public class AA_LoginFragment extends Fragment {
 
     }
 
-    public static void setDefault(String loginStateKey, boolean loginState, String loginTypeKey, String loginType,  Context context)
-    {
+    public static void setDefault(String loginStateKey, boolean loginState, String loginTypeKey, String loginType,  Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean(loginStateKey, loginState);
