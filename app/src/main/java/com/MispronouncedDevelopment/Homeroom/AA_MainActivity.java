@@ -15,6 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import java.io.IOException;
 
@@ -78,6 +86,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         } else {
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
+        UpdateData();
     }
 
     @Override
@@ -165,6 +174,33 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    void UpdateData(){
+        final TextView mTextView = (TextView) findViewById(R.id.text);
+
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url ="http://172.31.98.117:8080/testfunction";
+        Log.d(TAG, "starting request");
+                // Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        Log.d(TAG, "Response is: "+ response.substring(0,500));
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "That didn't work!");
+            }
+        });
+        // Add the request to the RequestQueue.
+        queue.add(stringRequest);
+        Log.d(TAG, "End of function?");
     }
 }
 
