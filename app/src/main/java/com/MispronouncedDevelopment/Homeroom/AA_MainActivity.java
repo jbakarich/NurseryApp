@@ -21,8 +21,12 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -178,28 +182,40 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
 
     void UpdateData(){
-        final TextView mTextView = (TextView) findViewById(R.id.text);
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://172.31.98.117:8080/testfunction";
-        Log.d(TAG, "starting request");
-                // Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
-                        Log.d(TAG, "Response is: "+ response.substring(0,500));
-                    }
-                }, new Response.ErrorListener() {
+        String url ="http://172.31.98.117:8080/testfunction";//this is the location of wherever the server is running.
+
+        JSONObject student = new JSONObject();
+        try {
+            student.put("name", "James");
+            Log.d(TAG, "added name");
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Log.d(TAG, "There was an error here");
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest request = new JsonObjectRequest(url, student, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, "got object");
+                Log.d(TAG, response.toString());
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "That didn't work!");
+                Log.d(TAG, "There was an error:");
+                Log.d(TAG, error.toString());
             }
         });
+
+
+
         // Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        queue.add(request);
         Log.d(TAG, "End of function?");
     }
 }
