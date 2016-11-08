@@ -4,28 +4,20 @@ package com.MispronouncedDevelopment.Homeroom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuItem;
+import android.view.View;
+import android.widget.CheckBox;
 
 import java.io.IOException;
 
-import static android.R.attr.type;
 
 public class AA_LoginActivity extends AppCompatActivity{
     private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
-    boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,22 +63,17 @@ public class AA_LoginActivity extends AppCompatActivity{
             myIntent.putExtra("type", type);
             startActivity(myIntent);
             this.startActivity(myIntent);
-
         }
     }
 
     public static boolean getDefaultLoginStatus(String key, Context context){
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
         return prefs.getBoolean(key, false);
     }
-    public static String getDefaultLoginType(String key, Context context)
-    {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
+    public static String getDefaultLoginType(String key, Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getString(key, "admin");
     }
-
 }
 

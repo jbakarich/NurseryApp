@@ -12,22 +12,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-
-import com.android.volley.AuthFailureError;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -40,18 +26,15 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         myType = extras.getString("type");
-        Log.d(TAG, myType);
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
         if(myType.equals("admin")){
-            Log.d(TAG, "making admin");
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
              navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         } else {
-            Log.d(TAG, "making parent");
             setContentView(R.layout.parent_main);
              toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -86,9 +69,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
        if(myType.equals("admin")){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        }
-        UpdateData();
+           fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+       }
     }
 
     @Override
@@ -160,7 +142,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             editor.remove("login");
             editor.apply();
 
-            Log.d(TAG, "logging out");
             Context context = this;
             Intent myIntent = new Intent(context, AA_LoginActivity.class);
             startActivity(myIntent);
@@ -176,59 +157,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-
-    void UpdateData(){
-
-        Map<String, String> postParam= new HashMap<String, String>();
-        postParam.put("type", myType);
-        postParam.put("name", myName);
-
-        JSONObject obj = new JSONObject(postParam);
-
-        // Instantiate the RequestQueue.
-
-        String url ="http://192.168.0.5:8080/testfunction";//this is the location of wherever the server is running.
-
-    Log.d(TAG, "Trying here");
-        Log.d(TAG, obj.toString());
-        JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
-
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "Trying response");
-                        Log.d(TAG, response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "Trying error");
-                        Log.d(TAG, error.toString());
-                    }
-                }){
-            @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<>();
-                params.put("user", "something");
-                params.put("pass", "else");
-
-
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(request);
     }
 }
 

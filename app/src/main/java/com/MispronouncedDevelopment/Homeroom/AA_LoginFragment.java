@@ -16,12 +16,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
 
-import java.io.IOException;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -35,6 +45,8 @@ public class AA_LoginFragment extends Fragment {
     AA_DatabaseImport myDB;
     Button loginButton;
     EditText editName, editPin;
+    CheckBox myCheckbox;
+    String url ="http://192.168.0.5:8080/";//this is the location of wherever the server is running.
 
     @Nullable
     @Override
@@ -57,6 +69,7 @@ public class AA_LoginFragment extends Fragment {
         editName = (EditText) myView.findViewById(R.id.editUserNameText);
         editPin = (EditText) myView.findViewById(R.id.EditUserPIN);
         loginButton = (Button) myView.findViewById(R.id.loginButton);
+        myCheckbox = (CheckBox) myView.findViewById(R.id.serverCheckBox);
         login();
         return myView;
     }
@@ -69,26 +82,31 @@ public class AA_LoginFragment extends Fragment {
                     public void onClick(View v) {
                         String userName = editName.getText().toString();
                         String PIN = editPin.getText().toString();
-                        boolean login = false;
-                        Context context1 = getActivity();
-                        Cursor res = myDB.getAllData();
-                        //StringBuffer buffer = new StringBuffer();
-                        boolean success = false;
-                        while (res.moveToNext()) {
-                            //buffer.append("" + res.getString(1));
-                            if (userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
-                                Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
-                                toast.show();
-                                successfulLogin(res.getString(4));
-                                success = true;
-                                break;
+                        if(myCheckbox.isChecked()){
+                            Map<String, String> params = new HashMap<>();
+                            params.put("username", editName.getText().toString());
+                            params.put("password", editPin.getText().toString());
+                            MakeRequest(url+"CheckLogin", params);
+                        } else {
+                            boolean login = false;
+                            Context context1 = getActivity();
+                            Cursor res = myDB.getAllData();
+                            boolean success = false;
+                            while (res.moveToNext()) {
+                                if (userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
+                                    Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
+                                    toast.show();
+                                    successfulLogin(res.getString(4));
+                                    success = true;
+                                    break;
+                                }
                             }
+                            if (!success) {
+                                Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+
                         }
-                        if (!success) {
-                            Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                        //showMessage("Data", buffer.toString());
                     }
 
                 }
@@ -111,7 +129,6 @@ public class AA_LoginFragment extends Fragment {
         String loginTypeKey = "type";
         String loginType = "";
 
-
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (type.equals("ADMIN")) {
@@ -129,6 +146,7 @@ public class AA_LoginFragment extends Fragment {
         Context context = getActivity();
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", type);
+        myIntent.putExtra("serverurl", url);
         startActivity(myIntent);
         context.startActivity(myIntent);
 
@@ -142,4 +160,32 @@ public class AA_LoginFragment extends Fragment {
         editor.commit();
     }
 
+
+    void MakeRequest(String url, Map<String, String> data){
+
+        JSONObject obj = new JSONObject(data);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, "here");
+                doLogin(response.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ShowError(error.toString());
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(request);
+    }
+    void doLogin(String response){
+        Log.d(TAG, "got response: " + response);
+    }
+
+    void ShowError(String error){
+        Log.d(TAG, "There was an error: " + error);
+    }
 }

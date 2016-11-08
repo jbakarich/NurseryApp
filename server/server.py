@@ -34,17 +34,16 @@ class Root(object):
         return cherrypy.request.db
 
     @cherrypy.expose
+    def CheckLogin(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print "Checking log in info"
+        print b
+
+    @cherrypy.expose
     def enter_name(self, **kwargs):
         self.db.add(Entry(firstName=kwargs['first_name'], lastName=kwargs['last_name'], age=kwargs['age']))
         self.db.commit()
-
-    @cherrypy.expose
-    def testfunction(self, *args, **kwargs):
-        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
-        b = json.loads(rawData)
-        print b
-        print "\nend of stuff"
-        return json.dumps(myObj, indent=4)
 
     @cherrypy.expose
     def get_table(self, **kwargs):
