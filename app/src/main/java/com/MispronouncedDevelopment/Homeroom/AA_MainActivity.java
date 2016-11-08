@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,11 +27,19 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import static android.R.attr.path;
 import static android.R.attr.type;
 
 
@@ -181,42 +191,62 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     }
 
 
+
+
+
+
+
+
     void UpdateData(){
 
+        Map<String, String> postParam= new HashMap<String, String>();
+        postParam.put("un", "xyz@gmail.com");
+        postParam.put("p", "somepasswordhere");
+
+        JSONObject obj = new JSONObject(postParam);
+
         // Instantiate the RequestQueue.
+
+        String url ="http://192.168.0.5:8080/testfunction";//this is the location of wherever the server is running.
+
+    Log.d(TAG, "Trying here");
+        Log.d(TAG, obj.toString());
+        JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "Trying response");
+                        Log.d(TAG, response.toString());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "Trying error");
+                        Log.d(TAG, error.toString());
+                    }
+                }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<>();
+                params.put("user", "something");
+                params.put("pass", "else");
+
+
+                return params;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+        };
+
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url ="http://172.31.98.117:8080/testfunction";//this is the location of wherever the server is running.
-
-        JSONObject student = new JSONObject();
-        try {
-            student.put("name", "James");
-            Log.d(TAG, "added name");
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            Log.d(TAG, "There was an error here");
-        }
-
-        // Request a string response from the provided URL.
-        JsonObjectRequest request = new JsonObjectRequest(url, student, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d(TAG, "got object");
-                Log.d(TAG, response.toString());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "There was an error:");
-                Log.d(TAG, error.toString());
-            }
-        });
-
-
-
-        // Add the request to the RequestQueue.
         queue.add(request);
-        Log.d(TAG, "End of function?");
     }
 }
 
