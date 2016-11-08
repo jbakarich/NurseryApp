@@ -120,40 +120,54 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.Admin_Home) {
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-        } else if(id == R.id.Admin_Attendence){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
-        } else if(id == R.id.Admin_Payment){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
-        } else if(id == R.id.Admin_Settings){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
-        } else if(id == R.id.Admin_CreateUser){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
-        } else if(id == R.id.Admin_Profile) {
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();
-        }else if(id == R.id.Parent_Home){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        } else if(id == R.id.Parent_Attendence){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
-        } else if(id == R.id.Parent_Payment){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
-        } else if(id == R.id.Parent_Settings){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
-        } else if(id == R.id.Parent_Profile) {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_ProfileFragment()).commit();
-        }else if(id == R.id.Parent_Logout || id == R.id.Admin_Logout){
+        switch (id){
+            case R.id.Admin_Home:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+                break;
+            case R.id.Admin_Attendence:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
+                break;
+            case R.id.Admin_Payment:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
+                break;
+            case R.id.Admin_Settings:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
+                break;
+            case R.id.Admin_CreateUser:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
+                break;
+            case R.id.Admin_Profile:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();
+                break;
+            case R.id.Parent_Home:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+                break;
+            case R.id.Parent_Attendence:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
+                break;
+            case R.id.Parent_Payment:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
+                break;
+            case R.id.Parent_Settings:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
+                break;
+            case R.id.Parent_Profile:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_ProfileFragment()).commit();
+                break;
+            case R.id.Parent_Logout:
+            case R.id.Admin_Logout:
+                SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = mySPrefs.edit();
+                editor.remove("login");
+                editor.apply();
 
-
-            SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = mySPrefs.edit();
-            editor.remove("login");
-            editor.apply();
-
-            Context context = this;
-            Intent myIntent = new Intent(context, AA_LoginActivity.class);
-            startActivity(myIntent);
-            context.startActivity(myIntent);
+                Context context = this;
+                Intent myIntent = new Intent(context, AA_LoginActivity.class);
+                startActivity(myIntent);
+                context.startActivity(myIntent);
+                break;
+            default:
+                Log.d(TAG, "Error in the menu switch");
         }
 
         DrawerLayout drawer;
