@@ -27,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -88,7 +89,6 @@ public class AA_LoginFragment extends Fragment {
                             params.put("password", editPin.getText().toString());
                             MakeRequest(url+"CheckLogin", params);
                         } else {
-                            boolean login = false;
                             Context context1 = getActivity();
                             Cursor res = myDB.getAllData();
                             boolean success = false;
@@ -169,7 +169,7 @@ public class AA_LoginFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 Log.d(TAG, "here");
-                doLogin(response.toString());
+                doLogin(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -181,8 +181,54 @@ public class AA_LoginFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }
-    void doLogin(String response){
+    void doLogin(JSONObject response){
         Log.d(TAG, "got response: " + response);
+
+
+        Context context1 = getActivity();
+        Cursor res = myDB.getAllData();
+        boolean success = false;
+        String myType = "";
+        String name = "";
+        try {
+            myType = response.getString("type");
+            name =  response.getString("name");
+        }catch(JSONException ex) {
+            Toast toast = Toast.makeText(context1, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
+        }
+        if(myType.equals("invalid")){
+            Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
+            toast.show();
+            return;//quit early
+        }
+        
+        Toast toast = Toast.makeText(context1, "Welcome back " + name, Toast.LENGTH_SHORT);
+        toast.show();
+
+        loginState = true;
+        String loginStateKey = "login";
+        String loginTypeKey = "type";
+        String loginType = "";
+
+        android.app.FragmentManager fragmentManager = getFragmentManager();
+
+        if (myType.equals("admin")) {
+            Log.d(TAG, "Admin success");
+            loginType = "admin";
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
+        } else {
+            Log.d(TAG, "parent success");
+            loginType ="parent";
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
+        }
+
+        setDefault(loginStateKey, loginState, loginTypeKey, loginType, this.getActivity());
+        Context context = getActivity();
+        Intent myIntent = new Intent(context, AA_MainActivity.class);
+        myIntent.putExtra("type", loginType);
+        myIntent.putExtra("serverurl", url);
+        startActivity(myIntent);
+        context.startActivity(myIntent);
     }
 
     void ShowError(String error){

@@ -5,8 +5,9 @@ import random
 import string
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, desc
-from sqlalchemy.types import String, Integer
+from sqlalchemy import Column, desc, ForeignKey
+from sqlalchemy.types import String, Integer, Date, Boolean
+from sqlalchemy.orm import relationship
 
 from tool import SQLAlchemyTool
 from plugin import SQLAlchemyPlugin
@@ -27,6 +28,49 @@ class Entry(Base):
     age = Column(String())
 
 
+class User(Base):
+
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True)
+    username = Column(String())
+    pin = Column(String())
+    isAdmin = Column(String())
+
+    parentname = Column(String())
+    childname = Column(String())
+    phonenumber = Column(Integer())
+    address = Column(String())
+    email = Column(String())
+    attendanceHistory = relationship("Attendance", back_populates="user")
+    paymentHistory = relationship("Payment", back_populates="user")
+
+
+class Payment(Base):
+
+    __tablename__ = "payment"
+
+    id = Column(Integer, primary_key=True)
+    user = relationship("Users", back_populates="payment")
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+    amount = Column(Integer())
+    date = Column(Date())
+    isPaid = Column(Boolean())
+
+
+class Attendance(Base):
+
+    __tablename__ = "attendance"
+
+    id = Column(Integer, primary_key=True)
+    user = relationship("Users", back_populates="attendance")
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+    date = Column(Date())
+    attended = Column(Boolean())
+
+
 class Root(object):
 
     @property
@@ -37,8 +81,21 @@ class Root(object):
     def CheckLogin(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "Checking log in info"
-        print b
+        results = self.db.query(User).filter(User.username == b['username']).filter(User.pin == b['password'])
+        if len(results) > 0:
+            response = {
+                "name": results['parentname']
+            }
+            if results[0]['isAdmin']:
+                response['type'] = "admin"
+            else:
+                response['type'] = "parent"
+        else:
+            response = {
+                "name": "invalid",
+                "type": "invalid"
+            }
+        return json.dumps(response, indent=4)
 
     @cherrypy.expose
     def enter_name(self, **kwargs):
