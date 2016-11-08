@@ -115,12 +115,12 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        switch (id){
+        switch (item.getItemId()){
+
+//          Admin menus
             case R.id.Admin_Home:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
                 break;
@@ -136,9 +136,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             case R.id.Admin_CreateUser:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
                 break;
-            case R.id.Admin_Profile:
-                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();
-                break;
+
+
+//            Parent menus
             case R.id.Parent_Home:
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
                 break;
@@ -154,6 +154,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             case R.id.Parent_Profile:
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_ProfileFragment()).commit();
                 break;
+
+
+//          Both menus
             case R.id.Parent_Logout:
             case R.id.Admin_Logout:
                 SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -170,13 +173,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer;
-        if(myType.equals("admin")){
-             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
-        } else {
-             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
-        }
-
+        DrawerLayout drawer = (DrawerLayout) findViewById(myType.equals("admin") ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

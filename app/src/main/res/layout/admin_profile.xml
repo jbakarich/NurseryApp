@@ -1,15 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/Admin_Profile">
 
 
-    <EditText
+    <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/GridLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Admin Profile"
-        android:ems="10"
-        android:id="@+id/editText2" />
+        android:columnCount="2"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="153dp"
+            app:srcCompat="@android:drawable/sym_def_app_icon"
+            android:id="@+id/imageView2"
+            android:layout_height="153dp" />
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/RelativeLayout"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="'Admins' Profile"
+                android:ems="10"
+                android:id="@+id/admin_profileName"
+                android:textSize="24sp" />
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="123-456-7890"
+                    android:ems="10"
+                    android:id="@+id/admin_profilePhone"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    android:text="someone@somehwere.com"
+                    android:ems="10"
+                    android:id="@+id/admin_profileEmail"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    android:text="1234 Fake st"
+                    android:ems="10"
+                    android:id="@+id/admin_profileAddress1"
+                    android:layout_width="match_parent" />
+
+                <TextView
+                    android:text="Las Cruces NM, 88005"
+                    android:ems="10"
+                    android:id="@+id/admin_profileAddress2"
+                    android:layout_width="match_parent" />
+
+            </GridLayout>
+        </LinearLayout>
+    </GridLayout>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:layout_margin="8dp"
+        android:id="@+id/admin_profile_attendanceStats">
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:columnCount="1">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dmin_profile_memberSince"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:text="Member since October 17, 2016" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dmin_profile_lastCheckin"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:text="Last check-in was October 29, 2016"/>
+
+
+
+            <Button
+                android:text="View history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/admin_attendenceHistoryButton"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimaryDark"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_alignParentBottom="true"
+                android:layout_alignEnd="@+id/activitiesCardTitle" />
+
+
+
+
+        </GridLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:id="@+id/admin_profile_paymentStats">
+
+        <GridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:columnCount="1">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/admin_profile_lastPayment"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:text="Last payment was made October 12, 2016" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/admin_profile_nextPayment"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:text="The next payment will be due November 1, 2016"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/admin_profile_paymentDue"
+                android:padding="8dp"
+                android:textSize="14sp"
+                android:text="Parent currently owes $76.93"/>
+
+
+            <Button
+                android:text="View history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/admin_paymentHistoryButton"
+                android:background="@color/white"
+                android:textColor="@color/colorPrimaryDark"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_alignParentBottom="true"
+                android:layout_alignEnd="@+id/activitiesCardTitle" />
+
+
+
+
+        </GridLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>
