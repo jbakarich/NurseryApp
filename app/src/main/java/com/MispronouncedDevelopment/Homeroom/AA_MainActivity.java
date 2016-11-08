@@ -3,7 +3,6 @@ package com.MispronouncedDevelopment.Homeroom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,33 +14,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-
 import java.io.IOException;
-
-import static android.R.attr.type;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
     String myType;
+    String myName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle extras = getIntent().getExtras();
         myType = extras.getString("type");
-        Log.d(TAG, myType);
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
+        Log.d(TAG, "there:   " + myType);
         if(myType.equals("admin")){
-            Log.d(TAG, "making admin");
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
              navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         } else {
-            Log.d(TAG, "making parent");
             setContentView(R.layout.parent_main);
              toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -76,8 +71,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
        if(myType.equals("admin")){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        }
+           fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+       }
     }
 
     @Override
@@ -133,6 +128,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
         } else if(id == R.id.Admin_Settings){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
+        } else if(id == R.id.Admin_CreateUser){
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
         } else if(id == R.id.Parent_Home){
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         } else if(id == R.id.Parent_Attendence){
@@ -149,7 +146,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             editor.remove("login");
             editor.apply();
 
-            Log.d(TAG, "logging out");
             Context context = this;
             Intent myIntent = new Intent(context, AA_LoginActivity.class);
             startActivity(myIntent);
