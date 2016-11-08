@@ -124,9 +124,6 @@ public class AA_LoginFragment extends Fragment {
 
     public void successfulLogin(String type) {
 
-        loginState = true;
-        String loginStateKey = "login";
-        String loginTypeKey = "type";
         String loginType = "";
         Log.d(TAG, "Here    " + type);
         android.app.FragmentManager fragmentManager = getFragmentManager();
@@ -142,24 +139,21 @@ public class AA_LoginFragment extends Fragment {
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
 
-        setDefault(loginStateKey, loginState, loginTypeKey, loginType, this.getActivity());
         Context context = getActivity();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("login", true);//for login persistance
+        editor.putString("type", loginType);//for login persistance
+        editor.putString("url", url);//for url persistance
+        editor.commit();
+
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", type);
         myIntent.putExtra("serverurl", url);
         startActivity(myIntent);
         context.startActivity(myIntent);
-
     }
-
-    public static void setDefault(String loginStateKey, boolean loginState, String loginTypeKey, String loginType,  Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean(loginStateKey, loginState);
-        editor.putString(loginTypeKey, loginType);
-        editor.commit();
-    }
-
 
     void MakeRequest(String url, Map<String, String> data){
 
@@ -222,8 +216,13 @@ public class AA_LoginFragment extends Fragment {
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
 
-        setDefault(loginStateKey, loginState, loginTypeKey, loginType, this.getActivity());
         Context context = getActivity();
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean("login", true);//for login persistance
+        editor.putString("type", loginType);//for login persistance
+
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", loginType);
         myIntent.putExtra("serverurl", url);
