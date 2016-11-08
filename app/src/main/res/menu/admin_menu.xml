@@ -31,6 +31,11 @@
             android:id="@+id/Admin_Logout"
 
             android:title="Log out" />
+
+        <item
+            android:id="@+id/Admin_Profile"
+
+            android:title="My Profile" />
     </group>
 
 </menu>
