@@ -1,41 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/admin_createuser">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/admin_createuser">
-
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="115dp"
-            android:layout_margin="8dp"
-            android:id="@+id/child1Card">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-        <TextView
+        <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/GridLayout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ActivityCardText"
-            android:maxLines="3"
-            android:padding="8dp"
-            android:textColor="?android:attr/textColorPrimary"
-            android:textAllCaps="false"
-            android:textSize="20sp"
-            android:textAlignment="inherit"
-            android:layout_marginStart="11dp"
-            android:text="Create new user"
-            android:layout_below="@+id/activitiesCardTitle"
-            android:layout_alignParentStart="true" />
-        </RelativeLayout>
-        </android.support.v7.widget.CardView>
+            android:columnCount="2"
+            android:orientation="horizontal">
 
-    </LinearLayout>
-</ScrollView>
+            <TextView
+                android:text="Create New User:\n"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:text=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="First Name        "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="normal|bold" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/newUserFirstName"
+                android:hint="John"
+                android:textSize="14sp" />
+
+            <TextView
+                android:text="Last Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/newUserLastName"
+                android:hint="Smith"
+                android:textSize="14sp" />
+
+            <TextView
+                android:text="User Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/newUserUserName"
+                android:hint="Dijkstra"
+                android:singleLine="true"
+                android:textSize="14sp" />
+
+            <TextView
+                android:text="Child Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                android:ems="10"
+                android:id="@+id/newUserChildName"
+                android:hint="Bobby"
+                android:textSize="14sp" />
+
+            <TextView
+                android:text="Address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:id="@+id/newUserAddress"
+                android:hint="1234 fake street"
+                android:textSize="14sp" />
+
+            <TextView
+                android:text="Phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/newUserPhone"
+                android:hint="575-123-4567"
+                android:textSize="14sp"
+                android:inputType="phone" />
+
+            <TextView
+                android:text="Email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:id="@+id/newUserEmail"
+                android:hint="someone@somewhere.com"
+                android:textSize="14sp"
+                android:inputType="textWebEmailAddress" />
+
+            <Button
+                android:text="Submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/submitnewuser" />
+        </GridLayout>
+
+    </ScrollView>

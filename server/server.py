@@ -37,9 +37,10 @@ class User(Base):
     pin = Column(String())
     isAdmin = Column(String())
 
-    parentname = Column(String())
+    firstname = Column(String())
+    lastname = Column(String())
     childname = Column(String())
-    phonenumber = Column(Integer())
+    phone = Column(Integer())
     address = Column(String())
     email = Column(String())
     attendanceHistory = relationship("Attendance", back_populates="user")
@@ -51,7 +52,7 @@ class Payment(Base):
     __tablename__ = "payment"
 
     id = Column(Integer, primary_key=True)
-    user = relationship("Users", back_populates="payment")
+    user = relationship("User", back_populates="paymentHistory")
     user_id = Column(Integer, ForeignKey('user.id'))
 
     amount = Column(Integer())
@@ -64,7 +65,7 @@ class Attendance(Base):
     __tablename__ = "attendance"
 
     id = Column(Integer, primary_key=True)
-    user = relationship("Users", back_populates="attendance")
+    user = relationship("User", back_populates="attendanceHistory")
     user_id = Column(Integer, ForeignKey('user.id'))
 
     date = Column(Date())
@@ -81,21 +82,45 @@ class Root(object):
     def CheckLogin(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        results = self.db.query(User).filter(User.username == b['username']).filter(User.pin == b['password'])
-        if len(results) > 0:
+        results = self.db.query(User).filter(User.username == b['username']).filter(User.pin == int(b['password']))
+        response = {}
+        for x in results:
+            if "name" not in results:
+                print "nope"
+                continue
             response = {
-                "name": results['parentname']
+                "name": x['firstname']
             }
-            if results[0]['isAdmin']:
+            if x['isAdmin']:
                 response['type'] = "admin"
             else:
                 response['type'] = "parent"
-        else:
+        if response is None:
             response = {
                 "name": "invalid",
                 "type": "invalid"
             }
+        print json.dumps(response, indent=4)
         return json.dumps(response, indent=4)
+
+    @cherrypy.expose
+    def AddUser(self, **kwargs):
+        print "we're here"
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        self.db.add(User(
+            firstname=b['firstname'],
+            lastname=b['lastname'],
+            childname=b['childname'],
+            username=b['username'],
+            address=b['address'],
+            phone=b['phone'],
+            email=b['email'],
+            pin=1234
+        ))
+        self.db.commit()
+        print "We commited!"
+        print b
 
     def CreateNewUser(self, **kwargs):
         self.db.add(Entry(firstName=kwargs['first_name'], lastName=kwargs['last_name'], age=kwargs['age']))
