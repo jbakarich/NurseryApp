@@ -14,7 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -22,6 +33,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     AA_DatabaseImport myDB;
     String myType;
     String myName;
+    int myId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +85,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         } else {
            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
        }
+        UpdateDatabase();
     }
 
     @Override
@@ -161,6 +174,48 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    void UpdateDatabase(){
+        Map<String, String> params = new HashMap<>();
+        params.put("name", myName);
+        params.put("type", myType);
+        params.put("id", myId+"");
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String url = prefs.getString("url", "http://192.168.0.1/");
+
+        MakeRequest(url+"DatabaseUpdate", params);
+    }
+
+    void MakeRequest(String url, Map<String, String> data){
+
+        JSONObject obj = new JSONObject(data);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Update(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ShowError(error.toString());
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
+    }
+
+    void Update(JSONObject response){
+        Log.d(TAG, "got a response: " + response.toString());
+    }
+
+    void ShowError(String error){
+        Log.d(TAG, "There was an error: " + error);
+        //this probably occurs if there was a problem with the connection,
+        //therefore we should probably try again in like 1 minute.
     }
 }
 

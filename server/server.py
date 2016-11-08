@@ -122,6 +122,13 @@ class Root(object):
         print "We commited!"
         print b
 
+    @cherrypy.expose
+    def DatabaseUpdate(self, **kwargs):
+        print "\n\nSomeone asked for a database update"
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print "and this is what we got:\n{}".format(json.dumps(b, indent=2))
+
     def CreateNewUser(self, **kwargs):
         self.db.add(Entry(firstName=kwargs['first_name'], lastName=kwargs['last_name'], age=kwargs['age']))
         self.db.commit()

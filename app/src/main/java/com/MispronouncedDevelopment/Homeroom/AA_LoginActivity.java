@@ -51,19 +51,15 @@ public class AA_LoginActivity extends AppCompatActivity{
             setContentView(R.layout.admin_main);
             type = "admin";
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-            Intent myIntent = new Intent(this, AA_MainActivity.class);
-            myIntent.putExtra("type", type);
-            startActivity(myIntent);
-            this.startActivity(myIntent);
         } else {
             setContentView(R.layout.parent_main);
             type = "parent";
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-            Intent myIntent = new Intent(this, AA_MainActivity.class);
-            myIntent.putExtra("type", type);
-            startActivity(myIntent);
-            this.startActivity(myIntent);
         }
+        Intent myIntent = new Intent(this, AA_MainActivity.class);
+        myIntent.putExtra("type", type);
+        startActivity(myIntent);
+        this.startActivity(myIntent);
     }
 
     public static boolean getDefaultLoginStatus(String key, Context context){

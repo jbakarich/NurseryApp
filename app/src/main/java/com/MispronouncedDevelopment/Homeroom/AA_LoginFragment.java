@@ -175,9 +175,9 @@ public class AA_LoginFragment extends Fragment {
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }
+
     void doLogin(JSONObject response){
         Log.d(TAG, "got response: " + response);
-
 
         Context context1 = getActivity();
         Cursor res = myDB.getAllData();
