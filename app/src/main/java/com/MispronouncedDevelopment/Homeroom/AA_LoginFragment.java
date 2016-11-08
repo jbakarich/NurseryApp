@@ -128,7 +128,7 @@ public class AA_LoginFragment extends Fragment {
         String loginStateKey = "login";
         String loginTypeKey = "type";
         String loginType = "";
-
+        Log.d(TAG, "Here    " + type);
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (type.equals("ADMIN")) {
@@ -201,7 +201,7 @@ public class AA_LoginFragment extends Fragment {
             toast.show();
             return;//quit early
         }
-        
+
         Toast toast = Toast.makeText(context1, "Welcome back " + name, Toast.LENGTH_SHORT);
         toast.show();
 

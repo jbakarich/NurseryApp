@@ -97,10 +97,17 @@ class Root(object):
             }
         return json.dumps(response, indent=4)
 
-    @cherrypy.expose
-    def enter_name(self, **kwargs):
+    def CreateNewUser(self, **kwargs):
         self.db.add(Entry(firstName=kwargs['first_name'], lastName=kwargs['last_name'], age=kwargs['age']))
         self.db.commit()
+
+    @cherrypy.expose
+    def enter_name(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        self.db.add(User(username=b['username']))
+        self.db.commit()
+        return json.dumps({"message": "User created successfully!"}, indent=4)
 
     @cherrypy.expose
     def get_table(self, **kwargs):

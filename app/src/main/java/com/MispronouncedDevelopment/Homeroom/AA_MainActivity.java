@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import java.io.IOException;
 
@@ -29,6 +30,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
+        Log.d(TAG, "there:   " + myType);
         if(myType.equals("admin")){
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
@@ -126,6 +128,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
         } else if(id == R.id.Admin_Settings){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
+        } else if(id == R.id.Admin_CreateUser){
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
         } else if(id == R.id.Parent_Home){
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         } else if(id == R.id.Parent_Attendence){
