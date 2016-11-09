@@ -113,7 +113,12 @@ class Root(object):
                     "Date": payment['date'],
                     "Amount": date['amount']
                 })
-        print "and this is what we got:\n{}".format(json.dumps(b, indent=2))
+        else:
+            allParents = self.db.query(models.User).filter(models.User.isAdmin == False)
+            toReturn["parents"] = []
+            for parent in allParents:
+                toReturn['parents'].append(parent.toDict())
+        print "and this is what we're returning:\n{}".format(json.dumps(toReturn, indent=2))
         return json.dumps(toReturn, indent=4)
 
 
