@@ -47,11 +47,18 @@ public class AA_LoginFragment extends Fragment {
     Button loginButton;
     EditText editName, editPin;
     CheckBox myCheckbox;
-    String url ="http://192.168.0.5:8080/";//this is the location of wherever the server is running.
+    String url ="http://172.24.95.132:8080/";//this is the location of wherever the server is running.
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("url");
+        editor.putString("url", url);
+        editor.commit();
+
+
         Log.d(TAG, "Creating loginfrag");
         Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
@@ -137,14 +144,14 @@ public class AA_LoginFragment extends Fragment {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
         editor.putBoolean("login", true);//for login persistance
         editor.putString("type", loginType);//for login persistance
-        editor.putString("url", url);//for url persistance
+        editor.putString("url", url);
         editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", type);
-        myIntent.putExtra("serverurl", url);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }
@@ -219,7 +226,6 @@ public class AA_LoginFragment extends Fragment {
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", loginType);
-        myIntent.putExtra("serverurl", url);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }

@@ -32,7 +32,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
     String myType;
-    String myName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,7 +175,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
     void UpdateDatabase(){
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = prefs.getString("url", "http://192.168.0.5/") + "DatabaseUpdate";
+        String url = prefs.getString("url", "Wrong!") + "DatabaseUpdate";
 
         Map<String, String> params = new HashMap<>();
         params.put("id", prefs.getInt("id", -1)+"");
