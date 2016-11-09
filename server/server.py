@@ -1,11 +1,11 @@
+# system imports
 import os
 import cherrypy
 import json
-import random
-import string
 
 from sqlalchemy.ext.declarative import declarative_base
 
+# local imports
 from tool import SQLAlchemyTool
 from plugin import SQLAlchemyPlugin
 import models
@@ -82,7 +82,7 @@ class Root(object):
         print "\n\nSomeone asked for a database update"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        results = self.db.query(models.User).filter(User.id == b['id'])
+        results = self.db.query(models.User).filter(models.User.id == b['id'])
         toReturn = {
             "isAdmin": results['isAdmin'],
             "FirstName": results['firstname'],
@@ -107,101 +107,6 @@ class Root(object):
                 })
         print "and this is what we got:\n{}".format(json.dumps(b, indent=2))
         return json.dumps(toReturn, indent=4)
-
-# to be deleted:
-    def CreateNewUser(self, **kwargs):
-        self.db.add(Entry(firstName=kwargs['first_name'], lastName=kwargs['last_name'], age=kwargs['age']))
-        self.db.commit()
-
-# to be deleted:
-    @cherrypy.expose
-    def enter_name(self, **kwargs):
-        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
-        b = json.loads(rawData)
-        self.db.add(User(username=b['username']))
-        self.db.commit()
-        return json.dumps({"message": "User created successfully!"}, indent=4)
-
-# to be deleted:
-    @cherrypy.expose
-    def get_table(self, **kwargs):
-        print "\n\n{}\n".format(kwargs)
-        data = []
-        if 'filterCount' in kwargs:
-            results = self.db.query(Entry)
-            for i in range(0, int(kwargs['filterCount'])):
-                filterBy = kwargs['filters[{}][filterBy]'.format(i)]
-                filterOf = kwargs['filters[{}][filterOf]'.format(i)]
-                filterValue = kwargs['filters[{}][filterValue]'.format(i)]
-
-                if filterOf == "firstName":
-                    filterOf = Entry.firstName
-                elif filterOf == "lastName":
-                    filterOf = Entry.lastName
-                else:
-                    filterOf = Entry.age
-
-                print "\nFiltering {}".format(filterOf)
-                print "\nwith {}".format(filterBy)
-                print "by {}\n".format(filterValue)
-                if filterBy == "filtercontains":
-                    print "\n{}\n".format(results)
-                    results = results.filter(Entry.firstName.in_(filterValue))
-                    print "\n{}\n".format(results)
-                if filterBy == "filteris":
-                    results.filter(filterOf == filterValue)
-                if filterBy == "filterstartswith":
-                    results.filter(filterOf.startsWith(filterValue))
-                if filterBy == "filterendswith":
-                    results.filter(filterOf.endsWitch(filterValue))
-            for j in results:
-                data.append({"firstName": j.firstName, "lastName": j.lastName, "age": j.age})
-            return json.dumps(data, indent=4)
-
-        elif 'sort' in kwargs:
-            if kwargs['direction'] == 'decreasing':
-                if kwargs['sort'] == 'firstName':
-                    for entry in self.db.query(Entry).order_by(desc(Entry.firstName)).all():
-                        data.append({"firstName": entry.firstName, "lastName": entry.lastName, "age": entry.age})
-                elif kwargs['sort'] == 'lastName':
-                    for entry in self.db.query(Entry).order_by(desc(Entry.lastName)).all():
-                        data.append({"firstName": entry.firstName, "lastName": entry.lastName, "age": entry.age})
-                else:
-                    for entry in self.db.query(Entry).order_by(desc(Entry.age)).all():
-                        data.append({"firstName": entry.firstName, "lastName": entry.lastName, "age": entry.age})
-            else:
-                if kwargs['sort'] == 'firstName':
-                    for entry in self.db.query(Entry).order_by(Entry.firstName).all():
-                        data.append({"firstName": entry.firstName, "lastName": entry.lastName, "age": entry.age})
-                elif kwargs['sort'] == 'lastName':
-                    for entry in self.db.query(Entry).order_by(Entry.lastName).all():
-                        data.append({"firstName": entry.firstName, "lastName": entry.lastName, "age": entry.age})
-                else:
-                    for entry in self.db.query(Entry).order_by(Entry.age).all():
-                        data.append({"firstName": entry.firstName, "lastName": entry.lastName, "age": entry.age})
-            return json.dumps(data, indent=4)
-        else:
-            for entry in self.db.query(Entry).all():
-                data.append({"firstName": entry.firstName, "lastName": entry.lastName, "age": entry.age})
-        return json.dumps(data, indent=4)
-
-# to be deleted:
-    @cherrypy.expose
-    def generate_random(self, **kwargs):
-        for x in range(0, 50):
-            self.db.add(Entry(
-                firstName=''.join(random.choice(string.lowercase) for i in range(7)),
-                lastName=''.join(random.choice(string.lowercase) for i in range(7)),
-                age=random.randint(0, 100)
-            ))
-        self.db.commit()
-
-# to be deleted:
-    @cherrypy.expose
-    def delete_entries(self, **kwargs):
-        for i in self.db.query(Entry).all():
-            self.db.delete(i)
-        self.db.commit()
 
 
 def get_cp_config():
@@ -231,6 +136,7 @@ def runserver(config):
     cherrypy.server.socket_host = "0.0.0.0"
     cherrypy.engine.start()
     cherrypy.engine.block()
+
 
 if __name__ == "__main__":
     runserver(get_cp_config())

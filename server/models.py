@@ -47,6 +47,12 @@ class User(Base):
             "address2": self.address2,
             "email": self.email
         }
+        data['attendenceRecords'] = []
+        for x in self.attendanceHistory:
+            data['attendenceRecords'].append(x.toDict())
+        data['paymentRecords'] = []
+        for x in self.paymentHistory:
+            data['paymentRecords'].append(x.toDict())
         return data
 
 
@@ -62,6 +68,17 @@ class Payment(Base):
     date = Column(Date())
     isPaid = Column(Boolean())
 
+    def toDict(self):
+        data = {
+            "id": self.id,
+            "user": self.user,
+            "user_id": self.user_id,
+            "amount": self.amount,
+            "date": self.date,
+            "isPaid": self.isPaid
+        }
+        return data
+
 
 class Attendance(Base):
 
@@ -74,3 +91,12 @@ class Attendance(Base):
     date = Column(Date())
     attended = Column(Boolean())
 
+    def toDict(self):
+        data = {
+            "id": self.id,
+            "user": self.user,
+            "user_id": self.user_id,
+            "date": self.date,
+            "attended": self.attended
+        }
+        return data
