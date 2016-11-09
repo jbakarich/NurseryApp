@@ -80,25 +80,35 @@ class Root(object):
         print "\n\nSomeone asked for a database update"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
+        print "\nThis is what we recived in the request:\n{}".format(json.dumps(b, indent=2))
         results = self.db.query(models.User).filter(models.User.id == b['id'])
+        print "\nresults = \n{}".format(results)
+        # print "\nresults length: {}".format(len(results))
+        for x in results:
+            print "\nfor x: {}\n".format(x)
+            foundUser = x
+
+        print "\ntoDict method:\n{}".format(foundUser.toDict())
+        res = foundUser.toDict()
+        print "\nEnd of results\n"
         toReturn = {
-            "isAdmin": results['isAdmin'],
-            "FirstName": results['firstname'],
-            "LastName": results['lastname'],
-            "UserName": results['username'],
-            "ChildName": results['childname'],
-            "Phone": results['phone'],
-            "Email": results['email'],
-            "Address1": results['address1'],
-            "Address2": results['address2']
+            "isAdmin": res['isAdmin'],
+            "FirstName": res['firstname'],
+            "LastName": res['lastname'],
+            "UserName": res['username'],
+            "ChildName": res['childname'],
+            "Phone": res['phone'],
+            "Email": res['email'],
+            "Address1": res['address1'],
+            "Address2": res['address2']
         }
-        if not results['isAdmin']:
-            for date in results['attendenceHistory']:
+        if not res['isAdmin']:
+            for date in res['attendenceHistory']:
                 toReturn['AttendenceRecords'].append({
                     "DateIn": date['intime'],
                     "DateOut": date['outtime']
                 })
-            for payment in results['paymentHistory']:
+            for payment in res['paymentHistory']:
                 toReturn['PaymentRecords'].append({
                     "Date": payment['date'],
                     "Amount": date['amount']
