@@ -125,50 +125,63 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.Admin_Home) {
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-        } else if(id == R.id.Admin_Attendence){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
-        } else if(id == R.id.Admin_Payment){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
-        } else if(id == R.id.Admin_Settings){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
-        } else if(id == R.id.Admin_CreateUser){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
-        } else if(id == R.id.Parent_Home){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        } else if(id == R.id.Parent_Attendence){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
-        } else if(id == R.id.Parent_Payment){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
-        } else if(id == R.id.Parent_Settings){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
-        } else if(id == R.id.Parent_Logout || id == R.id.Admin_Logout){
-            Log.d(TAG, "Logging out");
-            SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-            SharedPreferences.Editor editor = mySPrefs.edit();
-            editor.remove("login");
-            editor.remove("type");
-            editor.commit();
+        switch (item.getItemId()){
 
-            Intent myIntent = new Intent(this, AA_LoginActivity.class);
-            myIntent.putExtra("logout", true);
-            startActivity(myIntent);
-            this.startActivity(myIntent);
+//          Admin menus
+            case R.id.Admin_Home:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+                break;
+            case R.id.Admin_Attendence:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
+                break;
+            case R.id.Admin_Payment:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
+                break;
+            case R.id.Admin_Settings:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
+                break;
+            case R.id.Admin_CreateUser:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
+                break;
+
+//            Parent menus
+            case R.id.Parent_Home:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+                break;
+            case R.id.Parent_Attendence:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
+                break;
+            case R.id.Parent_Payment:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
+                break;
+            case R.id.Parent_Settings:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
+                break;
+            case R.id.Parent_Profile:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_ProfileFragment()).commit();
+                break;
+
+//          Both menus
+            case R.id.Parent_Logout:
+            case R.id.Admin_Logout:
+                SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = mySPrefs.edit();
+                editor.remove("login");
+                editor.apply();
+
+                Context context = this;
+                Intent myIntent = new Intent(context, AA_LoginActivity.class);
+                startActivity(myIntent);
+                context.startActivity(myIntent);
+                break;
+            default:
+                Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer;
-        if(myType.equals("admin")){
-             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
-        } else {
-             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
-        }
-
+        DrawerLayout drawer = (DrawerLayout) findViewById(myType.equals("admin") ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
