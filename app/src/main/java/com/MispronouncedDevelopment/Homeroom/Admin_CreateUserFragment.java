@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,6 +36,7 @@ public class Admin_CreateUserFragment extends Fragment {
     String TAG = "CreateUserFragment", url = "http://172.24.95.132/";
     Button submitBtn;
     EditText firstname, lastname, username, childname, address1, address2, phone, email;
+    CheckBox isAdmin;
 
     @Nullable
     @Override
@@ -55,6 +57,7 @@ public class Admin_CreateUserFragment extends Fragment {
         address2 = (EditText) myView.findViewById(R.id.newUserAddress2);
         phone = (EditText) myView.findViewById(R.id.newUserPhone);
         email = (EditText) myView.findViewById(R.id.newUserEmail);
+        isAdmin = (CheckBox) myView.findViewById(R.id.newUserIsAdmin);
         Log.d(TAG, "Creating view");
 
         submitnewuser();
@@ -78,6 +81,11 @@ public class Admin_CreateUserFragment extends Fragment {
                         params.put("address2", address2.getText().toString());
                         params.put("phone", phone.getText().toString());
                         params.put("email", email.getText().toString());
+                        if (isAdmin.isChecked()){
+                            params.put("isAdmin", "True");
+                        } else {
+                            params.put("isAdmin", "False");
+                        }
 
                         MakeRequest(url+"AddUser", params);
 

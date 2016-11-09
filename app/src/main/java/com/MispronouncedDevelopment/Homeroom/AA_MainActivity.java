@@ -33,7 +33,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     AA_DatabaseImport myDB;
     String myType;
     String myName;
-    int myId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,13 +175,12 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     }
 
     void UpdateDatabase(){
-        Map<String, String> params = new HashMap<>();
-        params.put("name", myName);
-        params.put("type", myType);
-        params.put("id", myId+"");
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String url = prefs.getString("url", "http://192.168.0.5/") + "DatabaseUpdate";
+
+        Map<String, String> params = new HashMap<>();
+        params.put("id", prefs.getInt("id", -1)+"");
+
         Log.d(TAG, "url = " + url);
         MakeRequest(url, params);
     }

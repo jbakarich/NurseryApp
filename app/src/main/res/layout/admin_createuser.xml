@@ -154,11 +154,25 @@
                 android:textSize="14sp"
                 android:inputType="textWebEmailAddress" />
 
+            <TextView
+                android:text="Administrator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+            <CheckBox
+                android:text="CheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/newUserIsAdmin" />
+
             <Button
                 android:text="Submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/submitnewuser" />
+
+
         </GridLayout>
 
     </ScrollView>

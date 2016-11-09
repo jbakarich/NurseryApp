@@ -56,7 +56,10 @@ class User(Base):
             "firstname": self.firstname,
             "lastname": self.lastname,
             "childname": self.childname,
-            "phone": self.phone
+            "phone": self.phone,
+            "address1": self.address1,
+            "address2": self.address2,
+            "email": self.email
         }
         return data
 
@@ -105,9 +108,12 @@ class Root(object):
             if(curUser['username'] == b['username'] and curUser['pin'] == b['password']):
                 response = {
                     "name": curUser['firstname'],
-                    "isAdmin": curUser['isAdmin'],
                     "id": curUser['id']
                 }
+                if curUser['isAdmin']:
+                    response['isAdmin'] = "True"
+                else:
+                    response['isAdmin'] = "False"
         if len(response) is 0:
             response = {
                 "name": "invalid"
@@ -123,8 +129,15 @@ class Root(object):
         print "adding user"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
+        print b
+        b['phone'] = int(b['phone'])
+        if b['isAdmin'] == "True":
+            isAdmin = True
+        else:
+            isAdmin = False
         self.db.add(User(
             firstname=b['firstname'],
+            isAdmin=isAdmin,
             lastname=b['lastname'],
             childname=b['childname'],
             username=b['username'],
@@ -135,8 +148,7 @@ class Root(object):
             pin=1234
         ))
         self.db.commit()
-        print "We commited!"
-        print b
+        print "We commited!\n"
 
     @cherrypy.expose
     def DatabaseUpdate(self, **kwargs):
@@ -145,6 +157,7 @@ class Root(object):
         b = json.loads(rawData)
         results = self.db.query(User).filter(User.id == b['id'])
         toReturn = {
+            "isAdmin": results['isAdmin'],
             "FirstName": results['firstname'],
             "LastName": results['lastname'],
             "UserName": results['username'],
@@ -154,16 +167,17 @@ class Root(object):
             "Address1": results['address1'],
             "Address2": results['address2']
         }
-        for date in results['attendenceHistory']:
-            toReturn['AttendenceRecords'].append({
-                "DateIn": date['intime'],
-                "DateOut": date['outtime']
-            })
-        for payment in results['paymentHistory']:
-            toReturn['PaymentRecords'].append({
-                "Date": payment['date'],
-                "Amount": date['amount']
-            })
+        if not results['isAdmin']:
+            for date in results['attendenceHistory']:
+                toReturn['AttendenceRecords'].append({
+                    "DateIn": date['intime'],
+                    "DateOut": date['outtime']
+                })
+            for payment in results['paymentHistory']:
+                toReturn['PaymentRecords'].append({
+                    "Date": payment['date'],
+                    "Amount": date['amount']
+                })
         print "and this is what we got:\n{}".format(json.dumps(b, indent=2))
         return json.dumps(toReturn, indent=4)
 

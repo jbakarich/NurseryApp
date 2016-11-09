@@ -174,14 +174,14 @@ public class AA_LoginFragment extends Fragment {
         Toast toast;
 
         int myId;
-        boolean isAdmin;
-        String name;
+        String isAdmin, name;
         try {
             myId = response.getInt("id");
-            isAdmin = response.getBoolean("type");
+            isAdmin = response.getString("isAdmin");
             name =  response.getString("name");
         }catch(JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
+            Log.d(TAG, "The data that came back to us was: " + response.toString());
             toast.show();
             return;//quit early
         }
@@ -198,7 +198,7 @@ public class AA_LoginFragment extends Fragment {
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (isAdmin) {
+        if (isAdmin.equals("True")) {
             Log.d(TAG, "Admin success");
             loginType = "admin";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
@@ -213,8 +213,8 @@ public class AA_LoginFragment extends Fragment {
         editor.putBoolean("login", true);//for login persistance
         editor.putString("type", loginType);//for login persistance
         editor.putString("name", name);
-        editor.putInt("id", myId);
-        
+        editor.putInt("id", myId);//for any queries needed
+
         editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
