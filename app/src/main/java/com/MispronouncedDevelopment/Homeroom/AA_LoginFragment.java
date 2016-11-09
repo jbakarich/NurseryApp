@@ -47,11 +47,12 @@ public class AA_LoginFragment extends Fragment {
     Button loginButton;
     EditText editName, editPin;
     CheckBox myCheckbox;
-    String url ="http://172.24.95.132/";//this is the location of wherever the server is running.
+    String url ="http://192.168.0.5/";//this is the location of wherever the server is running.
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "Creating loginfrag");
         Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
         myDB = new AA_DatabaseImport(context, "DB1.db");
@@ -89,6 +90,7 @@ public class AA_LoginFragment extends Fragment {
                             params.put("password", editPin.getText().toString());
                             MakeRequest(url+"CheckLogin", params);
                         } else {
+                            //to be deleted in live state:
                             Context context1 = getActivity();
                             Cursor res = myDB.getAllData();
                             boolean success = false;
@@ -113,19 +115,9 @@ public class AA_LoginFragment extends Fragment {
         );
     }
 
-    public void showMessage(String title, String Message) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
-        builder.setCancelable(true);
-        builder.setTitle(title);
-        builder.setMessage(Message);
-        builder.show();
-    }
-
     public void successfulLogin(String type) {
 
-        String loginType = "";
-        Log.d(TAG, "Here    " + type);
+        String loginType;
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (type.equals("ADMIN")) {
@@ -162,7 +154,6 @@ public class AA_LoginFragment extends Fragment {
         JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Log.d(TAG, "here");
                 doLogin(response);
             }
         }, new Response.ErrorListener() {
@@ -177,32 +168,27 @@ public class AA_LoginFragment extends Fragment {
     }
 
     void doLogin(JSONObject response){
-        Log.d(TAG, "got response: " + response);
-
-        Context context1 = getActivity();
-        Cursor res = myDB.getAllData();
-        boolean success = false;
-        String myType = "";
-        String name = "";
+        Context context = getActivity();
+        Toast toast;
+        String myType, name;
         try {
             myType = response.getString("type");
             name =  response.getString("name");
         }catch(JSONException ex) {
-            Toast toast = Toast.makeText(context1, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
+            toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
+            toast.show();
+            return;//quit early
         }
         if(myType.equals("invalid")){
-            Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
+            toast = Toast.makeText(context, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
             toast.show();
             return;//quit early
         }
 
-        Toast toast = Toast.makeText(context1, "Welcome back " + name, Toast.LENGTH_SHORT);
+        toast = Toast.makeText(context, "Welcome back " + name, Toast.LENGTH_SHORT);
         toast.show();
 
-        loginState = true;
-        String loginStateKey = "login";
-        String loginTypeKey = "type";
-        String loginType = "";
+        String loginType;
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
@@ -216,12 +202,11 @@ public class AA_LoginFragment extends Fragment {
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
 
-        Context context = getActivity();
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("login", true);//for login persistance
         editor.putString("type", loginType);//for login persistance
+        editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", loginType);

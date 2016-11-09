@@ -19,7 +19,7 @@ import java.sql.SQLDataException;
  */
 
 public class AA_DatabaseImport extends SQLiteOpenHelper {
-    private static final String TAG = "MyActivity";//Use this for logging. ex: Log.d(TAG, "my message");
+    private static final String TAG = "DatabaseImport";//Use this for logging. ex: Log.d(TAG, "my message");
 
     private static String DB_PATH = "/data/data/com.MispronouncedDevelopment.Homeroom/databases/";
     private static String DB_NAME = "null";
@@ -81,7 +81,6 @@ public class AA_DatabaseImport extends SQLiteOpenHelper {
 
     public void openDataBase() throws SQLiteException {
         String myPath = DB_PATH + DB_NAME;
-        Log.d(TAG, "we're here");
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
     }
 

@@ -41,7 +41,8 @@ class User(Base):
     lastname = Column(String())
     childname = Column(String())
     phone = Column(Integer())
-    address = Column(String())
+    address1 = Column(String())
+    address2 = Column(String())
     email = Column(String())
     attendanceHistory = relationship("Attendance", back_populates="user")
     paymentHistory = relationship("Payment", back_populates="user")
@@ -127,7 +128,29 @@ class Root(object):
         print "\n\nSomeone asked for a database update"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
+        results = self.db.query(User).filter(User.id == b['id'])
+        toReturn = {
+            "FirstName": results['firstname'],
+            "LastName": results['lastname'],
+            "UserName": results['username'],
+            "ChildName": results['childname'],
+            "Phone": results['phone'],
+            "Email": results['email'],
+            "Address1": results['address1'],
+            "Address2": results['address2']
+        }
+        for date in results['attendenceHistory']:
+            toReturn['AttendenceRecords'].append({
+                "DateIn": date['intime'],
+                "DateOut": date['outtime']
+            })
+        for payment in results['paymentHistory']:
+            toReturn['PaymentRecords'].append({
+                "Date": payment['date'],
+                "Amount": date['amount']
+            })
         print "and this is what we got:\n{}".format(json.dumps(b, indent=2))
+        return json.dumps(toReturn, indent=4)
 
     def CreateNewUser(self, **kwargs):
         self.db.add(Entry(firstName=kwargs['first_name'], lastName=kwargs['last_name'], age=kwargs['age']))

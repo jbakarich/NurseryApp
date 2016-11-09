@@ -42,7 +42,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
-        Log.d(TAG, "there:   " + myType);
         if(myType.equals("admin")){
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
@@ -152,17 +151,19 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         } else if(id == R.id.Parent_Settings){
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
         } else if(id == R.id.Parent_Logout || id == R.id.Admin_Logout){
-
-
+            Log.d(TAG, "Logging out");
             SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = mySPrefs.edit();
             editor.remove("login");
-            editor.apply();
+            editor.remove("type");
+            editor.commit();
 
-            Context context = this;
-            Intent myIntent = new Intent(context, AA_LoginActivity.class);
+//            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();
+//            Context context = this;
+            Intent myIntent = new Intent(this, AA_LoginActivity.class);
+            myIntent.putExtra("logout", true);
             startActivity(myIntent);
-            context.startActivity(myIntent);
+            this.startActivity(myIntent);
         }
 
         DrawerLayout drawer;
@@ -183,9 +184,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         params.put("id", myId+"");
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = prefs.getString("url", "http://192.168.0.1/");
-
-        MakeRequest(url+"DatabaseUpdate", params);
+        String url = prefs.getString("url", "http://192.168.0.5/") + "DatabaseUpdate";
+        Log.d(TAG, "url = " + url);
+        MakeRequest(url, params);
     }
 
     void MakeRequest(String url, Map<String, String> data){
@@ -213,7 +214,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     }
 
     void ShowError(String error){
-        Log.d(TAG, "There was an error: " + error);
+        Log.d(TAG, "MakeRequest function: There was an error: " + error);
         //this probably occurs if there was a problem with the connection,
         //therefore we should probably try again in like 1 minute.
     }

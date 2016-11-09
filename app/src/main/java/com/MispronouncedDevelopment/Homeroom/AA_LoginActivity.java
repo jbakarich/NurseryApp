@@ -40,13 +40,23 @@ public class AA_LoginActivity extends AppCompatActivity{
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-       boolean loginStatus = getDefaultLoginStatus("login", this);
-       String loginType =  getDefaultLoginType("type", this);
-        String type = "";
+        boolean loginStatus = getDefaultLoginStatus("login", this);
+        String loginType =  getDefaultLoginType("type", this);
+        Bundle extras = getIntent().getExtras();
+        if(extras != null && extras.containsKey("logout")) {
+            boolean logout = extras.getBoolean("logout", false);
+            if (logout) {
+                loginStatus = false;
+                loginType = "";
+            }
+        }
+        Log.d(TAG, "The defaults are " + loginStatus + " and " + loginType);
+        String type;
 
         if (!loginStatus) {
-            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new AA_LoginFragment()).commit();//change this to a default view
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new AA_LoginFragment()).commit();
             setContentView(R.layout.default_main);
+            return;
         } else if (loginType.matches("admin")) {
             setContentView(R.layout.admin_main);
             type = "admin";
