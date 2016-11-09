@@ -34,7 +34,7 @@ public class Admin_CreateUserFragment extends Fragment {
     View myView;
     String TAG = "CreateUserFragment", url = "http://172.24.95.132/";
     Button submitBtn;
-    EditText firstname, lastname, username, childname, address, phone, email;
+    EditText firstname, lastname, username, childname, address1, address2, phone, email;
 
     @Nullable
     @Override
@@ -51,7 +51,8 @@ public class Admin_CreateUserFragment extends Fragment {
         lastname = (EditText) myView.findViewById(R.id.newUserLastName);
         childname = (EditText) myView.findViewById(R.id.newUserUserName);
         username = (EditText) myView.findViewById(R.id.newUserUserName);
-        address = (EditText) myView.findViewById(R.id.newUserAddress);
+        address1 = (EditText) myView.findViewById(R.id.newUserAddress1);
+        address2 = (EditText) myView.findViewById(R.id.newUserAddress2);
         phone = (EditText) myView.findViewById(R.id.newUserPhone);
         email = (EditText) myView.findViewById(R.id.newUserEmail);
         Log.d(TAG, "Creating view");
@@ -73,7 +74,8 @@ public class Admin_CreateUserFragment extends Fragment {
                         params.put("lastname", lastname.getText().toString());
                         params.put("username", username.getText().toString());
                         params.put("childname", childname.getText().toString());
-                        params.put("address", address.getText().toString());
+                        params.put("address1", address1.getText().toString());
+                        params.put("address2", address2.getText().toString());
                         params.put("phone", phone.getText().toString());
                         params.put("email", email.getText().toString());
 

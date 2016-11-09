@@ -84,7 +84,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         } else {
            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
        }
-        UpdateDatabase();
+        //UpdateDatabase();
     }
 
     @Override
