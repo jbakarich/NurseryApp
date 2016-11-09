@@ -3,17 +3,15 @@ import os
 import cherrypy
 import json
 
-from sqlalchemy.ext.declarative import declarative_base
-
 # local imports
 from tool import SQLAlchemyTool
 from plugin import SQLAlchemyPlugin
+from base import Base
 import models
 
 
 PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 STATIC = os.path.join(PATH, 'static')
-Base = declarative_base()
 
 
 class Root(object):

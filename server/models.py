@@ -1,17 +1,7 @@
 from sqlalchemy import Column, ForeignKey
 from sqlalchemy.types import String, Integer, Date, Boolean
 from sqlalchemy.orm import relationship
-from server import Base
-
-
-class Entry(Base):
-
-    __tablename__ = 'name'
-
-    id = Column(Integer, primary_key=True)
-    firstName = Column(String())
-    lastName = Column(String())
-    age = Column(String())
+from base import Base
 
 
 class User(Base):
