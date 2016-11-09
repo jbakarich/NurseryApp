@@ -47,7 +47,7 @@ public class AA_LoginFragment extends Fragment {
     Button loginButton;
     EditText editName, editPin;
     CheckBox myCheckbox;
-    String url ="http://192.168.0.5/";//this is the location of wherever the server is running.
+    String url ="http://192.168.0.5:8080/";//this is the location of wherever the server is running.
 
     @Nullable
     @Override
@@ -88,7 +88,9 @@ public class AA_LoginFragment extends Fragment {
                             Map<String, String> params = new HashMap<>();
                             params.put("username", editName.getText().toString());
                             params.put("password", editPin.getText().toString());
-                            MakeRequest(url+"CheckLogin", params);
+                            String newUrl = url+"CheckLogin";
+                            Log.d(TAG, "The url being used is: " + newUrl);
+                            MakeRequest(newUrl, params);
                         } else {
                             //to be deleted in live state:
                             Context context1 = getActivity();

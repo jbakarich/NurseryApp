@@ -81,6 +81,7 @@ class Root(object):
 
     @cherrypy.expose
     def CheckLogin(self, **kwargs):
+        print "starting login"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         results = self.db.query(User).filter(User.username == b['username']).filter(User.pin == int(b['password']))
@@ -96,17 +97,18 @@ class Root(object):
                 response['type'] = "admin"
             else:
                 response['type'] = "parent"
-        if response is None:
+        if len(response) is 0:
             response = {
                 "name": "invalid",
                 "type": "invalid"
             }
+        print("Returning login:")
         print json.dumps(response, indent=4)
-        return json.dumps(response, indent=4)
+        return json.dumps(response, indent=2)
 
     @cherrypy.expose
     def AddUser(self, **kwargs):
-        print "we're here"
+        print "adding user"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         self.db.add(User(
