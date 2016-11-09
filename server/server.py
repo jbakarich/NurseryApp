@@ -35,7 +35,7 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String())
     pin = Column(String())
-    isAdmin = Column(String())
+    isAdmin = Column(Boolean())
 
     firstname = Column(String())
     lastname = Column(String())
@@ -49,6 +49,7 @@ class User(Base):
 
     def toDict(self):
         data = {
+            "id": self.id,
             "username": self.username,
             "pin": self.pin,
             "isAdmin": self.isAdmin,
@@ -96,26 +97,20 @@ class Root(object):
         print "\n\nstarting login"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "\nincoming user:\n{}\n".format(json.dumps(b, indent=2))
         results = self.db.query(User).all()
         response = {}
         for x in results:
             curUser = x.toDict()
-            print "\ncurrent user to check:"
             print json.dumps(curUser, indent=2)
             if(curUser['username'] == b['username'] and curUser['pin'] == b['password']):
-                print "Found user!"
                 response = {
-                    "name": curUser['firstname']
+                    "name": curUser['firstname'],
+                    "isAdmin": curUser['isAdmin'],
+                    "id": curUser['id']
                 }
-                if curUser['isAdmin']:
-                    response['type'] = "admin"
-                else:
-                    response['type'] = "parent"
         if len(response) is 0:
             response = {
-                "name": "invalid",
-                "type": "invalid"
+                "name": "invalid"
             }
         print("Returning login:")
         print json.dumps(response, indent=4)

@@ -84,7 +84,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         } else {
            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
        }
-        //UpdateDatabase();
+        UpdateDatabase();
     }
 
     @Override
@@ -158,8 +158,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             editor.remove("type");
             editor.commit();
 
-//            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();
-//            Context context = this;
             Intent myIntent = new Intent(this, AA_LoginActivity.class);
             myIntent.putExtra("logout", true);
             startActivity(myIntent);

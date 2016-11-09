@@ -172,16 +172,20 @@ public class AA_LoginFragment extends Fragment {
     void doLogin(JSONObject response){
         Context context = getActivity();
         Toast toast;
-        String myType, name;
+
+        int myId;
+        boolean isAdmin;
+        String name;
         try {
-            myType = response.getString("type");
+            myId = response.getInt("id");
+            isAdmin = response.getBoolean("type");
             name =  response.getString("name");
         }catch(JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
             toast.show();
             return;//quit early
         }
-        if(myType.equals("invalid")){
+        if(name.equals("invalid")){
             toast = Toast.makeText(context, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
             toast.show();
             return;//quit early
@@ -194,7 +198,7 @@ public class AA_LoginFragment extends Fragment {
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (myType.equals("admin")) {
+        if (isAdmin) {
             Log.d(TAG, "Admin success");
             loginType = "admin";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
@@ -208,6 +212,9 @@ public class AA_LoginFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("login", true);//for login persistance
         editor.putString("type", loginType);//for login persistance
+        editor.putString("name", name);
+        editor.putInt("id", myId);
+        
         editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
