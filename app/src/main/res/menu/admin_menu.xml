@@ -31,6 +31,7 @@
             android:id="@+id/Admin_Logout"
 
             android:title="Log out" />
+
     </group>
 
 </menu>
