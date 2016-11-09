@@ -41,10 +41,23 @@ class User(Base):
     lastname = Column(String())
     childname = Column(String())
     phone = Column(Integer())
-    address = Column(String())
+    address1 = Column(String())
+    address2 = Column(String())
     email = Column(String())
     attendanceHistory = relationship("Attendance", back_populates="user")
     paymentHistory = relationship("Payment", back_populates="user")
+
+    def toDict(self):
+        data = {
+            "username": self.username,
+            "pin": self.pin,
+            "isAdmin": self.isAdmin,
+            "firstname": self.firstname,
+            "lastname": self.lastname,
+            "childname": self.childname,
+            "phone": self.phone
+        }
+        return data
 
 
 class Payment(Base):
@@ -80,32 +93,39 @@ class Root(object):
 
     @cherrypy.expose
     def CheckLogin(self, **kwargs):
+        print "\n\nstarting login"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        results = self.db.query(User).filter(User.username == b['username']).filter(User.pin == int(b['password']))
+        print "\nincoming user:\n{}\n".format(json.dumps(b, indent=2))
+        results = self.db.query(User).all()
         response = {}
         for x in results:
-            if "name" not in results:
-                print "nope"
-                continue
-            response = {
-                "name": x['firstname']
-            }
-            if x['isAdmin']:
-                response['type'] = "admin"
-            else:
-                response['type'] = "parent"
-        if response is None:
+            curUser = x.toDict()
+            print "\ncurrent user to check:"
+            print json.dumps(curUser, indent=2)
+            if(curUser['username'] == b['username'] and curUser['pin'] == b['password']):
+                print "Found user!"
+                response = {
+                    "name": curUser['firstname']
+                }
+                if curUser['isAdmin']:
+                    response['type'] = "admin"
+                else:
+                    response['type'] = "parent"
+        if len(response) is 0:
             response = {
                 "name": "invalid",
                 "type": "invalid"
             }
+        print("Returning login:")
         print json.dumps(response, indent=4)
-        return json.dumps(response, indent=4)
+        print "\n\n"
+
+        return json.dumps(response, indent=2)
 
     @cherrypy.expose
     def AddUser(self, **kwargs):
-        print "we're here"
+        print "adding user"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         self.db.add(User(
@@ -113,7 +133,8 @@ class Root(object):
             lastname=b['lastname'],
             childname=b['childname'],
             username=b['username'],
-            address=b['address'],
+            address1=b['address1'],
+            address2=b['address2'],
             phone=b['phone'],
             email=b['email'],
             pin=1234
@@ -121,6 +142,35 @@ class Root(object):
         self.db.commit()
         print "We commited!"
         print b
+
+    @cherrypy.expose
+    def DatabaseUpdate(self, **kwargs):
+        print "\n\nSomeone asked for a database update"
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        results = self.db.query(User).filter(User.id == b['id'])
+        toReturn = {
+            "FirstName": results['firstname'],
+            "LastName": results['lastname'],
+            "UserName": results['username'],
+            "ChildName": results['childname'],
+            "Phone": results['phone'],
+            "Email": results['email'],
+            "Address1": results['address1'],
+            "Address2": results['address2']
+        }
+        for date in results['attendenceHistory']:
+            toReturn['AttendenceRecords'].append({
+                "DateIn": date['intime'],
+                "DateOut": date['outtime']
+            })
+        for payment in results['paymentHistory']:
+            toReturn['PaymentRecords'].append({
+                "Date": payment['date'],
+                "Amount": date['amount']
+            })
+        print "and this is what we got:\n{}".format(json.dumps(b, indent=2))
+        return json.dumps(toReturn, indent=4)
 
     def CreateNewUser(self, **kwargs):
         self.db.add(Entry(firstName=kwargs['first_name'], lastName=kwargs['last_name'], age=kwargs['age']))

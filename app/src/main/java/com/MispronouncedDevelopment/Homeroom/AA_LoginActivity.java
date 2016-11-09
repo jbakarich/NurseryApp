@@ -40,30 +40,36 @@ public class AA_LoginActivity extends AppCompatActivity{
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-       boolean loginStatus = getDefaultLoginStatus("login", this);
-       String loginType =  getDefaultLoginType("type", this);
-        String type = "";
+        boolean loginStatus = getDefaultLoginStatus("login", this);
+        String loginType =  getDefaultLoginType("type", this);
+        Bundle extras = getIntent().getExtras();
+        if(extras != null && extras.containsKey("logout")) {
+            boolean logout = extras.getBoolean("logout", false);
+            if (logout) {
+                loginStatus = false;
+                loginType = "";
+            }
+        }
+        Log.d(TAG, "The defaults are " + loginStatus + " and " + loginType);
+        String type;
 
         if (!loginStatus) {
-            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new AA_LoginFragment()).commit();//change this to a default view
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new AA_LoginFragment()).commit();
             setContentView(R.layout.default_main);
+            return;
         } else if (loginType.matches("admin")) {
             setContentView(R.layout.admin_main);
             type = "admin";
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-            Intent myIntent = new Intent(this, AA_MainActivity.class);
-            myIntent.putExtra("type", type);
-            startActivity(myIntent);
-            this.startActivity(myIntent);
         } else {
             setContentView(R.layout.parent_main);
             type = "parent";
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-            Intent myIntent = new Intent(this, AA_MainActivity.class);
-            myIntent.putExtra("type", type);
-            startActivity(myIntent);
-            this.startActivity(myIntent);
         }
+        Intent myIntent = new Intent(this, AA_MainActivity.class);
+        myIntent.putExtra("type", type);
+        startActivity(myIntent);
+        this.startActivity(myIntent);
     }
 
     public static boolean getDefaultLoginStatus(String key, Context context){

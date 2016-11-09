@@ -2,8 +2,10 @@ package com.MispronouncedDevelopment.Homeroom;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,12 +32,17 @@ import java.util.Map;
 
 public class Admin_CreateUserFragment extends Fragment {
     View myView;
-    String TAG = "CreateUserFragment";
+    String TAG = "CreateUserFragment", url = "http://172.24.95.132/";
+    Button submitBtn;
+    EditText firstname, lastname, username, childname, address1, address2, phone, email;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.admin_createuser, container, false);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+        url = prefs.getString("url", "http://192.168.0.1/");
 
 
         submitBtn = (Button) myView.findViewById(R.id.submitnewuser);
@@ -44,7 +51,8 @@ public class Admin_CreateUserFragment extends Fragment {
         lastname = (EditText) myView.findViewById(R.id.newUserLastName);
         childname = (EditText) myView.findViewById(R.id.newUserUserName);
         username = (EditText) myView.findViewById(R.id.newUserUserName);
-        address = (EditText) myView.findViewById(R.id.newUserAddress);
+        address1 = (EditText) myView.findViewById(R.id.newUserAddress1);
+        address2 = (EditText) myView.findViewById(R.id.newUserAddress2);
         phone = (EditText) myView.findViewById(R.id.newUserPhone);
         email = (EditText) myView.findViewById(R.id.newUserEmail);
         Log.d(TAG, "Creating view");
@@ -52,10 +60,6 @@ public class Admin_CreateUserFragment extends Fragment {
         submitnewuser();
         return myView;
     }
-
-    Button submitBtn;
-    EditText firstname, lastname, username, childname, address, phone, email;
-    String url = "http://172.24.95.132/";
 
     public void submitnewuser() {
         submitBtn.setOnClickListener(
@@ -70,7 +74,8 @@ public class Admin_CreateUserFragment extends Fragment {
                         params.put("lastname", lastname.getText().toString());
                         params.put("username", username.getText().toString());
                         params.put("childname", childname.getText().toString());
-                        params.put("address", address.getText().toString());
+                        params.put("address1", address1.getText().toString());
+                        params.put("address2", address2.getText().toString());
                         params.put("phone", phone.getText().toString());
                         params.put("email", email.getText().toString());
 

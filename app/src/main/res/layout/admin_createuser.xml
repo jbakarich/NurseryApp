@@ -91,7 +91,7 @@
                 android:textSize="14sp" />
 
             <TextView
-                android:text="Address"
+                android:text="Address1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="normal|bold"
@@ -102,8 +102,24 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
                 android:ems="10"
-                android:id="@+id/newUserAddress"
+                android:id="@+id/newUserAddress1"
                 android:hint="1234 fake street"
+                android:textSize="14sp" />
+
+            <TextView
+                android:text="Address2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal|bold"
+                android:textSize="24sp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:id="@+id/newUserAddress2"
+                android:hint="Las Cruces, NM, 88005"
                 android:textSize="14sp" />
 
             <TextView
