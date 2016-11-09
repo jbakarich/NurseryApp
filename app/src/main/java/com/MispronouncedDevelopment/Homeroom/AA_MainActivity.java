@@ -32,8 +32,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
     String myType;
-    String myName;
-    int myId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +82,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         } else {
            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
        }
-        //UpdateDatabase();
+        UpdateDatabase();
     }
 
     @Override
@@ -158,8 +156,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             editor.remove("type");
             editor.commit();
 
-//            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new AA_LoginFragment()).commit();
-//            Context context = this;
             Intent myIntent = new Intent(this, AA_LoginActivity.class);
             myIntent.putExtra("logout", true);
             startActivity(myIntent);
@@ -178,13 +174,12 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     }
 
     void UpdateDatabase(){
-        Map<String, String> params = new HashMap<>();
-        params.put("name", myName);
-        params.put("type", myType);
-        params.put("id", myId+"");
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = prefs.getString("url", "http://192.168.0.5/") + "DatabaseUpdate";
+        String url = prefs.getString("url", "Wrong!") + "DatabaseUpdate";
+
+        Map<String, String> params = new HashMap<>();
+        params.put("id", prefs.getInt("id", -1)+"");
+
         Log.d(TAG, "url = " + url);
         MakeRequest(url, params);
     }

@@ -47,11 +47,18 @@ public class AA_LoginFragment extends Fragment {
     Button loginButton;
     EditText editName, editPin;
     CheckBox myCheckbox;
-    String url ="http://192.168.0.5:8080/";//this is the location of wherever the server is running.
+    String url ="http://172.24.95.132:8080/";//this is the location of wherever the server is running.
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("url");
+        editor.putString("url", url);
+        editor.commit();
+
+
         Log.d(TAG, "Creating loginfrag");
         Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
@@ -137,14 +144,14 @@ public class AA_LoginFragment extends Fragment {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
         editor.putBoolean("login", true);//for login persistance
         editor.putString("type", loginType);//for login persistance
-        editor.putString("url", url);//for url persistance
+        editor.putString("url", url);
         editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", type);
-        myIntent.putExtra("serverurl", url);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }
@@ -172,16 +179,20 @@ public class AA_LoginFragment extends Fragment {
     void doLogin(JSONObject response){
         Context context = getActivity();
         Toast toast;
-        String myType, name;
+
+        int myId;
+        String isAdmin, name;
         try {
-            myType = response.getString("type");
+            myId = response.getInt("id");
+            isAdmin = response.getString("isAdmin");
             name =  response.getString("name");
         }catch(JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
+            Log.d(TAG, "The data that came back to us was: " + response.toString());
             toast.show();
             return;//quit early
         }
-        if(myType.equals("invalid")){
+        if(name.equals("invalid")){
             toast = Toast.makeText(context, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
             toast.show();
             return;//quit early
@@ -194,7 +205,7 @@ public class AA_LoginFragment extends Fragment {
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (myType.equals("admin")) {
+        if (isAdmin.equals("True")) {
             Log.d(TAG, "Admin success");
             loginType = "admin";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
@@ -208,11 +219,13 @@ public class AA_LoginFragment extends Fragment {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("login", true);//for login persistance
         editor.putString("type", loginType);//for login persistance
+        editor.putString("name", name);
+        editor.putInt("id", myId);//for any queries needed
+
         editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
         myIntent.putExtra("type", loginType);
-        myIntent.putExtra("serverurl", url);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }

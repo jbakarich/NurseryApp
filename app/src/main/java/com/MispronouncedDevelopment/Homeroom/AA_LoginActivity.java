@@ -51,6 +51,7 @@ public class AA_LoginActivity extends AppCompatActivity{
             }
         }
         Log.d(TAG, "The defaults are " + loginStatus + " and " + loginType);
+
         String type;
 
         if (!loginStatus) {
@@ -79,6 +80,7 @@ public class AA_LoginActivity extends AppCompatActivity{
 
     public static String getDefaultLoginType(String key, Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+
         return prefs.getString(key, "admin");
     }
 }

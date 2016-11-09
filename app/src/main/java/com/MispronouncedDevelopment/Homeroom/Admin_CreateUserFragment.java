@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -32,21 +33,17 @@ import java.util.Map;
 
 public class Admin_CreateUserFragment extends Fragment {
     View myView;
-    String TAG = "CreateUserFragment", url = "http://172.24.95.132/";
+    String TAG = "CreateUserFragment";
     Button submitBtn;
     EditText firstname, lastname, username, childname, address1, address2, phone, email;
+    CheckBox isAdmin;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.admin_createuser, container, false);
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
-        url = prefs.getString("url", "http://192.168.0.1/");
-
-
         submitBtn = (Button) myView.findViewById(R.id.submitnewuser);
-
         firstname = (EditText) myView.findViewById(R.id.newUserFirstName);
         lastname = (EditText) myView.findViewById(R.id.newUserLastName);
         childname = (EditText) myView.findViewById(R.id.newUserUserName);
@@ -55,6 +52,7 @@ public class Admin_CreateUserFragment extends Fragment {
         address2 = (EditText) myView.findViewById(R.id.newUserAddress2);
         phone = (EditText) myView.findViewById(R.id.newUserPhone);
         email = (EditText) myView.findViewById(R.id.newUserEmail);
+        isAdmin = (CheckBox) myView.findViewById(R.id.newUserIsAdmin);
         Log.d(TAG, "Creating view");
 
         submitnewuser();
@@ -78,6 +76,14 @@ public class Admin_CreateUserFragment extends Fragment {
                         params.put("address2", address2.getText().toString());
                         params.put("phone", phone.getText().toString());
                         params.put("email", email.getText().toString());
+                        if (isAdmin.isChecked()){
+                            params.put("isAdmin", "True");
+                        } else {
+                            params.put("isAdmin", "False");
+                        }
+
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        String url = prefs.getString("url", "Wrong again!");
 
                         MakeRequest(url+"AddUser", params);
 
