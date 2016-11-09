@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -58,18 +61,18 @@
                 android:text="Call"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/CheckInHistoryButton"
+                android:id="@+id/callButton"
                 android:background="@color/white"
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/paymentHistoyCardButton" />
+                android:layout_toEndOf="@+id/paymentHistoryCardButton" />
 
             <Button
                 android:text="History"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/paymentHistoyCardButton"
+                android:id="@+id/attendaceHistoryCardButton"
                 android:background="@color/white"
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -131,7 +134,7 @@
                 android:text="History"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/paymentHistoyCardButton"
+                android:id="@+id/paymentHistoryCardButton"
                 android:background="@color/white"
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -142,12 +145,12 @@
                 android:text="Make Payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/PaymentCardButton"
+                android:id="@+id/makePaymentButton"
                 android:background="@color/white"
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/paymentHistoyCardButton" />
+                android:layout_toEndOf="@+id/paymentHistoryCardButton" />
 
 
         </RelativeLayout>
@@ -197,13 +200,13 @@
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/paymentHistoyCardButton" />
+                android:layout_toEndOf="@+id/paymentHistoryCardButton" />
 
             <Button
                 android:text="History"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/paymentHistoyCardButton"
+                android:id="@+id/paymentHistoryCardButton"
                 android:background="@color/white"
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Borderless"
@@ -218,10 +221,9 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:textSize="20sp"
                 android:textAlignment="viewStart"
-                android:layout_marginTop="13dp"
                 android:layout_below="@+id/ActivityCardText"
-                android:layout_alignEnd="@+id/CheckInHistoryButton"
-                android:layout_marginEnd="29dp" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="13dp" />
 
 
         </RelativeLayout>
@@ -229,3 +231,4 @@
 
 
 </LinearLayout>
+    </ScrollView>

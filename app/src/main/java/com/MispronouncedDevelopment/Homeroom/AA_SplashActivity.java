@@ -11,8 +11,6 @@ public class AA_SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aa_splash_screen);
-
-
         startActivity(new Intent(this, AA_LoginActivity.class));
     }
 }

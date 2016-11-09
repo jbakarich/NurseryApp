@@ -8,20 +8,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * Created by Cyrille on 10/24/16.
+ * Created by Cyrille on 11/8/16.
  */
 
-public class Admin_SettingsFragment extends Fragment {
-
+public class Admin_ProfileFragment extends Fragment {
     View myView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.admin_settings, container, false);
+        myView = inflater.inflate(R.layout.admin_profile, container, false);
         return myView;
-
-
-
     }
 }

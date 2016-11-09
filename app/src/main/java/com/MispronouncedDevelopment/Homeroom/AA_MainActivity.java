@@ -1,8 +1,11 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.database.Cursor;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,7 +15,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -22,22 +35,17 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Bundle extras = getIntent().getExtras();
         myType = extras.getString("type");
-        Log.d(TAG, myType);
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
-
-        if(myType.equals("ADMIN")){
-            Log.d(TAG, "making admin");
+        if(myType.equals("admin")){
             setContentView(R.layout.admin_main);
              toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
              navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         } else {
-            Log.d(TAG, "making parent");
             setContentView(R.layout.parent_main);
              toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -68,21 +76,19 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         }
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
-        Cursor res = myDB.getLoginStatus();
-        res.moveToNext();
-        String loginStatus = "0";
 
-       if(myType.equals("ADMIN")){
+       if(myType.equals("admin")){
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        }
+           fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+       }
+        UpdateDatabase();
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer;
-        if(myType.equals("ADMIN")) {
+        if(myType.equals("admin")) {
              drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         } else {
              drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -119,38 +125,106 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
-        if (id == R.id.Admin_Home) {
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-        } else if(id == R.id.Admin_Attendence){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
-        } else if(id == R.id.Admin_Payment){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
-        } else if(id == R.id.Admin_Settings){
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
-        } else if(id == R.id.Parent_Home){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        } else if(id == R.id.Parent_Attendence){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
-        } else if(id == R.id.Parent_Payment){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
-        } else if(id == R.id.Parent_Settings){
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
+        switch (item.getItemId()){
+
+//          Admin menus
+            case R.id.Admin_Home:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+                break;
+            case R.id.Admin_Attendence:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
+                break;
+            case R.id.Admin_Payment:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
+                break;
+            case R.id.Admin_Settings:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
+                break;
+            case R.id.Admin_CreateUser:
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_CreateUserFragment()).commit();
+                break;
+
+//            Parent menus
+            case R.id.Parent_Home:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+                break;
+            case R.id.Parent_Attendence:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
+                break;
+            case R.id.Parent_Payment:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
+                break;
+            case R.id.Parent_Settings:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
+                break;
+            case R.id.Parent_Profile:
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_ProfileFragment()).commit();
+                break;
+
+//          Both menus
+            case R.id.Parent_Logout:
+            case R.id.Admin_Logout:
+                SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = mySPrefs.edit();
+                editor.remove("login");
+                editor.apply();
+
+                Context context = this;
+                Intent myIntent = new Intent(context, AA_LoginActivity.class);
+                startActivity(myIntent);
+                context.startActivity(myIntent);
+                break;
+            default:
+                Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer;
-        if(myType.equals("ADMIN")){
-             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
-        } else {
-             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
-        }
-
+        DrawerLayout drawer = (DrawerLayout) findViewById(myType.equals("admin") ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    void UpdateDatabase(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String url = prefs.getString("url", "Wrong!") + "DatabaseUpdate";
+
+        Map<String, String> params = new HashMap<>();
+        params.put("id", prefs.getInt("id", -1)+"");
+
+        Log.d(TAG, "url = " + url);
+        MakeRequest(url, params);
+    }
+
+    void MakeRequest(String url, Map<String, String> data){
+
+        JSONObject obj = new JSONObject(data);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Update(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ShowError(error.toString());
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
+    }
+
+    void Update(JSONObject response){
+        Log.d(TAG, "got a response: " + response.toString());
+    }
+
+    void ShowError(String error){
+        Log.d(TAG, "MakeRequest function: There was an error: " + error);
+        //this probably occurs if there was a problem with the connection,
+        //therefore we should probably try again in like 1 minute.
     }
 }
 

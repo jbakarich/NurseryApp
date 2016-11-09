@@ -3,6 +3,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/Admin_CreateUser"
+
+            android:title="CreateUser" />
+        <item
 
             android:title="This is the admin menu" />
         <item
@@ -22,6 +26,12 @@
             android:id="@+id/Admin_Settings"
 
             android:title="Settings" />
+
+        <item
+            android:id="@+id/Admin_Logout"
+
+            android:title="Log out" />
+
     </group>
 
 </menu>

@@ -22,6 +22,16 @@
             android:id="@+id/Parent_Settings"
 
             android:title="Settings" />
+
+        <item
+            android:id="@+id/Parent_Logout"
+
+            android:title="Log out" />
+
+        <item
+            android:id="@+id/Parent_Profile"
+
+            android:title="My Profile" />
     </group>
 
 </menu>

@@ -30,7 +30,7 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/editUserNameText"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="17sp"
         android:layout_below="@+id/WelcomeText"
         android:layout_alignStart="@+id/EditUserPIN"
         android:hint="Username" />
@@ -40,10 +40,9 @@
         android:layout_height="wrap_content"
         android:inputType="numberPassword"
         android:ems="10"
-        android:layout_marginTop="17dp"
+        android:layout_marginTop="16sp"
         android:id="@+id/EditUserPIN"
         android:hint="PIN"
-        android:singleLine="false"
         android:selectAllOnFocus="false"
         android:layout_below="@+id/editUserNameText"
         android:layout_centerHorizontal="true" />
@@ -57,5 +56,14 @@
         android:layout_alignEnd="@+id/editUserNameText"
         android:layout_alignStart="@+id/editUserNameText"
         android:id="@+id/loginButton" />
+
+    <CheckBox
+        android:text="Use server"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EditUserPIN"
+        android:layout_alignStart="@+id/EditUserPIN"
+        android:layout_marginTop="65dp"
+        android:id="@+id/serverCheckBox" />
 
 </RelativeLayout>
