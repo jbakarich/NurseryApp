@@ -33,20 +33,20 @@ public class myAdapter extends ArrayAdapter<String> {
         TextView childName = (TextView) rowView.findViewById(R.id.childName);
         TextView childDate = (TextView) rowView.findViewById(R.id.childDate);
 
-        View.OnClickListener viewProfile = new View.OnClickListener() { 
-            
-            @Override 
+        View.OnClickListener viewProfile = new View.OnClickListener() {
+             
             public void onClick(View v) { 
-            // change text of the TextView (tvOut) 
-            // Log.d(TAG, "Here");  
-            // swap fragments 
-             FragmentManager fragmentManager = ((Activity) context).getFragmentManager(); 
-             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();  
-            // find data fields 
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-                View profileView = inflater.inflate(R.layout.admin_homecard, myParent, false);
+                // change text of the TextView (tvOut) 
+                // Log.d(TAG, "Here");  
+                // swap fragments 
+                FragmentManager fragmentManager = ((Activity) context).getFragmentManager(); 
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();  
+                // find data fields 
+//                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
+//                View profileView = inflater.inflate(R.layout.admin_homecard, myParent, false);
 
-
+            }
+        }
 
             SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
