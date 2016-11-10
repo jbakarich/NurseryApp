@@ -74,6 +74,7 @@ class Root(object):
         ))
         self.db.commit()
         print "We commited!\n"
+        return json.dumps({"added": "Successful"}, indent=2)
 
     @cherrypy.expose
     def DatabaseUpdate(self, **kwargs):
