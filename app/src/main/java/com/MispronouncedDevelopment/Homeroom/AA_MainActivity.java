@@ -261,7 +261,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             Log.d(TAG, "Error in her");
         }
 
-        final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -273,7 +273,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                             @Override
                             public void run() {
                                 list.remove(item);
-                                adapter.notifyDataSetChanged();
+//                                adapter.notifyDataSetChanged();
                                 view.setAlpha(1);
                             }
                         });
@@ -282,30 +282,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         });
     }
 
-    private class StableArrayAdapter extends ArrayAdapter<String> {
-
-        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
-
-        public StableArrayAdapter(Context context, int textViewResourceId,
-                                  List<String> objects) {
-            super(context, textViewResourceId, objects);
-            for (int i = 0; i < objects.size(); ++i) {
-                mIdMap.put(objects.get(i), i);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            String item = getItem(position);
-            return mIdMap.get(item);
-        }
-
-        @Override
-        public boolean hasStableIds() {
-            return true;
-        }
-
-    } 
 
 
 
@@ -355,7 +331,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     public void onStop() {
         super.onStop();
- 
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
