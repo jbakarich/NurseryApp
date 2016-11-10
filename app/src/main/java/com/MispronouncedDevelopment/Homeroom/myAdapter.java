@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,11 +28,11 @@ public class myAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.admin_homecard, parent, false);
         TextView childName = (TextView) rowView.findViewById(R.id.childName);
         TextView childDate = (TextView) rowView.findViewById(R.id.childDate);
+        Button profileBtn = (Button) rowView.findViewById(R.id.viewProfileBtn);
 
         View.OnClickListener viewProfile = new View.OnClickListener() {
              
@@ -46,9 +47,10 @@ public class myAdapter extends ArrayAdapter<String> {
 //                View profileView = inflater.inflate(R.layout.admin_homecard, myParent, false);
 
             }
-        }
+        };
 
-            SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        profileBtn.setOnClickListener(viewProfile);
+        SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
         String val1 = mySPrefs.getString("id" + values[position] + "name", "Henrey");
         String val2 = mySPrefs.getString("id" + values[position] + "date", "Nov 1");
