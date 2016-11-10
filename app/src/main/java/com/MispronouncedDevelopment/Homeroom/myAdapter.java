@@ -2,6 +2,7 @@ package com.MispronouncedDevelopment.Homeroom;
 
 import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -35,19 +36,14 @@ public class myAdapter extends ArrayAdapter<String> {
         Button profileBtn = (Button) rowView.findViewById(R.id.viewProfileBtn);
 
         View.OnClickListener viewProfile = new View.OnClickListener() {
-             
-            public void onClick(View v) { 
-                // change text of the TextView (tvOut) 
-                // Log.d(TAG, "Here");  
-                // swap fragments 
-                FragmentManager fragmentManager = ((Activity) context).getFragmentManager(); 
-                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();  
-                // find data fields 
-//                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE); 
-//                View profileView = inflater.inflate(R.layout.admin_homecard, myParent, false);
-
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();
             }
         };
+
+
 
         profileBtn.setOnClickListener(viewProfile);
         SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -57,8 +53,23 @@ public class myAdapter extends ArrayAdapter<String> {
 
         childName.setText(val1);
         childDate.setText(val2);
-        String s = values[position];
 
         return rowView;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
