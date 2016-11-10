@@ -355,7 +355,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     public void onStop() {
         super.onStop();
-
+ 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
