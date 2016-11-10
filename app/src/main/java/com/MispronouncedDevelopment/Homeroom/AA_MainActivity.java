@@ -246,22 +246,35 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         final ListView listview = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();
-
+        String[] ids = new String[0];
         Log.d(TAG, "got a response: " + response.toString());
         try {
             JSONArray parents = response.getJSONArray("parents");
+            ids = new String[parents.length()];
             for (int i = 0; i < parents.length(); i++) {
                 JSONObject parent = parents.getJSONObject(i);
-                HomeCard newCard = new HomeCard(parent.getString("childname"), 123456, i + "");
+                HomeCard newCard = new HomeCard(parent.getString("childname"), "Oct " + i, i + "");
                 childCards.add(newCard);
                 list.add(newCard.name);
+                ids[i] = i+"";
             }
 
         } catch (JSONException e) {
             Log.d(TAG, "Error in her");
         }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        //silly hack
+        SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = mySPrefs.edit();
+
+        for (int i = 0; i < ids.length; i++) {
+            editor.putString("id"+i+"name", childCards.get(i).name);
+            editor.putString("id"+i+"date", childCards.get(i).date);
+        }
+        editor.apply();
+
+
+        myAdapter adapter = new myAdapter(this, ids);
         listview.setAdapter(adapter);
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -341,9 +354,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
 class HomeCard{
     String name;
-    int date;
+    String date;
     String id;
-    public HomeCard(String Name, int Date, String Id){
+    public HomeCard(String Name, String Date, String Id){
         name = Name;
         date = Date;
         id = Id;

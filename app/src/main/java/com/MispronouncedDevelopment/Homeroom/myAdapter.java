@@ -1,6 +1,8 @@
 package com.MispronouncedDevelopment.Homeroom;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +28,18 @@ public class myAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.admin_homecard, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.childname);
-        textView.setText(values[position]);
-        // Change the icon for Windows and iPhone
-        String s = values[position];
+        TextView childName = (TextView) rowView.findViewById(R.id.childName);
+        TextView childDate = (TextView) rowView.findViewById(R.id.childDate);
 
+
+        SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        String val1 = mySPrefs.getString("id" + values[position] + "name", "Henrey");
+        String val2 = mySPrefs.getString("id" + values[position] + "date", "Nov 1");
+
+        childName.setText(val1);
+        childDate.setText(val2);
+        String s = values[position];
 
         return rowView;
     }
