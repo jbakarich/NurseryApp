@@ -1,9 +1,11 @@
 package com.MispronouncedDevelopment.Homeroom;
 
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
@@ -14,12 +16,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -32,10 +42,16 @@ import java.util.List;
 import java.util.Map;
 
 
-public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     AA_DatabaseImport myDB;
     String myType;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,16 +60,16 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
-        if(myType.equals("admin")){
+        if (myType.equals("admin")) {
             setContentView(R.layout.admin_main);
-             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
-             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
-             navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
+            toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
+            drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
+            navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
         } else {
             setContentView(R.layout.parent_main);
-             toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
-             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
-             navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
+            toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
+            drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+            navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
         }
 
         setSupportActionBar(toolbar);
@@ -68,34 +84,37 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         try {
             myDB.createDataBase();
-        } catch (IOException ioe){
+        } catch (IOException ioe) {
             throw new Error("UNABLE TO CREATE DATABASE");
         }
 
-        try{
+        try {
             myDB.openDataBase();
 
-        } catch(SQLiteException sqle){
+        } catch (SQLiteException sqle) {
             throw sqle;
         }
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
-       if(myType.equals("admin")){
+        if (myType.equals("admin")) {
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
-           fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-       }
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+        }
         UpdateDatabase();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     @Override
     public void onBackPressed() {
         DrawerLayout drawer;
-        if(myType.equals("admin")) {
-             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
+        if (myType.equals("admin")) {
+            drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
         } else {
-             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+            drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
         }
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -118,7 +137,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-       //noinspection SimplifiableIfStatement
+        //noinspection SimplifiableIfStatement
         /*if (id == R.id.action_settings) {
             return true;
         }*/
@@ -130,9 +149,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
 
 //          Admin menus
             case R.id.Admin_Home:
@@ -190,18 +209,18 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
-    void UpdateDatabase(){
+    void UpdateDatabase() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String url = prefs.getString("url", "Wrong!") + "DatabaseUpdate";
 
         Map<String, String> params = new HashMap<>();
-        params.put("id", prefs.getInt("id", -1)+"");
+        params.put("id", prefs.getInt("id", -1) + "");
 
         Log.d(TAG, "url = " + url);
         MakeRequest(url, params);
     }
 
-    void MakeRequest(String url, Map<String, String> data){
+    void MakeRequest(String url, Map<String, String> data) {
 
         JSONObject obj = new JSONObject(data);
 
@@ -221,28 +240,137 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         queue.add(request);
     }
 
-    private List<HomeCard> childCards = new ArrayList<HomeCard>();
 
-    void Update(JSONObject response){
+    void Update(JSONObject response) {
+        List<HomeCard> childCards = new ArrayList<>();
+
+        final ListView listview = (ListView) findViewById(R.id.listview);
+        final ArrayList<String> list = new ArrayList<>();
 
         Log.d(TAG, "got a response: " + response.toString());
         try {
             JSONArray parents = response.getJSONArray("parents");
-            for(int i = 0; i < parents.length(); i++){
+            for (int i = 0; i < parents.length(); i++) {
                 JSONObject parent = parents.getJSONObject(i);
-                HomeCard newCard = new HomeCard(parent.getString("childname"), 123456, i+"");
+                HomeCard newCard = new HomeCard(parent.getString("childname"), 123456, i + "");
                 childCards.add(newCard);
+                list.add(newCard.name);
             }
 
-        }catch(JSONException e){
+        } catch (JSONException e) {
             Log.d(TAG, "Error in her");
         }
+
+        final StableArrayAdapter adapter = new StableArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+        listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                final String item = (String) parent.getItemAtPosition(position);
+                view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                list.remove(item);
+                                adapter.notifyDataSetChanged();
+                                view.setAlpha(1);
+                            }
+                        });
+            }
+
+        });
     }
 
-    void ShowError(String error){
+    private class StableArrayAdapter extends ArrayAdapter<String> {
+
+        HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+
+        public StableArrayAdapter(Context context, int textViewResourceId,
+                                  List<String> objects) {
+            super(context, textViewResourceId, objects);
+            for (int i = 0; i < objects.size(); ++i) {
+                mIdMap.put(objects.get(i), i);
+            }
+        }
+
+        @Override
+        public long getItemId(int position) {
+            String item = getItem(position);
+            return mIdMap.get(item);
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return true;
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    void ShowError(String error) {
         Log.d(TAG, "MakeRequest function: There was an error: " + error);
         //this probably occurs if there was a problem with the connection,
         //therefore we should probably try again in like 1 minute.
+    }
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("AA_Main Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+}
+
+class HomeCard{
+    String name;
+    int date;
+    String id;
+    public HomeCard(String Name, int Date, String Id){
+        name = Name;
+        date = Date;
+        id = Id;
     }
 }
 
