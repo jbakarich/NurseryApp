@@ -47,7 +47,7 @@ public class AA_LoginFragment extends Fragment {
     Button loginButton;
     EditText editName, editPin;
     CheckBox myCheckbox;
-    String url ="http://172.24.95.132:8080/";//this is the location of wherever the server is running.
+    String url ="http://192.168.0.5:8080/";//this is the location of wherever the server is running.
 
     @Nullable
     @Override

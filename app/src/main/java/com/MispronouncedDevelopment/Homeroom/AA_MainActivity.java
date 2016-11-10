@@ -21,10 +21,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -217,8 +221,22 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         queue.add(request);
     }
 
+    private List<HomeCard> childCards = new ArrayList<HomeCard>();
+
     void Update(JSONObject response){
+
         Log.d(TAG, "got a response: " + response.toString());
+        try {
+            JSONArray parents = response.getJSONArray("parents");
+            for(int i = 0; i < parents.length(); i++){
+                JSONObject parent = parents.getJSONObject(i);
+                HomeCard newCard = new HomeCard(parent.getString("childname"), 123456, i+"");
+                childCards.add(newCard);
+            }
+
+        }catch(JSONException e){
+            Log.d(TAG, "Error in her");
+        }
     }
 
     void ShowError(String error){
