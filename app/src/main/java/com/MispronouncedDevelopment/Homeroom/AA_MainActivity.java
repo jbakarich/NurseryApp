@@ -178,7 +178,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
                 break;
             case R.id.Parent_Payment:
-                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
+                Intent myPaymentIntent = new Intent(this, AndroidPay.class);
+//                myIntent.putExtra("type", type);
+                startActivity(myPaymentIntent);
+                this.startActivity(myPaymentIntent);
                 break;
             case R.id.Parent_Settings:
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_SettingsFragment()).commit();
@@ -196,9 +199,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 editor.apply();
 
                 Context context = this;
-                Intent myIntent = new Intent(context, AA_LoginActivity.class);
-                startActivity(myIntent);
-                context.startActivity(myIntent);
+                Intent myLogoutIntent = new Intent(context, AA_LoginActivity.class);
+                startActivity(myLogoutIntent);
+                context.startActivity(myLogoutIntent);
                 break;
             default:
                 Log.d(TAG, "Error in the menu switch");
