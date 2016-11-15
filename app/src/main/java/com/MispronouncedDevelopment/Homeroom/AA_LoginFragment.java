@@ -1,13 +1,10 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -30,12 +27,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.R.attr.type;
-
 
 /**
  * Created by jacob on 9/15/2016.
@@ -63,7 +56,6 @@ public class AA_LoginFragment extends Fragment {
         myCheckbox = (CheckBox) myView.findViewById(R.id.serverCheckBox);
 
         myDB = new DB_Manager(getActivity());
-        myDB.LoadDatabase(getActivity());
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 

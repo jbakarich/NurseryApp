@@ -53,14 +53,18 @@ public class DB_Accessor extends SQLiteOpenHelper {
 
 
     // If you change the database schema, you must increment the database version.
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "Homeroom.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "Homeroom.db";
 
     public DB_Accessor(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static void WriteDB(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) {
+        WriteDB(db);
+    }
+
+    static void WriteDB(SQLiteDatabase db) {
         db.execSQL(CreateUserTable);
         db.execSQL(CreatePaymentTable);
         db.execSQL(CreateAttendanceTable);
