@@ -55,11 +55,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        myType = extras.getString("type");
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
+        //set myType from db
         if (myType.equals("admin")) {
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
@@ -122,13 +121,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             super.onBackPressed();
         }
     }
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -195,7 +187,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             case R.id.Admin_Logout:
                 SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
                 SharedPreferences.Editor editor = mySPrefs.edit();
-                editor.remove("login");
+//                editor.remove("login");
+
+                //change this user id ^^
+
                 editor.apply();
 
                 Context context = this;
@@ -243,7 +238,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         queue.add(request);
     }
 
-
+    //THIS ENTIRE FUNCTION NEEDS TO BE REWRITTEN TO UPDATE LOCAL DATABASE
+    //after the face, a second function to update homevards should be written
     void Update(JSONObject response) {
         List<HomeCard> childCards = new ArrayList<>();
 

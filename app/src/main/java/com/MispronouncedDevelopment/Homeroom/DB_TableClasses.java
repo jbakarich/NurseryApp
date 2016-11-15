@@ -14,17 +14,25 @@ public class DB_TableClasses {
 }
 
 class User {
-    public int id = -1;
-    public String username = "username";
-    public int pin = 1234;
-    public boolean isAdmin = false;
-    public String firstName = "firstName";
-    public String lastName = "lastName";
-    public String childName = "childName";
-    public int phone = 1234567890;
-    public String address1 = "address1";
-    public String address2 = "address2";
-    public String email = "email";
+    private  int id = -1;
+    private String username = "username";
+    private int pin = 1234;
+    private boolean isAdmin = false;
+    private String firstName = "firstName";
+    private String lastName = "lastName";
+    private String childName = "childName";
+    private int phone = 1234567890;
+    private String address1 = "address1";
+    private String address2 = "address2";
+    private String email = "email";
+
+    public SetUser(int UserId){
+
+    }
+
+    public SetUserName(int UserId, String newName){
+        username = newName;
+    }
 }
 
 /* Inner class that defines the table contents */

@@ -58,11 +58,10 @@ public class AA_LoginFragment extends Fragment {
         editor.putString("url", url);
         editor.commit();
 
-
-        Log.d(TAG, "Creating loginfrag");
         Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
-        myDB = new DB_Manager(context, "DB1.db");
+
+        myDB = new DB_Manager(context, "app_data.db");
         try {
             myDB.createDataBase();
         } catch (IOException ioe) {
@@ -96,7 +95,6 @@ public class AA_LoginFragment extends Fragment {
                             params.put("username", editName.getText().toString());
                             params.put("password", editPin.getText().toString());
                             String newUrl = url+"CheckLogin";
-                            Log.d(TAG, "The url being used is: " + newUrl);
                             MakeRequest(newUrl, params);
                         } else {
                             //to be deleted in live state:
@@ -145,13 +143,10 @@ public class AA_LoginFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
-        editor.putBoolean("login", true);//for login persistance
-        editor.putString("type", loginType);//for login persistance
         editor.putString("url", url);
         editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
-        myIntent.putExtra("type", type);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }
@@ -217,15 +212,15 @@ public class AA_LoginFragment extends Fragment {
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("login", true);//for login persistance
-        editor.putString("type", loginType);//for login persistance
-        editor.putString("name", name);
-        editor.putInt("id", myId);//for any queries needed
+//        editor.putBoolean("login", true);//for login persistance
+//        editor.putString("type", loginType);//for login persistance
+//        editor.putString("name", name);
+//        editor.putInt("id", myId);//for any queries needed
+//        Change ^^ to interact with database
 
         editor.commit();
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
-        myIntent.putExtra("type", loginType);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }

@@ -33,9 +33,7 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     public void createDataBase() throws IOException {
         boolean dbExist = checkDataBase();
-        if(dbExist){
-
-        }else{
+        if(!dbExist){
             this.getReadableDatabase();
             try{
                 copyDataBase();
@@ -106,7 +104,7 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     public Cursor getLoginStatus(){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM data", null);
+        Cursor res = db.rawQuery("SELECT * FROM Users", null);
         return res;
     }
 

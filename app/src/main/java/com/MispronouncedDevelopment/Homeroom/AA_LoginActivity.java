@@ -50,7 +50,6 @@ public class AA_LoginActivity extends AppCompatActivity{
                 loginType = "";
             }
         }
-        Log.d(TAG, "The defaults are " + loginStatus + " and " + loginType);
 
         String type;
 
@@ -68,20 +67,20 @@ public class AA_LoginActivity extends AppCompatActivity{
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
         Intent myIntent = new Intent(this, AA_MainActivity.class);
-        myIntent.putExtra("type", type);
         startActivity(myIntent);
         this.startActivity(myIntent);
     }
 
     public static boolean getDefaultLoginStatus(String key, Context context){
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        return prefs.getBoolean(key, false);
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+//        return prefs.getBoolean(key, false);
+
+        //migrate this to a user id and check against local db
     }
 
     public static String getDefaultLoginType(String key, Context context) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-
-        return prefs.getString(key, "admin");
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+//        return prefs.getString(key, "admin");
     }
 }
 
