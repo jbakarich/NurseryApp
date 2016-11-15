@@ -43,7 +43,7 @@ public class AA_LoginFragment extends Fragment {
     public static final String PREFS_NAME = "PrefsFile";
     public boolean loginState = false;
     View myView;
-    AA_DatabaseImport myDB;
+    DB_Manager myDB;
     Button loginButton;
     EditText editName, editPin;
     CheckBox myCheckbox;
@@ -62,7 +62,7 @@ public class AA_LoginFragment extends Fragment {
         Log.d(TAG, "Creating loginfrag");
         Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
-        myDB = new AA_DatabaseImport(context, "DB1.db");
+        myDB = new DB_Manager(context, "DB1.db");
         try {
             myDB.createDataBase();
         } catch (IOException ioe) {

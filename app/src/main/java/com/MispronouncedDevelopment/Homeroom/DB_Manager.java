@@ -12,27 +12,26 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.SQLDataException;
 
 /**
- * Created by jacob on 10/5/2016.
+ * Created by Cyrille on 11/15/16.
  */
 
-public class AA_DatabaseImport extends SQLiteOpenHelper {
-    private static final String TAG = "DatabaseImport";//Use this for logging. ex: Log.d(TAG, "my message");
+public class DB_Manager extends SQLiteOpenHelper{
+    private static final String TAG = "DB_Manager";//Use this for logging. ex: Log.d(TAG, "my message");
 
     private static String DB_PATH = "/data/data/com.MispronouncedDevelopment.Homeroom/databases/";
     private static String DB_NAME = "null";
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
-    public AA_DatabaseImport(Context context, String database){
+    public DB_Manager(Context context, String database){
         super(context, database, null, 1);
         DB_NAME = database;
         this.myContext = context;
     }
 
-    public void createDataBase() throws IOException{
+    public void createDataBase() throws IOException {
         boolean dbExist = checkDataBase();
         if(dbExist){
 
@@ -52,7 +51,7 @@ public class AA_DatabaseImport extends SQLiteOpenHelper {
             String myPath = DB_PATH+DB_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         }catch (SQLiteException e){
-
+            Log.d(TAG, "error in checkDataBase: " + e.toString());
         }
 
         if(checkDB != null){
@@ -61,7 +60,6 @@ public class AA_DatabaseImport extends SQLiteOpenHelper {
 
         return checkDB!= null ? true : false;
     }
-
 
     private void copyDataBase() throws IOException{
 
@@ -85,8 +83,7 @@ public class AA_DatabaseImport extends SQLiteOpenHelper {
     }
 
     @Override
-
-        public synchronized void close() {
+    public synchronized void close() {
         if(myDataBase != null)
             myDataBase.close();
         super.close();
@@ -94,7 +91,6 @@ public class AA_DatabaseImport extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-
     }
 
     @Override
@@ -118,5 +114,7 @@ public class AA_DatabaseImport extends SQLiteOpenHelper {
         this.myDataBase.execSQL("UPDATE " + table + " SET "+ column + "=" + values + "WHERE id=0" );
     }
 }
+
+
 
 

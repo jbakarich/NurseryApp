@@ -44,7 +44,7 @@ import java.util.Map;
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
-    AA_DatabaseImport myDB;
+    DB_Manager myDB;
     String myType;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -80,7 +80,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        myDB = new AA_DatabaseImport(this, "app_data.db");
+        myDB = new DB_Manager(this, "app_data.db");
 
         try {
             myDB.createDataBase();
@@ -297,19 +297,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         });
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     void ShowError(String error) {

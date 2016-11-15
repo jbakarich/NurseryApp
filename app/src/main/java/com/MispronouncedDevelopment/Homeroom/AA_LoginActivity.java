@@ -17,13 +17,13 @@ import java.io.IOException;
 
 public class AA_LoginActivity extends AppCompatActivity{
     private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
-    AA_DatabaseImport myDB;
+    DB_Manager myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myDB = new AA_DatabaseImport(this, "app_data.db");
+        myDB = new DB_Manager(this, "app_data.db");
 
         try {
             myDB.createDataBase();
