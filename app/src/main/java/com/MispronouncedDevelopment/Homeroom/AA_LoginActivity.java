@@ -17,70 +17,42 @@ import java.io.IOException;
 
 public class AA_LoginActivity extends AppCompatActivity{
     private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
-    DB_Manager myDB;
+    String url ="http://172.24.95.132:8080/";//this is the location of wherever the server is running.
+   public DB_Manager myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myDB = new DB_Manager(this, "app_data.db");
-
-        try {
-            myDB.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("UNABLE TO CREATE DATABASE");
-        }
-
-        try {
-            myDB.openDataBase();
-
-        } catch (SQLiteException sqle) {
-            throw sqle;
-        }
-
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         android.app.FragmentManager fragmentManager = getFragmentManager();
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove("url");
+        editor.putString("url", url);
+        editor.apply();
 
-        boolean loginStatus = getDefaultLoginStatus("login", this);
-        String loginType =  getDefaultLoginType("type", this);
-        Bundle extras = getIntent().getExtras();
-        if(extras != null && extras.containsKey("logout")) {
-            boolean logout = extras.getBoolean("logout", false);
-            if (logout) {
-                loginStatus = false;
-                loginType = "";
+        myDB = new DB_Manager(this);
+
+        int userID = prefs.getInt("USERID", -1);
+        if(userID != -1){
+            boolean isAdmin = false;//from data base!!!
+
+            if (isAdmin) {
+                setContentView(R.layout.admin_main);
+                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+            } else {
+                setContentView(R.layout.parent_main);
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
             }
-        }
-
-        String type;
-
-        if (!loginStatus) {
+            Intent myIntent = new Intent(this, AA_MainActivity.class);
+            startActivity(myIntent);
+            this.startActivity(myIntent);
+        }  else {
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new AA_LoginFragment()).commit();
             setContentView(R.layout.default_main);
-            return;
-        } else if (loginType.matches("admin")) {
-            setContentView(R.layout.admin_main);
-            type = "admin";
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-        } else {
-            setContentView(R.layout.parent_main);
-            type = "parent";
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
-        Intent myIntent = new Intent(this, AA_MainActivity.class);
-        startActivity(myIntent);
-        this.startActivity(myIntent);
     }
 
-    public static boolean getDefaultLoginStatus(String key, Context context){
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//        return prefs.getBoolean(key, false);
 
-        //migrate this to a user id and check against local db
-    }
-
-    public static String getDefaultLoginType(String key, Context context) {
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-//        return prefs.getString(key, "admin");
-    }
 }
 

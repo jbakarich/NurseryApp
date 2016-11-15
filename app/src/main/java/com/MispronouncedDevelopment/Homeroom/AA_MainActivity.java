@@ -45,7 +45,6 @@ import java.util.Map;
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     DB_Manager myDB;
-    String myType;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -58,17 +57,23 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
-        //set myType from db
-        if (myType.equals("admin")) {
+
+        myDB = new DB_Manager(this);
+
+        FragmentManager fragmentManager = getFragmentManager();
+
+        if (myDB.getIsAdmin()) {
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
             navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
             setContentView(R.layout.parent_main);
             toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
             navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
 
         setSupportActionBar(toolbar);
@@ -79,29 +84,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        myDB = new DB_Manager(this, "app_data.db");
-
-        try {
-            myDB.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("UNABLE TO CREATE DATABASE");
-        }
-
-        try {
-            myDB.openDataBase();
-
-        } catch (SQLiteException sqle) {
-            throw sqle;
-        }
-
-        FragmentManager fragmentManager = getFragmentManager();
-
-        if (myType.equals("admin")) {
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-        } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        }
         UpdateDatabase();
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -109,12 +93,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer;
-        if (myType.equals("admin")) {
-            drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
-        } else {
-            drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
-        }
+        DrawerLayout drawer = myDB.getIsAdmin() ? (DrawerLayout) findViewById(R.id.admin_drawer_layout) : (DrawerLayout) findViewById(R.id.parent_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -171,7 +150,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 break;
             case R.id.Parent_Payment:
                 Intent myPaymentIntent = new Intent(this, AndroidPay.class);
-//                myIntent.putExtra("type", type);
                 startActivity(myPaymentIntent);
                 this.startActivity(myPaymentIntent);
                 break;
@@ -185,12 +163,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 //          Both menus
             case R.id.Parent_Logout:
             case R.id.Admin_Logout:
-                SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = mySPrefs.edit();
-//                editor.remove("login");
-
-                //change this user id ^^
-
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.remove("USERID");
+                editor.putInt("USERID", -1);
                 editor.apply();
 
                 Context context = this;
@@ -202,7 +178,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(myType.equals("admin") ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(myDB.getIsAdmin() ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -214,7 +190,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         Map<String, String> params = new HashMap<>();
         params.put("id", prefs.getInt("id", -1) + "");
 
-        Log.d(TAG, "url = " + url);
+        Log.d(TAG, "updating database from url = " + url);
         MakeRequest(url, params);
     }
 
@@ -241,37 +217,91 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     //THIS ENTIRE FUNCTION NEEDS TO BE REWRITTEN TO UPDATE LOCAL DATABASE
     //after the face, a second function to update homevards should be written
     void Update(JSONObject response) {
-        List<HomeCard> childCards = new ArrayList<>();
-
-        final ListView listview = (ListView) findViewById(R.id.listview);
-        final ArrayList<String> list = new ArrayList<>();
         String[] ids = new String[0];
         Log.d(TAG, "got a response: " + response.toString());
         try {
-            JSONArray parents = response.getJSONArray("parents");
-            ids = new String[parents.length()];
-            for (int i = 0; i < parents.length(); i++) {
-                JSONObject parent = parents.getJSONObject(i);
-                HomeCard newCard = new HomeCard(parent.getString("childname"), "Oct " + i, i + "");
-                childCards.add(newCard);
-                list.add(newCard.name);
-                ids[i] = i+"";
-            }
+            int myId = response.getInt("ID");
+            myDB.setID(myId);
+            myDB.setIsAdmin(myId, response.getString("IsAdmin"));
+            myDB.setPin(myId, response.getInt("Pin"));
+            myDB.setFirstName(myId, response.getString("FirstName"));
+            myDB.setLastName(myId, response.getString("LastName"));
+            myDB.setUserName(myId, response.getString("UserName"));
+            myDB.setChildName(myId, response.getString("ChildName"));
+            myDB.setPhone(myId, response.getInt("Phone"));
+            myDB.setAddress1(myId, response.getString("Address1"));
+            myDB.setAddress2(myId, response.getString("Address2"));
+            myDB.setEmail(myId, response.getString("Email"));
 
+            if(myDB.getIsAdmin()) {
+                //this updates the admins records
+                JSONArray parents = response.getJSONArray("parents");
+                for (int i = 0; i < parents.length(); i++) {
+
+                    JSONObject parent = parents.getJSONObject(i);
+                    int ParentId = parent.getInt("ID");
+                    myDB.setID(ParentId);
+                    myDB.setIsAdmin(ParentId, parent.getString("IsAdmin"));
+                    myDB.setPin(ParentId, parent.getInt("Pin"));
+                    myDB.setFirstName(ParentId, parent.getString("FirstName"));
+                    myDB.setLastName(ParentId, parent.getString("LastName"));
+                    myDB.setUserName(ParentId, parent.getString("UserName"));
+                    myDB.setChildName(ParentId, parent.getString("ChildName"));
+                    myDB.setPhone(ParentId, parent.getInt("Phone"));
+                    myDB.setAddress1(ParentId, parent.getString("Address1"));
+                    myDB.setAddress2(ParentId, parent.getString("Address2"));
+                    myDB.setEmail(ParentId, parent.getString("Email"));
+
+                    JSONArray attendenceRecords = parent.getJSONArray("AttendanceRecords");
+
+                    for (int j = 0; j < attendenceRecords.length(); j++) {
+                        JSONObject attendanceRecord = attendenceRecords.getJSONObject(j);
+                        int attendenceID = attendanceRecord.getInt("ID");
+                        myDB.setAttendanceID(attendenceID);
+                        myDB.setAttendanceParentID(attendenceID, attendanceRecord.getInt("ID"));
+                        myDB.setAttendanceAmount(attendenceID, attendanceRecord.getInt("ID"));
+                        myDB.setAttendanceDate(attendenceID, attendanceRecord.getInt("ID"));
+                        myDB.setAttendanceIsPaid(attendenceID, attendanceRecord.getInt("ID"));
+                    }
+
+                    JSONArray paymentRecords = parent.getJSONArray("PaymentRecords");
+
+                    for (int j = 0; j < paymentRecords.length(); j++) {
+                        JSONObject paymentRecord = paymentRecords.getJSONObject(j);
+                        int paymentID = paymentRecord.getInt("ID");
+                        myDB.setAttendanceID(paymentID);
+                        myDB.setAttendanceParentID(paymentID, paymentRecord.getInt("ID"));
+                        myDB.setAttendanceAmount(paymentID, paymentRecord.getInt("ID"));
+                        myDB.setAttendanceDate(paymentID, paymentRecord.getInt("ID"));
+                        myDB.setAttendanceIsPaid(paymentID, paymentRecord.getInt("ID"));
+                    }
+                }
+                UpdateCards();
+            }
         } catch (JSONException e) {
             Log.d(TAG, "Error in her");
         }
+    }
 
-        //silly hack
-        SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = mySPrefs.edit();
+    void UpdateCards(){
 
-        for (int i = 0; i < ids.length; i++) {
-            editor.putString("id"+i+"name", childCards.get(i).name);
-            editor.putString("id"+i+"date", childCards.get(i).date);
+        int[] parentIds = myDB.getParentIds();
+        String[] ids = new String[parentIds.length];
+
+        List<HomeCard> childCards = new ArrayList<>();
+        final ListView listview = (ListView) findViewById(R.id.listview);
+        final ArrayList<String> list = new ArrayList<>();
+
+
+        for(int i =0; i < parentIds.length; i++) {
+            HomeCard newCard = new HomeCard();
+            newCard.setName(myDB.getParentName(parentIds[i]));
+            newCard.setDate(myDB.getLastCheckin(parentIds[i]));
+            newCard.setId(parentIds[i]);
+            childCards.add(newCard);
+            list.add(newCard.name);
+            ids[i] = parentIds[i]+"";
         }
-        editor.apply();
-
 
         myAdapter adapter = new myAdapter(this, ids);
         listview.setAdapter(adapter);
@@ -282,13 +312,13 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 final String item = (String) parent.getItemAtPosition(position);
                 view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
+                    @Override
+                    public void run() {
+                        list.remove(item);
 //                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
+                        view.setAlpha(1);
+                    }
+                });
             }
 
         });
@@ -340,12 +370,25 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
 class HomeCard{
     String name;
-    String date;
-    String id;
-    public HomeCard(String Name, String Date, String Id){
-        name = Name;
-        date = Date;
-        id = Id;
+    int date;
+    int id;
+
+    public HomeCard(){
+        name = "";
+        date = 0;
+        id = -1;
+    }
+
+    public void setName(String newName){
+        name = newName;
+    }
+
+    public void setDate(int newDate){
+        date = newDate;
+    }
+
+    public void setId(int newId){
+        id = newId;
     }
 }
 

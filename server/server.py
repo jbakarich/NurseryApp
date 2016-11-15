@@ -94,6 +94,7 @@ class Root(object):
         print "\nEnd of results\n"
         toReturn = {
             "isAdmin": res['isAdmin'],
+            "ID": res['id'],
             "FirstName": res['firstname'],
             "LastName": res['lastname'],
             "UserName": res['username'],

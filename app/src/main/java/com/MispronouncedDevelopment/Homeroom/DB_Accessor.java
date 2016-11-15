@@ -60,7 +60,7 @@ public class DB_Accessor extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public void onCreate(SQLiteDatabase db) {
+    public static void WriteDB(SQLiteDatabase db) {
         db.execSQL(CreateUserTable);
         db.execSQL(CreatePaymentTable);
         db.execSQL(CreateAttendanceTable);

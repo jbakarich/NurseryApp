@@ -19,16 +19,30 @@ import java.io.OutputStream;
 
 public class DB_Manager extends SQLiteOpenHelper{
     private static final String TAG = "DB_Manager";//Use this for logging. ex: Log.d(TAG, "my message");
-
     private static String DB_PATH = "/data/data/com.MispronouncedDevelopment.Homeroom/databases/";
-    private static String DB_NAME = "null";
+    private static String DB_NAME = "app_data.db";
     private SQLiteDatabase myDataBase;
     private final Context myContext;
 
-    public DB_Manager(Context context, String database){
-        super(context, database, null, 1);
-        DB_NAME = database;
+
+    public DB_Manager(Context context){
+        super(context, DB_NAME, null, 1);
         this.myContext = context;
+        LoadDatabase();
+    }
+
+    public void LoadDatabase(){
+        try {
+            createDataBase();
+        } catch (IOException ioe) {
+            throw new Error("UNABLE TO CREATE DATABASE");
+        }
+
+        try {
+            openDataBase();
+        } catch (SQLiteException sqle) {
+            throw sqle;
+        }
     }
 
     public void createDataBase() throws IOException {
@@ -51,7 +65,6 @@ public class DB_Manager extends SQLiteOpenHelper{
         }catch (SQLiteException e){
             Log.d(TAG, "error in checkDataBase: " + e.toString());
         }
-
         if(checkDB != null){
             checkDB.close();
         }
@@ -60,19 +73,7 @@ public class DB_Manager extends SQLiteOpenHelper{
     }
 
     private void copyDataBase() throws IOException{
-
-        InputStream myInput = myContext.getAssets().open(DB_NAME);
-        String outFileName = DB_PATH + DB_NAME;
-        OutputStream myOutput = new FileOutputStream(outFileName);
-        byte[] buffer = new byte[1024];
-        int length;
-        while((length = myInput.read(buffer)) > 0){
-            myOutput.write(buffer, 0, length);
-        }
-
-        myOutput.flush();
-        myOutput.close();
-        myInput.close();
+        DB_Accessor.WriteDB(myDataBase);
     }
 
     public void openDataBase() throws SQLiteException {
@@ -96,21 +97,27 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     }
 
-    public Cursor getAllData(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM profiles", null);
-        return res;
-    }
 
-    public Cursor getLoginStatus(){
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM Users", null);
-        return res;
-    }
 
-    public void updateTable(String table, String column, ContentValues values) {
-        this.myDataBase.execSQL("UPDATE " + table + " SET "+ column + "=" + values + "WHERE id=0" );
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
