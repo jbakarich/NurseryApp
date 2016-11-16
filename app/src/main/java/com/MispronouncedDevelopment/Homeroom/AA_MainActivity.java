@@ -42,6 +42,7 @@ import java.util.Map;
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     DB_Manager myDB;
+    SharedPreferences prefs;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -59,7 +60,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         FragmentManager fragmentManager = getFragmentManager();
 
-        if (myDB.getIsAdmin()) {
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (myDB.getIsAdmin(prefs.getInt("USERID", -1))) {
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
@@ -90,7 +93,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = myDB.getIsAdmin() ? (DrawerLayout) findViewById(R.id.admin_drawer_layout) : (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+        DrawerLayout drawer = myDB.getIsAdmin(prefs.getInt("USERID", -1)) ? (DrawerLayout) findViewById(R.id.admin_drawer_layout) : (DrawerLayout) findViewById(R.id.parent_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -175,7 +178,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(myDB.getIsAdmin() ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(myDB.getIsAdmin(prefs.getInt("USERID", -1)) ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -230,7 +233,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             myDB.setAddress2(myId, response.getString("Address2"));
             myDB.setEmail(myId, response.getString("Email"));
 
-            if(myDB.getIsAdmin()) {
+            if(myDB.getIsAdmin(prefs.getInt("USERID", -1))) {
                 //this updates the admins records
                 JSONArray parents = response.getJSONArray("parents");
                 for (int i = 0; i < parents.length(); i++) {
@@ -266,11 +269,11 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                     for (int j = 0; j < paymentRecords.length(); j++) {
                         JSONObject paymentRecord = paymentRecords.getJSONObject(j);
                         int paymentID = paymentRecord.getInt("ID");
-                        myDB.setAttendanceID(paymentID);
-                        myDB.setAttendanceParentID(paymentID, paymentRecord.getInt("ID"));
-                        myDB.setAttendanceAmount(paymentID, paymentRecord.getInt("ID"));
-                        myDB.setAttendanceDate(paymentID, paymentRecord.getInt("ID"));
-                        myDB.setAttendanceIsPaid(paymentID, paymentRecord.getInt("ID"));
+                        myDB.setPaymentID(paymentID);
+                        myDB.setPaymentParentID(paymentID, paymentRecord.getInt("ID"));
+                        myDB.setPaymentAmount(paymentID, paymentRecord.getInt("ID"));
+                        myDB.setPaymentDate(paymentID, paymentRecord.getInt("ID"));
+                        myDB.setPaymentIsPaid(paymentID, paymentRecord.getInt("ID"));
                     }
                 }
                 UpdateCards();

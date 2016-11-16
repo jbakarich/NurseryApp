@@ -1,6 +1,7 @@
 package com.MispronouncedDevelopment.Homeroom;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -82,22 +83,113 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     }
 
+    //GETTERS
+
+    public int[] getParentIds(){
+        int[] myInts = new int[5];
+        return myInts;
+    }
+
+    public Cursor getAllData() {
+        String[] columns = new String[2];
+        columns[0] = "UserName";
+        columns[1] = "Pin";
+        Cursor res = myDataBase.query("user", columns, null, null, null, null, null);
+        Log.d(TAG, "This is the res we got:");
+        Log.d(TAG, res.toString());
+        return res;
+    }
+
+    public boolean getIsAdmin(int UserId){
+        return true;
+    }
+
+    public int getLastCheckin(int UserId){
+        return 1;
+    }
+
+    public String getParentName(int UserId){
+        return "larry";
+    }
+
+    public int[] getParentIds(int UserId){
+        int[] ints = new int[3];
+        ints[0] = 1;
+        ints[1] =2;
+        ints[2] = 3;
+        return ints;
+    }
 
 
+//    SETTERS
 
+    public void setID(int newId){
 
+    }
+    public void setIsAdmin(int UserID, String isAdmin){
 
+    }
+    public void setPin(int UserID, int newPin){
 
+    }
+    public void setFirstName(int UserID, String newFirstName){
 
+    }
+    public void setLastName(int UserID, String newLastName){
 
+    }
+    public void setUserName(int UserID, String newUserName){
 
+    }
+    public void setChildName(int UserID, String newChildName){
 
+    }
+    public void setPhone(int UserID, int newPhone){
 
+    }
+    public void setAddress1(int UserID, String newAddress1){
 
+    }
+    public void setAddress2(int UserID, String newAddress2){
 
+    }
+    public void setEmail(int UserID, String newEmail){
 
+    }
 
+//    Attendance Setters
+    public void setAttendanceID(int AttendenceID){
 
+    }
+    public void setAttendanceParentID(int AttendenceID, int newParentId){
+
+    }
+    public void setAttendanceAmount(int AttendenceID, int newAttendenceAmount){
+
+    }
+    public void setAttendanceDate(int AttendenceID, int newAttendenceDate){
+
+    }
+    public void setAttendanceIsPaid(int AttendenceID, int newAttendenceIsPaid){
+
+    }
+
+    //Payment Setters
+    public void setPaymentID(int AttendenceID){
+
+    }
+    public void setPaymentParentID(int AttendenceID, int newPaymentId){
+
+    }
+    public void setPaymentAmount(int AttendenceID, int newPaymentAmount){
+
+    }
+    public void setPaymentDate(int AttendenceID, int newPaymentDate){
+
+    }
+    public void setPaymentIsPaid(int AttendenceID, int newPaymentisPaid){
+
+    }
 
 
 
