@@ -21,7 +21,7 @@ public final class DB_Models {
         public static final String id = "_id";
         public static final String username = "username";
         public static final String pin = "_pin";
-        public static final String isAdmin = "false";
+        public static final String isAdmin = "isAdmin";
         public static final String firstName = "firstName";
         public static final String lastName = "lastName";
         public static final String childName = "childName";
@@ -34,20 +34,20 @@ public final class DB_Models {
     /* Inner class that defines the table contents */
     public static class AttendanceRecord implements BaseColumns {
         public static final String tableName = "attendenceRecords";
-        public static final int id = -1;
-        public static final int userId = -1;
+        public static final String id = "_id";
+        public static final String userId = "_uid";
         public static final String date = "date";
         public static final boolean attended = false;
     }
 
     /* Inner class that defines the table contents */
     public static class PaymentRecord implements BaseColumns {
-        public static final String tableName = "tableRecords";
-        public static final int id = -1;
-        public static final int userId = -1;
+        public static final String tableName = "paymentRecords";
+        public static final String id = "_id";
+        public static final String userId = "_uid";
         public static final String date = "date";
-        public static final double amount = 0.0;
-        public static final boolean isPaid = false;
+        public static final String amount = "_dollars";
+        public static final String isPaid = "false";
     }
 }
 

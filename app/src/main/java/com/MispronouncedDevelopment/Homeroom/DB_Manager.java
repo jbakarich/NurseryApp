@@ -23,6 +23,9 @@ public class DB_Manager extends SQLiteOpenHelper{
     public DB_Manager(Context context){
         super(context, DB_NAME, null, 1);
         Log.d(TAG, "DB Constructor");
+//        if(true){
+//            context.deleteDatabase(DB_PATH+DB_NAME);
+//        }
         LoadDatabase();
         runTestFunctions();
     }
@@ -48,6 +51,7 @@ public class DB_Manager extends SQLiteOpenHelper{
     private boolean checkDataBase(){
         Log.d(TAG, "DB checkData");
         SQLiteDatabase checkDB = null;
+
         try{
             String myPath = DB_PATH+DB_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
@@ -109,8 +113,8 @@ public class DB_Manager extends SQLiteOpenHelper{
     public Cursor getLoginData() {
         Log.d(TAG, "getting login data");
         String[] columns = new String[2];
-        columns[0] = "UserName";
-        columns[1] = "Pin";
+        columns[0] = "username";
+        columns[1] = "_pin";
         Cursor res = myDataBase.query("user", columns, null, null, null, null, null);
         Log.d(TAG, "This is the res we got:");
         Log.d(TAG, res.toString());
@@ -119,7 +123,7 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     public boolean getIsAdmin(int UserId){
         String[] columns = new String[2];
-        columns[0] = "UserId";
+        columns[0] = "username";
         columns[1] = "isAdmin";
         Cursor res = myDataBase.query("user", columns, null, null, null, null, null);
         Log.d(TAG, "This is the res we got:");
@@ -223,9 +227,9 @@ int testIndex = 0;
         Log.d(TAG, "Running test functions");
         boolean userTable = tableExists(myDataBase, "user", true);
         Log.d(TAG, "User table = " + userTable);
-        boolean attendenceRecord = tableExists(myDataBase, "attendenceRecord", true);
+        boolean attendenceRecord = tableExists(myDataBase, "attendenceRecords", true);
         Log.d(TAG, "attendenceRecord table = " + attendenceRecord);
-        boolean paymentRecord = tableExists(myDataBase, "paymentRecord", true);
+        boolean paymentRecord = tableExists(myDataBase, "paymentRecords", true);
         Log.d(TAG, "paymentRecord table = " + paymentRecord);
 
         runRepairs(userTable, attendenceRecord, paymentRecord);
