@@ -63,3 +63,6 @@ build/
 
 #NDK
 obj/
+
+
+*.pyc
