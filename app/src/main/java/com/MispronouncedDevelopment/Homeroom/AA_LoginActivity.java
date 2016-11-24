@@ -9,7 +9,7 @@ import android.util.Log;
 
 public class AA_LoginActivity extends AppCompatActivity{
     private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
-    String url ="http://172.31.98.118:8080/";//this is the location of wherever the server is running.
+    String url ="http://172.19.245.49:8080/";//this is the location of wherever the server is running.
    public DB_Manager myDB;
 
     @Override

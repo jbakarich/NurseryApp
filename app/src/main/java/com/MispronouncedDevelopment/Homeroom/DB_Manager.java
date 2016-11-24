@@ -50,7 +50,7 @@ public class DB_Manager extends SQLiteOpenHelper{
         SQLiteDatabase checkDB = null;
         try{
             String myPath = DB_PATH+DB_NAME;
-            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+            checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
         }catch (SQLiteException e){
             Log.d(TAG, "error in checkDataBase: " + e.toString());
         }
@@ -63,14 +63,14 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     private void createDataBase() throws IOException {
         Log.d(TAG, "DB createDatabase");
-        this.getReadableDatabase();
+        this.getWritableDatabase();
         DB_Accessor.WriteDB(myDataBase);
     }
 
     private void openDataBase() throws SQLiteException {
         Log.d(TAG, "DB OpenData");
         String myPath = DB_PATH + DB_NAME;
-        myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
         Log.d(TAG, "This is what we got:");
         Log.d(TAG, myDataBase.toString());
     }
@@ -259,12 +259,12 @@ int testIndex = 0;
     public boolean tableExists(SQLiteDatabase DataBase, String tableName, boolean openDb) {
         if(openDb) {
             if(DataBase == null || !DataBase.isOpen()) {
-                DataBase = getReadableDatabase();
+                DataBase = getWritableDatabase();
             }
 
-            if(!DataBase.isReadOnly()) {
+            if(DataBase.isReadOnly()) {
                 DataBase.close();
-                DataBase = getReadableDatabase();
+                DataBase = getWritableDatabase();
             }
         }
 

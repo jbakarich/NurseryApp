@@ -44,15 +44,12 @@ public class DB_Accessor extends SQLiteOpenHelper {
                     DB_Models.PaymentRecord.amount + TEXT_TYPE + COMMA_SEP +
                     DB_Models.PaymentRecord.isPaid + TEXT_TYPE  + " )";
 
-
     private static final String DeleteUserEntries =
             "DROP TABLE IF EXISTS " + DB_Models.User.tableName;
     private static final String DeleteAttendanceEntries =
             "DROP TABLE IF EXISTS " + DB_Models.AttendanceRecord.tableName;
     private static final String DeletePaymentEntries =
             "DROP TABLE IF EXISTS " + DB_Models.PaymentRecord.tableName;
-
-
 
     // If you change the database schema, you must increment the database version.
     private static final int DATABASE_VERSION = 1;
