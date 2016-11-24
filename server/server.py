@@ -105,12 +105,12 @@ class Root(object):
             "Address2": res['address2']
         }
         if not res['isAdmin']:
-            for date in res['attendenceHistory']:
+            for date in res['attendenceRecords']:
                 toReturn['AttendenceRecords'].append({
                     "DateIn": date['intime'],
                     "DateOut": date['outtime']
                 })
-            for payment in res['paymentHistory']:
+            for payment in res['paymentRecords']:
                 toReturn['PaymentRecords'].append({
                     "Date": payment['date'],
                     "Amount": date['amount']

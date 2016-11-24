@@ -22,10 +22,13 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     public DB_Manager(Context context){
         super(context, DB_NAME, null, 1);
+        Log.d(TAG, "DB Constructor");
         LoadDatabase();
+        runTestFunctions();
     }
 
     private void LoadDatabase(){
+        Log.d(TAG, "DB LoadDatabase");
         boolean dbExist = checkDataBase();
         if(!dbExist) {
             try {
@@ -42,12 +45,8 @@ public class DB_Manager extends SQLiteOpenHelper{
         }
     }
 
-    private void createDataBase() throws IOException {
-        this.getReadableDatabase();
-        DB_Accessor.WriteDB(myDataBase);
-    }
-
     private boolean checkDataBase(){
+        Log.d(TAG, "DB checkData");
         SQLiteDatabase checkDB = null;
         try{
             String myPath = DB_PATH+DB_NAME;
@@ -62,13 +61,23 @@ public class DB_Manager extends SQLiteOpenHelper{
         return checkDB != null;
     }
 
+    private void createDataBase() throws IOException {
+        Log.d(TAG, "DB createDatabase");
+        this.getReadableDatabase();
+        DB_Accessor.WriteDB(myDataBase);
+    }
+
     private void openDataBase() throws SQLiteException {
+        Log.d(TAG, "DB OpenData");
         String myPath = DB_PATH + DB_NAME;
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
+        Log.d(TAG, "This is what we got:");
+        Log.d(TAG, myDataBase.toString());
     }
 
     @Override
     public synchronized void close() {
+        Log.d(TAG, "DB close");
         if(myDataBase != null)
             myDataBase.close();
         super.close();
@@ -85,12 +94,20 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     //GETTERS
 
+    public void testData(){
+        Log.d(TAG, "Begin test");
+        Cursor res = myDataBase.query("user", null, null, null, null, null, null);
+        Log.d(TAG, "From the testFunction:");
+        Log.d(TAG, res.toString());
+    }
+
     public int[] getParentIds(){
         int[] myInts = new int[5];
         return myInts;
     }
 
-    public Cursor getAllData() {
+    public Cursor getLoginData() {
+        Log.d(TAG, "getting login data");
         String[] columns = new String[2];
         columns[0] = "UserName";
         columns[1] = "Pin";
@@ -101,6 +118,12 @@ public class DB_Manager extends SQLiteOpenHelper{
     }
 
     public boolean getIsAdmin(int UserId){
+        String[] columns = new String[2];
+        columns[0] = "UserId";
+        columns[1] = "isAdmin";
+        Cursor res = myDataBase.query("user", columns, null, null, null, null, null);
+        Log.d(TAG, "This is the res we got:");
+        Log.d(TAG, res.toString());
         return true;
     }
 
@@ -114,9 +137,6 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     public int[] getParentIds(int UserId){
         int[] ints = new int[3];
-        ints[0] = 1;
-        ints[1] =2;
-        ints[2] = 3;
         return ints;
     }
 
@@ -191,9 +211,73 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     }
 
+int testIndex = 0;
 
+    //test functions
+    public void runTestFunctions(){
+        testIndex++;
+        if(testIndex > 10){
+            Log.d(TAG, "Quiting tests early");
+            return;
+        }
+        Log.d(TAG, "Running test functions");
+        boolean userTable = tableExists(myDataBase, "user", true);
+        Log.d(TAG, "User table = " + userTable);
+        boolean attendenceRecord = tableExists(myDataBase, "attendenceRecord", true);
+        Log.d(TAG, "attendenceRecord table = " + attendenceRecord);
+        boolean paymentRecord = tableExists(myDataBase, "paymentRecord", true);
+        Log.d(TAG, "paymentRecord table = " + paymentRecord);
 
+        runRepairs(userTable, attendenceRecord, paymentRecord);
+    }
 
+    public void runRepairs(boolean user, boolean attendence, boolean payment){
+        boolean rerunTest = false;
+        if(!user){
+            rerunTest = true;
+            Log.d(TAG, "Running user repair");
+            DB_Accessor.CreateUserTable(myDataBase);
+        }
+        if(!attendence){
+            rerunTest = true;
+            Log.d(TAG, "Running attendence repair");
+            DB_Accessor.CreateAttendenceTable(myDataBase);
+        }
+        if(!payment){
+            rerunTest = true;
+            Log.d(TAG, "Running payment repair");
+            DB_Accessor.CreatePaymentTable(myDataBase);
+        }
+
+        if(rerunTest){
+            runTestFunctions();
+        }
+    }
+
+    //taken from http://stackoverflow.com/questions/3058909/how-does-one-check-if-a-table-exists-in-an-android-sqlite-database
+
+    public boolean tableExists(SQLiteDatabase DataBase, String tableName, boolean openDb) {
+        if(openDb) {
+            if(DataBase == null || !DataBase.isOpen()) {
+                DataBase = getReadableDatabase();
+            }
+
+            if(!DataBase.isReadOnly()) {
+                DataBase.close();
+                DataBase = getReadableDatabase();
+            }
+        }
+
+        Cursor cursor = DataBase.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name = '"+tableName+"'", null);
+        if(cursor!=null) {
+            if(cursor.getCount()>0) {
+                cursor.close();
+                return true;
+            }
+            cursor.close();
+        }
+        return false;
+    }
 
 }
 

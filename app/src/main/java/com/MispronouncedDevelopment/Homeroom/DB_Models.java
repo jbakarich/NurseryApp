@@ -18,14 +18,14 @@ public final class DB_Models {
     /* Inner class that defines the table contents */
     public static class User implements BaseColumns {
         public static final String tableName = "user";
-        public static final int id = -1;
+        public static final String id = "_id";
         public static final String username = "username";
-        public static final int pin = 1234;
-        public static final boolean isAdmin = false;
+        public static final String pin = "_pin";
+        public static final String isAdmin = "false";
         public static final String firstName = "firstName";
         public static final String lastName = "lastName";
         public static final String childName = "childName";
-        public static final int phone = 1234567890;
+        public static final String phone = "_phone";
         public static final String address1 = "address1";
         public static final String address2 = "address2";
         public static final String email = "email";

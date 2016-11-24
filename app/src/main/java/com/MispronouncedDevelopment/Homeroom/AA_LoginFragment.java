@@ -80,7 +80,7 @@ public class AA_LoginFragment extends Fragment {
                         } else {
                             //to be deleted in live state:
                             Context context = getActivity();
-                            Cursor res = myDB.getAllData();
+                            Cursor res = myDB.getLoginData();
                             boolean success = false;
                             while (res.moveToNext()) {
                                 //Not sure how correct this is!
