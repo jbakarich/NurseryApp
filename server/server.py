@@ -99,6 +99,11 @@ class Root(object):
         print "and this is what we're returning:\n{}".format(json.dumps(toReturn, indent=2))
         return json.dumps(toReturn, indent=4)
 
+    @cherrypy.expose
+    def RequestProfile(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print b
 
 def get_cp_config():
     return {

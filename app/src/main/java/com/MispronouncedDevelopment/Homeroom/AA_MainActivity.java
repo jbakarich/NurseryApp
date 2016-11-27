@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -43,6 +44,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     DB_Manager myDB;
     SharedPreferences prefs;
+    private String parentName = "";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -127,6 +129,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 //          Admin menus
             case R.id.Admin_Home:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+                GetCards();
                 break;
             case R.id.Admin_Attendence:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
@@ -213,8 +216,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         queue.add(request);
     }
 
-    //THIS ENTIRE FUNCTION NEEDS TO BE REWRITTEN TO UPDATE LOCAL DATABASE
-    //after the face, a second function to update homevards should be written
     void UpdateCards(JSONObject response) {
         Log.d(TAG, "got a response: " + response.toString());
 
@@ -225,12 +226,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         try {
             JSONArray parents = response.getJSONArray("children");
             ids = new String[parents.length()];
-            for(int i =0; i < parents.length(); i++) {
+            for(int i = 0; i < parents.length(); i++) {
 
                 JSONObject cur = parents.getJSONObject(i);
-                Log.d(TAG, "HERE");
-                Log.d(TAG, cur.toString());
-//                if(cur.getString("isAdmin"))
 
                 HomeCard newCard = new HomeCard();
                 newCard.setName(cur.getString("username"));
@@ -241,6 +239,14 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 ids[i] = i+"";
             }
 
+            SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = mySPrefs.edit();
+
+            for (int i = 0; i < ids.length; i++) {
+                editor.putString("id"+i+"name", childCards.get(i).name);
+                editor.putString("id"+i+"date", childCards.get(i).date +"");
+            }
+            editor.apply();
 
             myAdapter adapter = new myAdapter(this, ids);
             listview.setAdapter(adapter);
@@ -254,7 +260,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                         @Override
                         public void run() {
                             list.remove(item);
-//                                adapter.notifyDataSetChanged();
                             view.setAlpha(1);
                         }
                     });
@@ -310,6 +315,14 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+
+    public void setParentName(String newName){
+        parentName = newName;
+    }
+
+    public String getParentName(){
+        return parentName;
+    }
 }
 
 class HomeCard{
@@ -334,6 +347,8 @@ class HomeCard{
     public void setId(int newId){
         id = newId;
     }
+
+    public int getDate(){ return date; }
 }
 
 
