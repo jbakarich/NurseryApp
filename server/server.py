@@ -29,7 +29,6 @@ class Root(object):
         response = {}
         for x in results:
             curUser = x.toDict()
-            print json.dumps(curUser, indent=2)
             if(curUser['username'] == b['username'] and curUser['pin'] == b['password']):
                 response = {
                     "name": curUser['firstname'],
@@ -46,7 +45,6 @@ class Root(object):
         print("Returning login:")
         print json.dumps(response, indent=4)
         print "\n\n"
-
         return json.dumps(response, indent=2)
 
     @cherrypy.expose
@@ -54,7 +52,7 @@ class Root(object):
         print "adding user"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print b
+        # print b
         b['phone'] = int(b['phone'])
         if b['isAdmin'] == "True":
             isAdmin = True
@@ -77,49 +75,27 @@ class Root(object):
         return json.dumps({"added": "Successful"}, indent=2)
 
     @cherrypy.expose
-    def DatabaseUpdate(self, **kwargs):
-        print "\n\nSomeone asked for a database update"
-        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
-        b = json.loads(rawData)
-        print "\nThis is what we recived in the request:\n{}".format(json.dumps(b, indent=2))
-        results = self.db.query(models.User).filter(models.User.id == b['id'])
-        print "\nresults = \n{}".format(results)
-        # print "\nresults length: {}".format(len(results))
-        for x in results:
-            print "\nfor x: {}\n".format(x)
-            foundUser = x
+    def AdminHome(self, **kwargs):
+        print "\n\nGetting admin home."
 
-        print "\ntoDict method:\n{}".format(foundUser.toDict())
-        res = foundUser.toDict()
-        print "\nEnd of results\n"
+        allParents = self.db.query(models.User)
+
         toReturn = {
-            "isAdmin": res['isAdmin'],
-            "ID": res['id'],
-            "FirstName": res['firstname'],
-            "LastName": res['lastname'],
-            "UserName": res['username'],
-            "ChildName": res['childname'],
-            "Phone": res['phone'],
-            "Email": res['email'],
-            "Address1": res['address1'],
-            "Address2": res['address2']
+            "children": [],
         }
-        if not res['isAdmin']:
-            for date in res['attendenceRecords']:
-                toReturn['AttendenceRecords'].append({
-                    "DateIn": date['intime'],
-                    "DateOut": date['outtime']
-                })
-            for payment in res['paymentRecords']:
-                toReturn['PaymentRecords'].append({
-                    "Date": payment['date'],
-                    "Amount": date['amount']
-                })
-        else:
-            allParents = self.db.query(models.User).filter(models.User.isAdmin == False)
-            toReturn["parents"] = []
-            for parent in allParents:
-                toReturn['parents'].append(parent.toDict())
+        for x in allParents:
+            newuser = x.toDict()
+            if newuser['isAdmin'] is True:
+                continue
+            newobj = {
+                "username": newuser['username']
+            }
+            if "attendenceRecords" in newuser and len(newuser['attendenceRecords']) > 0:
+                newobj["lastcheckin"] = newuser['attendenceRecords'][len(newuser['attendenceRecords']) - 1]
+            else:
+                newobj["lastcheckin"] = 0
+            toReturn["children"].append(newobj)
+
         print "and this is what we're returning:\n{}".format(json.dumps(toReturn, indent=2))
         return json.dumps(toReturn, indent=4)
 

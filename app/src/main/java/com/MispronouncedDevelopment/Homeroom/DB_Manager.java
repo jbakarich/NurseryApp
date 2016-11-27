@@ -215,7 +215,7 @@ public class DB_Manager extends SQLiteOpenHelper{
 
     }
 
-int testIndex = 0;
+    int testIndex = 0;
 
     //test functions
     public void runTestFunctions(){

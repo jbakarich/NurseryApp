@@ -84,7 +84,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        UpdateDatabase();
+        GetCards();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -183,25 +183,24 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
-    void UpdateDatabase() {
+    void GetCards() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = prefs.getString("url", "Wrong!") + "DatabaseUpdate";
+        String url = prefs.getString("url", "Wrong!") + "AdminHome";
 
         Map<String, String> params = new HashMap<>();
         params.put("id", prefs.getInt("id", -1) + "");
 
-        Log.d(TAG, "updating database from url = " + url);
-        MakeRequest(url, params);
+        RequestCards(url, params);
     }
 
-    void MakeRequest(String url, Map<String, String> data) {
+    void RequestCards(String url, Map<String, String> data) {
 
         JSONObject obj = new JSONObject(data);
 
         JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Update(response);
+                UpdateCards(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -216,112 +215,57 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
     //THIS ENTIRE FUNCTION NEEDS TO BE REWRITTEN TO UPDATE LOCAL DATABASE
     //after the face, a second function to update homevards should be written
-    void Update(JSONObject response) {
-        String[] ids = new String[0];
+    void UpdateCards(JSONObject response) {
         Log.d(TAG, "got a response: " + response.toString());
-        try {
-            int myId = response.getInt("ID");
-            myDB.setID(myId);
-            myDB.setIsAdmin(myId, response.getString("IsAdmin"));
-            myDB.setPin(myId, response.getInt("Pin"));
-            myDB.setFirstName(myId, response.getString("FirstName"));
-            myDB.setLastName(myId, response.getString("LastName"));
-            myDB.setUserName(myId, response.getString("UserName"));
-            myDB.setChildName(myId, response.getString("ChildName"));
-            myDB.setPhone(myId, response.getInt("Phone"));
-            myDB.setAddress1(myId, response.getString("Address1"));
-            myDB.setAddress2(myId, response.getString("Address2"));
-            myDB.setEmail(myId, response.getString("Email"));
-
-            if(myDB.getIsAdmin(prefs.getInt("USERID", -1))) {
-                //this updates the admins records
-                JSONArray parents = response.getJSONArray("parents");
-                for (int i = 0; i < parents.length(); i++) {
-
-                    JSONObject parent = parents.getJSONObject(i);
-                    int ParentId = parent.getInt("ID");
-                    myDB.setID(ParentId);
-                    myDB.setIsAdmin(ParentId, parent.getString("IsAdmin"));
-                    myDB.setPin(ParentId, parent.getInt("Pin"));
-                    myDB.setFirstName(ParentId, parent.getString("FirstName"));
-                    myDB.setLastName(ParentId, parent.getString("LastName"));
-                    myDB.setUserName(ParentId, parent.getString("UserName"));
-                    myDB.setChildName(ParentId, parent.getString("ChildName"));
-                    myDB.setPhone(ParentId, parent.getInt("Phone"));
-                    myDB.setAddress1(ParentId, parent.getString("Address1"));
-                    myDB.setAddress2(ParentId, parent.getString("Address2"));
-                    myDB.setEmail(ParentId, parent.getString("Email"));
-
-                    JSONArray attendenceRecords = parent.getJSONArray("AttendanceRecords");
-
-                    for (int j = 0; j < attendenceRecords.length(); j++) {
-                        JSONObject attendanceRecord = attendenceRecords.getJSONObject(j);
-                        int attendenceID = attendanceRecord.getInt("ID");
-                        myDB.setAttendanceID(attendenceID);
-                        myDB.setAttendanceParentID(attendenceID, attendanceRecord.getInt("ID"));
-                        myDB.setAttendanceAmount(attendenceID, attendanceRecord.getInt("ID"));
-                        myDB.setAttendanceDate(attendenceID, attendanceRecord.getInt("ID"));
-                        myDB.setAttendanceIsPaid(attendenceID, attendanceRecord.getInt("ID"));
-                    }
-
-                    JSONArray paymentRecords = parent.getJSONArray("PaymentRecords");
-
-                    for (int j = 0; j < paymentRecords.length(); j++) {
-                        JSONObject paymentRecord = paymentRecords.getJSONObject(j);
-                        int paymentID = paymentRecord.getInt("ID");
-                        myDB.setPaymentID(paymentID);
-                        myDB.setPaymentParentID(paymentID, paymentRecord.getInt("ID"));
-                        myDB.setPaymentAmount(paymentID, paymentRecord.getInt("ID"));
-                        myDB.setPaymentDate(paymentID, paymentRecord.getInt("ID"));
-                        myDB.setPaymentIsPaid(paymentID, paymentRecord.getInt("ID"));
-                    }
-                }
-                UpdateCards();
-            }
-        } catch (JSONException e) {
-            Log.d(TAG, "Error in her");
-        }
-    }
-
-    void UpdateCards(){
-
-        int[] parentIds = myDB.getParentIds();
-        String[] ids = new String[parentIds.length];
 
         List<HomeCard> childCards = new ArrayList<>();
         final ListView listview = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();
+        String[] ids;
+        try {
+            JSONArray parents = response.getJSONArray("children");
+            ids = new String[parents.length()];
+            for(int i =0; i < parents.length(); i++) {
 
+                JSONObject cur = parents.getJSONObject(i);
+                Log.d(TAG, "HERE");
+                Log.d(TAG, cur.toString());
+//                if(cur.getString("isAdmin"))
 
-        for(int i =0; i < parentIds.length; i++) {
-            HomeCard newCard = new HomeCard();
-            newCard.setName(myDB.getParentName(parentIds[i]));
-            newCard.setDate(myDB.getLastCheckin(parentIds[i]));
-            newCard.setId(parentIds[i]);
-            childCards.add(newCard);
-            list.add(newCard.name);
-            ids[i] = parentIds[i]+"";
-        }
+                HomeCard newCard = new HomeCard();
+                newCard.setName(cur.getString("username"));
+                newCard.setDate(Integer.parseInt(cur.getString("lastcheckin")));
 
-        myAdapter adapter = new myAdapter(this, ids);
-        listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        list.remove(item);
-//                                adapter.notifyDataSetChanged();
-                        view.setAlpha(1);
-                    }
-                });
+                childCards.add(newCard);
+                list.add(newCard.name);
+                ids[i] = i+"";
             }
 
-        });
+
+            myAdapter adapter = new myAdapter(this, ids);
+            listview.setAdapter(adapter);
+
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                    final String item = (String) parent.getItemAtPosition(position);
+                    view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.remove(item);
+//                                adapter.notifyDataSetChanged();
+                            view.setAlpha(1);
+                        }
+                    });
+                }
+
+            });
+
+
+        } catch (JSONException e) {
+            Log.d(TAG, "err in response:" + e.toString());
+        }
     }
 
 
