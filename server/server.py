@@ -103,7 +103,18 @@ class Root(object):
     def RequestProfile(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
+        print "\nStart req:"
         print b
+        print"\n\n"
+        parents = self.db.query(models.User)
+        for x in parents:
+            print "\nTHIS:\n"
+            print x.toDict()
+            if x.toDict()['username'] == b['name']:
+                print "\n\nFOUND HIM\n\n"
+                parent = x
+        return json.dumps(parent.toDict(), indent=4)
+
 
 def get_cp_config():
     return {
