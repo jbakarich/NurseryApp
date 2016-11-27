@@ -24,7 +24,6 @@ class Root(object):
 
     @cherrypy.expose
     def CheckLogin(self, **kwargs):
-        print "\n\nstarting login"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         results = self.db.query(models.User).all()
@@ -44,17 +43,12 @@ class Root(object):
             response = {
                 "name": "invalid"
             }
-        print("Returning login:")
-        print json.dumps(response, indent=4)
-        print "\n\n"
         return json.dumps(response, indent=2)
 
     @cherrypy.expose
     def AddUser(self, **kwargs):
-        print "adding user"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        # print b
         b['phone'] = int(b['phone'])
         if b['isAdmin'] == "True":
             isAdmin = True
@@ -73,20 +67,15 @@ class Root(object):
             pin=1234
         ))
         self.db.commit()
-        print "We commited!\n"
         return json.dumps({"added": "Successful"}, indent=2)
 
     @cherrypy.expose
     def AdminHome(self, **kwargs):
-        print "\n\nGetting admin home."
-
         allParents = self.db.query(models.User)
-
         toReturn = {
             "children": [],
         }
         for x in allParents:
-            print "newuser"
             newuser = x.toDict()
             if newuser['isAdmin'] is True:
                 continue
@@ -97,19 +86,14 @@ class Root(object):
             attendenceRecords = self.db.query(models.Attendance)
             lastDate = 0
             for y in attendenceRecords:
-                print "were attendence"
                 lastDate = 0
-                print y.toDict()
-                print newuser['username']
                 if y.toDict()['user'] == newuser['username']:
-                    print y.toDict()['date']
                     if lastDate < y.toDict()['date']:
                         lastDate = y.toDict()['date']
             newobj['lastcheckin'] = lastDate
 
             toReturn["children"].append(newobj)
 
-        print "and this is what we're returning:\n{}".format(json.dumps(toReturn, indent=2))
         return json.dumps(toReturn, indent=4)
 
     @cherrypy.expose
@@ -118,10 +102,7 @@ class Root(object):
         b = json.loads(rawData)
         parents = self.db.query(models.User)
         for x in parents:
-            print "\nTHIS:\n"
-            print x.toDict()
             if x.toDict()['username'] == b['name']:
-                print "\n\nFOUND HIM\n\n"
                 parent = x
                 break
         return json.dumps(parent.toDict(), indent=4)
@@ -130,32 +111,25 @@ class Root(object):
     def CheckIn(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "\nUser checking in: "
-        print b
         parents = self.db.query(models.User)
         for x in parents:
             if x.toDict()['username'] == b['name']:
-                print "\n\nthere:"
-                print time.mktime(datetime.datetime.now().timetuple())
                 self.db.add(models.Attendance(
                     username=x.toDict()['username'],
                     userid=x.toDict()["id"],
                     date=int(time.mktime(datetime.datetime.now().timetuple())),
                     checkin=int(time.mktime(datetime.datetime.now().timetuple())),
-                    checkout=0
+                    checkout=0,
+                    ischeckedin=True
                 ))
                 self.db.commit()
-                print "success"
                 return "success"
-        print "Error"
         return "error"
 
     @cherrypy.expose
     def CheckOut(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "\nUser checking out: "
-        print b
         parents = self.db.query(models.User)
         for x in parents:
             if x.toDict()['username'] == b['name']:
@@ -164,11 +138,10 @@ class Root(object):
             return "error, parent not found"
         records = self.db.query(models.Attendance)
         for y in records:
-            if y.toDict()['userid'] == parentId:
+            if y.toDict()['ischeckedin'] is True and y.toDict()['user'] == b['name']:
                 y.CheckOut = datetime.time()
-                print "Attendence logged"
+                y.ischeckedin = False
                 return "Attendence logged"
-        print "error finding record"
         return "error finding record"
 
 

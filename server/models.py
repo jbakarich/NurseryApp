@@ -74,6 +74,7 @@ class Attendance(Base):
     date = Column(Integer())
     checkin = Column(Integer())
     checkout = Column(Integer())
+    ischeckedin = Column(Boolean())
 
     def toDict(self):
         data = {
@@ -82,6 +83,7 @@ class Attendance(Base):
             "userid": self.userid,
             "date": self.date,
             "checkin": self.checkin,
-            "checkout": self.checkout
+            "checkout": self.checkout,
+            "ischeckedin": self.ischeckedin
         }
         return data
