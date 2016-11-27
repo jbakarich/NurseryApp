@@ -8,6 +8,8 @@ from tool import SQLAlchemyTool
 from plugin import SQLAlchemyPlugin
 from base import Base
 import models
+import datetime
+import time
 
 
 PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -22,14 +24,12 @@ class Root(object):
 
     @cherrypy.expose
     def CheckLogin(self, **kwargs):
-        print "\n\nstarting login"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         results = self.db.query(models.User).all()
         response = {}
         for x in results:
             curUser = x.toDict()
-            print json.dumps(curUser, indent=2)
             if(curUser['username'] == b['username'] and curUser['pin'] == b['password']):
                 response = {
                     "name": curUser['firstname'],
@@ -43,18 +43,12 @@ class Root(object):
             response = {
                 "name": "invalid"
             }
-        print("Returning login:")
-        print json.dumps(response, indent=4)
-        print "\n\n"
-
         return json.dumps(response, indent=2)
 
     @cherrypy.expose
     def AddUser(self, **kwargs):
-        print "adding user"
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print b
         b['phone'] = int(b['phone'])
         if b['isAdmin'] == "True":
             isAdmin = True
@@ -73,54 +67,82 @@ class Root(object):
             pin=1234
         ))
         self.db.commit()
-        print "We commited!\n"
         return json.dumps({"added": "Successful"}, indent=2)
 
     @cherrypy.expose
-    def DatabaseUpdate(self, **kwargs):
-        print "\n\nSomeone asked for a database update"
+    def AdminHome(self, **kwargs):
+        allParents = self.db.query(models.User)
+        toReturn = {
+            "children": [],
+        }
+        for x in allParents:
+            newuser = x.toDict()
+            if newuser['isAdmin'] is True:
+                continue
+            newobj = {
+                "username": newuser['username']
+            }
+
+            attendenceRecords = self.db.query(models.Attendance)
+            lastDate = 0
+            for y in attendenceRecords:
+                lastDate = 0
+                if y.toDict()['user'] == newuser['username']:
+                    if lastDate < y.toDict()['date']:
+                        lastDate = y.toDict()['date']
+            newobj['lastcheckin'] = lastDate
+
+            toReturn["children"].append(newobj)
+
+        return json.dumps(toReturn, indent=4)
+
+    @cherrypy.expose
+    def RequestProfile(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "\nThis is what we recived in the request:\n{}".format(json.dumps(b, indent=2))
-        results = self.db.query(models.User).filter(models.User.id == b['id'])
-        print "\nresults = \n{}".format(results)
-        # print "\nresults length: {}".format(len(results))
-        for x in results:
-            print "\nfor x: {}\n".format(x)
-            foundUser = x
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                parent = x
+                break
+        return json.dumps(parent.toDict(), indent=4)
 
-        print "\ntoDict method:\n{}".format(foundUser.toDict())
-        res = foundUser.toDict()
-        print "\nEnd of results\n"
-        toReturn = {
-            "isAdmin": res['isAdmin'],
-            "FirstName": res['firstname'],
-            "LastName": res['lastname'],
-            "UserName": res['username'],
-            "ChildName": res['childname'],
-            "Phone": res['phone'],
-            "Email": res['email'],
-            "Address1": res['address1'],
-            "Address2": res['address2']
-        }
-        if not res['isAdmin']:
-            for date in res['attendenceHistory']:
-                toReturn['AttendenceRecords'].append({
-                    "DateIn": date['intime'],
-                    "DateOut": date['outtime']
-                })
-            for payment in res['paymentHistory']:
-                toReturn['PaymentRecords'].append({
-                    "Date": payment['date'],
-                    "Amount": date['amount']
-                })
-        else:
-            allParents = self.db.query(models.User).filter(models.User.isAdmin == False)
-            toReturn["parents"] = []
-            for parent in allParents:
-                toReturn['parents'].append(parent.toDict())
-        print "and this is what we're returning:\n{}".format(json.dumps(toReturn, indent=2))
-        return json.dumps(toReturn, indent=4)
+    @cherrypy.expose
+    def CheckIn(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                self.db.add(models.Attendance(
+                    username=x.toDict()['username'],
+                    userid=x.toDict()["id"],
+                    date=int(time.mktime(datetime.datetime.now().timetuple())),
+                    checkin=int(time.mktime(datetime.datetime.now().timetuple())),
+                    checkout=0,
+                    ischeckedin=True
+                ))
+                self.db.commit()
+                return "success"
+        return "error"
+
+    @cherrypy.expose
+    def CheckOut(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                parentId = x.toDict()['id']
+        if parentId is None:
+            return "error, parent not found"
+        records = self.db.query(models.Attendance)
+        for y in records:
+            if y.toDict()['ischeckedin'] is True and y.toDict()['user'] == b['name']:
+                y.CheckOut = datetime.time()
+                y.ischeckedin = False
+                return "Attendence logged"
+        return "error finding record"
 
 
 def get_cp_config():

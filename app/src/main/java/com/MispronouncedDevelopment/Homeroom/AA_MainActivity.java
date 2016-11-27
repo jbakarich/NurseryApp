@@ -4,7 +4,6 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -18,7 +17,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -35,7 +34,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,8 +42,9 @@ import java.util.Map;
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
-    AA_DatabaseImport myDB;
-    String myType;
+    DB_Manager myDB;
+    SharedPreferences prefs;
+    private String parentName = "";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -55,21 +54,28 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        myType = extras.getString("type");
         Toolbar toolbar;
         DrawerLayout drawer;
         NavigationView navigationView;
-        if (myType.equals("admin")) {
+
+        myDB = new DB_Manager(this);
+
+        FragmentManager fragmentManager = getFragmentManager();
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (myDB.getIsAdmin(prefs.getInt("USERID", -1))) {
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
             navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
+            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
         } else {
             setContentView(R.layout.parent_main);
             toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
             navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
+            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
         }
 
         setSupportActionBar(toolbar);
@@ -80,29 +86,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        myDB = new AA_DatabaseImport(this, "app_data.db");
+        GetCards();
 
-        try {
-            myDB.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("UNABLE TO CREATE DATABASE");
-        }
-
-        try {
-            myDB.openDataBase();
-
-        } catch (SQLiteException sqle) {
-            throw sqle;
-        }
-
-        FragmentManager fragmentManager = getFragmentManager();
-
-        if (myType.equals("admin")) {
-            fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
-        } else {
-            fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
-        }
-        UpdateDatabase();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
@@ -110,25 +95,13 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer;
-        if (myType.equals("admin")) {
-            drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
-        } else {
-            drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
-        }
+        DrawerLayout drawer = myDB.getIsAdmin(prefs.getInt("USERID", -1)) ? (DrawerLayout) findViewById(R.id.admin_drawer_layout) : (DrawerLayout) findViewById(R.id.parent_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
     }
-
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -156,6 +129,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 //          Admin menus
             case R.id.Admin_Home:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+                GetCards();
                 break;
             case R.id.Admin_Attendence:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
@@ -179,7 +153,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 break;
             case R.id.Parent_Payment:
                 Intent myPaymentIntent = new Intent(this, AndroidPay.class);
-//                myIntent.putExtra("type", type);
                 startActivity(myPaymentIntent);
                 this.startActivity(myPaymentIntent);
                 break;
@@ -193,9 +166,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 //          Both menus
             case R.id.Parent_Logout:
             case R.id.Admin_Logout:
-                SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = mySPrefs.edit();
-                editor.remove("login");
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.remove("USERID");
+                editor.putInt("USERID", -1);
                 editor.apply();
 
                 Context context = this;
@@ -207,30 +181,29 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(myType.equals("admin") ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(myDB.getIsAdmin(prefs.getInt("USERID", -1)) ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    void UpdateDatabase() {
+    void GetCards() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String url = prefs.getString("url", "Wrong!") + "DatabaseUpdate";
+        String url = prefs.getString("url", "Wrong!") + "AdminHome";
 
         Map<String, String> params = new HashMap<>();
         params.put("id", prefs.getInt("id", -1) + "");
 
-        Log.d(TAG, "url = " + url);
-        MakeRequest(url, params);
+        RequestCards(url, params);
     }
 
-    void MakeRequest(String url, Map<String, String> data) {
+    void RequestCards(String url, Map<String, String> data) {
 
         JSONObject obj = new JSONObject(data);
 
         JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Update(response);
+                UpdateCards(response);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -243,73 +216,62 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         queue.add(request);
     }
 
+    void UpdateCards(JSONObject response) {
+        Log.d(TAG, "got a response: " + response.toString());
 
-    void Update(JSONObject response) {
         List<HomeCard> childCards = new ArrayList<>();
-
         final ListView listview = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();
-        String[] ids = new String[0];
-        Log.d(TAG, "got a response: " + response.toString());
+        String[] ids;
         try {
-            JSONArray parents = response.getJSONArray("parents");
+            JSONArray parents = response.getJSONArray("children");
             ids = new String[parents.length()];
-            for (int i = 0; i < parents.length(); i++) {
-                JSONObject parent = parents.getJSONObject(i);
-                HomeCard newCard = new HomeCard(parent.getString("childname"), "Oct " + i, i + "");
+            for(int i = 0; i < parents.length(); i++) {
+
+                JSONObject cur = parents.getJSONObject(i);
+
+                HomeCard newCard = new HomeCard();
+                newCard.setName(cur.getString("username"));
+                newCard.setDate(Integer.parseInt(cur.getString("lastcheckin")));
+
                 childCards.add(newCard);
                 list.add(newCard.name);
                 ids[i] = i+"";
             }
 
-        } catch (JSONException e) {
-            Log.d(TAG, "Error in her");
-        }
+            SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = mySPrefs.edit();
 
-        //silly hack
-        SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = mySPrefs.edit();
-
-        for (int i = 0; i < ids.length; i++) {
-            editor.putString("id"+i+"name", childCards.get(i).name);
-            editor.putString("id"+i+"date", childCards.get(i).date);
-        }
-        editor.apply();
-
-
-        myAdapter adapter = new myAdapter(this, ids);
-        listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                final String item = (String) parent.getItemAtPosition(position);
-                view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                list.remove(item);
-//                                adapter.notifyDataSetChanged();
-                                view.setAlpha(1);
-                            }
-                        });
+            for (int i = 0; i < ids.length; i++) {
+                editor.putString("id"+i+"name", childCards.get(i).name);
+                editor.putString("id"+i+"date", childCards.get(i).date +"");
             }
+            editor.apply();
 
-        });
+            myAdapter adapter = new myAdapter(this, ids);
+            listview.setAdapter(adapter);
+
+            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+                    final String item = (String) parent.getItemAtPosition(position);
+                    view.animate().setDuration(2000).alpha(0).withEndAction(new Runnable() {
+                        @Override
+                        public void run() {
+                            list.remove(item);
+                            view.setAlpha(1);
+                        }
+                    });
+                }
+
+            });
+
+
+        } catch (JSONException e) {
+            Log.d(TAG, "err in response:" + e.toString());
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     void ShowError(String error) {
@@ -353,17 +315,40 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+
+    public void setParentName(String newName){
+        parentName = newName;
+    }
+
+    public String getParentName(){
+        return parentName;
+    }
 }
 
 class HomeCard{
     String name;
-    String date;
-    String id;
-    public HomeCard(String Name, String Date, String Id){
-        name = Name;
-        date = Date;
-        id = Id;
+    int date;
+    int id;
+
+    public HomeCard(){
+        name = "";
+        date = 0;
+        id = -1;
     }
+
+    public void setName(String newName){
+        name = newName;
+    }
+
+    public void setDate(int newDate){
+        date = newDate;
+    }
+
+    public void setId(int newId){
+        id = newId;
+    }
+
+    public int getDate(){ return date; }
 }
 
 

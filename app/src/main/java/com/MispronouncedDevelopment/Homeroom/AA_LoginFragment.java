@@ -1,13 +1,10 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -30,55 +27,38 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 
 /**
  * Created by jacob on 9/15/2016.
  */
 public class AA_LoginFragment extends Fragment {
     private static final String TAG = "LoginFrag";//Use this for logging. ex: Log.d(TAG, "my message");
-    public static final String PREFS_NAME = "PrefsFile";
-    public boolean loginState = false;
     View myView;
-    AA_DatabaseImport myDB;
+
     Button loginButton;
     EditText editName, editPin;
     CheckBox myCheckbox;
-    String url ="http://172.24.95.132:8080/";//this is the location of wherever the server is running.
+
+    DB_Manager myDB;
+    SharedPreferences prefs;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.remove("url");
-        editor.putString("url", url);
-        editor.commit();
-
-
-        Log.d(TAG, "Creating loginfrag");
-        Context context = getActivity();
         myView = inflater.inflate(R.layout.aa_login, container, false);
-        myDB = new AA_DatabaseImport(context, "DB1.db");
-        try {
-            myDB.createDataBase();
-        } catch (IOException ioe) {
-            throw new Error("UNABLE TO CREATE DATABASE");
-        }
-
-        try {
-            myDB.openDataBase();
-        } catch (SQLiteException sqle) {
-            throw sqle;
-        }
 
         editName = (EditText) myView.findViewById(R.id.editUserNameText);
         editPin = (EditText) myView.findViewById(R.id.EditUserPIN);
         loginButton = (Button) myView.findViewById(R.id.loginButton);
         myCheckbox = (CheckBox) myView.findViewById(R.id.serverCheckBox);
+
+        myDB = new DB_Manager(getActivity());
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
         login();
         return myView;
     }
@@ -95,17 +75,17 @@ public class AA_LoginFragment extends Fragment {
                             Map<String, String> params = new HashMap<>();
                             params.put("username", editName.getText().toString());
                             params.put("password", editPin.getText().toString());
-                            String newUrl = url+"CheckLogin";
-                            Log.d(TAG, "The url being used is: " + newUrl);
+                            String newUrl = prefs.getString("url", "Wrong!")+"CheckLogin";
                             MakeRequest(newUrl, params);
                         } else {
                             //to be deleted in live state:
-                            Context context1 = getActivity();
-                            Cursor res = myDB.getAllData();
+                            Context context = getActivity();
+                            Cursor res = myDB.getLoginData();
                             boolean success = false;
                             while (res.moveToNext()) {
+                                //Not sure how correct this is!
                                 if (userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
-                                    Toast toast = Toast.makeText(context1, "Logged in as " + userName, Toast.LENGTH_SHORT);
+                                    Toast toast = Toast.makeText(context, "Logged in as " + userName, Toast.LENGTH_SHORT);
                                     toast.show();
                                     successfulLogin(res.getString(4));
                                     success = true;
@@ -113,10 +93,9 @@ public class AA_LoginFragment extends Fragment {
                                 }
                             }
                             if (!success) {
-                                Toast toast = Toast.makeText(context1, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(context, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
-
                         }
                     }
 
@@ -126,32 +105,19 @@ public class AA_LoginFragment extends Fragment {
 
     public void successfulLogin(String type) {
 
-        String loginType;
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (type.equals("ADMIN")) {
             Log.d(TAG, "Admin success");
-            loginType = "admin";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
         } else {
             Log.d(TAG, "parent success");
-            loginType ="parent";
-            type = "parent";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
 
         Context context = getActivity();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.clear();
-        editor.putBoolean("login", true);//for login persistance
-        editor.putString("type", loginType);//for login persistance
-        editor.putString("url", url);
-        editor.commit();
-
         Intent myIntent = new Intent(context, AA_MainActivity.class);
-        myIntent.putExtra("type", type);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }
@@ -186,6 +152,10 @@ public class AA_LoginFragment extends Fragment {
             myId = response.getInt("id");
             isAdmin = response.getString("isAdmin");
             name =  response.getString("name");
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt("USERID", myId);
+            editor.commit();
         }catch(JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
             Log.d(TAG, "The data that came back to us was: " + response.toString());
@@ -201,31 +171,17 @@ public class AA_LoginFragment extends Fragment {
         toast = Toast.makeText(context, "Welcome back " + name, Toast.LENGTH_SHORT);
         toast.show();
 
-        String loginType;
-
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (isAdmin.equals("True")) {
             Log.d(TAG, "Admin success");
-            loginType = "admin";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
         } else {
             Log.d(TAG, "parent success");
-            loginType ="parent";
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putBoolean("login", true);//for login persistance
-        editor.putString("type", loginType);//for login persistance
-        editor.putString("name", name);
-        editor.putInt("id", myId);//for any queries needed
-
-        editor.commit();
-
         Intent myIntent = new Intent(context, AA_MainActivity.class);
-        myIntent.putExtra("type", loginType);
         startActivity(myIntent);
         context.startActivity(myIntent);
     }
