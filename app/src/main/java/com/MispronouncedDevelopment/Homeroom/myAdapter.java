@@ -12,8 +12,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Cyrille on 11/10/16.
@@ -36,6 +48,7 @@ public class myAdapter extends ArrayAdapter<String> {
         final TextView childName = (TextView) rowView.findViewById(R.id.childName);
         TextView childDate = (TextView) rowView.findViewById(R.id.childDate);
         Button profileBtn = (Button) rowView.findViewById(R.id.viewProfileBtn);
+        final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
 
         View.OnClickListener viewProfile = new View.OnClickListener() {
             @Override
@@ -50,9 +63,41 @@ public class myAdapter extends ArrayAdapter<String> {
             }
         };
 
+        View.OnClickListener checkin = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "You checked");
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String url;
+                if(checkBox.isChecked()){
+                    url = prefs.getString("url", "Wrong!") + "CheckIn";
+                } else {
+                    url = prefs.getString("url", "Wrong!") + "CheckOut";
+                }
+                
+                Map<String, String> params = new HashMap<>();
+                params.put("name", childName.getText()+"");
 
+                JSONObject obj = new JSONObject(params);
+                JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "User has checked in");
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, error.toString());
+                    }
+                });
+
+                RequestQueue queue = Volley.newRequestQueue(getContext());
+                queue.add(request);
+            }
+        };
 
         profileBtn.setOnClickListener(viewProfile);
+        checkBox.setOnClickListener(checkin);
         SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String val1 = mySPrefs.getString("id" + values[position] + "name", "Henrey");
         String val2 = mySPrefs.getString("id" + values[position] + "date", "Nov 1");

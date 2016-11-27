@@ -84,14 +84,10 @@ public class Admin_ProfileFragment extends Fragment {
         Log.d(TAG, "got a response: " + response.toString());
 
         TextView firstName = (TextView) getView().findViewById(R.id.admin_profileName);
-//        TextView userName = (TextView) getView().findViewById(R.id.admin_);
-//        TextView lastName = (TextView) getView().findViewById(R.id.admin_l);
-//        TextView childName = (TextView) getView().findViewById(R.id.admin_);
         TextView phone = (TextView) getView().findViewById(R.id.admin_profilePhone);
         TextView address1 = (TextView) getView().findViewById(R.id.admin_profileAddress1);
         TextView address2 = (TextView) getView().findViewById(R.id.admin_profileAddress2);
         TextView email = (TextView) getView().findViewById(R.id.admin_profileEmail);
-
 
         try {
             firstName.setText(response.getString("username"));

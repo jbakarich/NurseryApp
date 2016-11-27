@@ -8,6 +8,8 @@ from tool import SQLAlchemyTool
 from plugin import SQLAlchemyPlugin
 from base import Base
 import models
+import datetime
+import time
 
 
 PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
@@ -84,16 +86,27 @@ class Root(object):
             "children": [],
         }
         for x in allParents:
+            print "newuser"
             newuser = x.toDict()
             if newuser['isAdmin'] is True:
                 continue
             newobj = {
                 "username": newuser['username']
             }
-            if "attendenceRecords" in newuser and len(newuser['attendenceRecords']) > 0:
-                newobj["lastcheckin"] = newuser['attendenceRecords'][len(newuser['attendenceRecords']) - 1]
-            else:
-                newobj["lastcheckin"] = 0
+
+            attendenceRecords = self.db.query(models.Attendance)
+            lastDate = 0
+            for y in attendenceRecords:
+                print "were attendence"
+                lastDate = 0
+                print y.toDict()
+                print newuser['username']
+                if y.toDict()['user'] == newuser['username']:
+                    print y.toDict()['date']
+                    if lastDate < y.toDict()['date']:
+                        lastDate = y.toDict()['date']
+            newobj['lastcheckin'] = lastDate
+
             toReturn["children"].append(newobj)
 
         print "and this is what we're returning:\n{}".format(json.dumps(toReturn, indent=2))
@@ -103,9 +116,6 @@ class Root(object):
     def RequestProfile(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "\nStart req:"
-        print b
-        print"\n\n"
         parents = self.db.query(models.User)
         for x in parents:
             print "\nTHIS:\n"
@@ -113,7 +123,53 @@ class Root(object):
             if x.toDict()['username'] == b['name']:
                 print "\n\nFOUND HIM\n\n"
                 parent = x
+                break
         return json.dumps(parent.toDict(), indent=4)
+
+    @cherrypy.expose
+    def CheckIn(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print "\nUser checking in: "
+        print b
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                print "\n\nthere:"
+                print time.mktime(datetime.datetime.now().timetuple())
+                self.db.add(models.Attendance(
+                    username=x.toDict()['username'],
+                    userid=x.toDict()["id"],
+                    date=int(time.mktime(datetime.datetime.now().timetuple())),
+                    checkin=int(time.mktime(datetime.datetime.now().timetuple())),
+                    checkout=0
+                ))
+                self.db.commit()
+                print "success"
+                return "success"
+        print "Error"
+        return "error"
+
+    @cherrypy.expose
+    def CheckOut(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print "\nUser checking out: "
+        print b
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                parentId = x.toDict()['id']
+        if parentId is None:
+            return "error, parent not found"
+        records = self.db.query(models.Attendance)
+        for y in records:
+            if y.toDict()['userid'] == parentId:
+                y.CheckOut = datetime.time()
+                print "Attendence logged"
+                return "Attendence logged"
+        print "error finding record"
+        return "error finding record"
 
 
 def get_cp_config():
