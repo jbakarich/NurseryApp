@@ -3,9 +3,9 @@ package com.MispronouncedDevelopment.Homeroom;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 
 public class AA_LoginActivity extends AppCompatActivity{
     private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
@@ -14,7 +14,7 @@ public class AA_LoginActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isAdmin = prefs.getString("isAdmin", "False") == "True";
         SharedPreferences.Editor editor = prefs.edit();

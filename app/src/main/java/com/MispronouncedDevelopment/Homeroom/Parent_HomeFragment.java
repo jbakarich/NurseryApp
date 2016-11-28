@@ -1,7 +1,7 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import static android.R.attr.button;
 
 /**
  * Created by jacob on 9/15/2016.
@@ -46,7 +45,7 @@ public class Parent_HomeFragment extends Fragment {
                                                 @Override
                                                 public void onClick(View v) {
 
-                                                    android.app.FragmentManager fragmentManager = getFragmentManager();
+                                                    FragmentManager fragmentManager = getFragmentManager();
 
 
                                                     fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
@@ -72,7 +71,7 @@ public class Parent_HomeFragment extends Fragment {
         paymentHistroy.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
-                                              android.app.FragmentManager fragmentManager = getFragmentManager();
+                                              FragmentManager fragmentManager = getFragmentManager();
                                               fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
 
                                           }
