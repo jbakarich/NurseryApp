@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+
+            android:title="This is the admin menu" />
+        <item
+            android:id="@+id/Admin_Home"
+
+            android:title="Home" />
+        <item
+            android:id="@+id/Admin_Attendence"
+
+            android:title="Attendence" />
+        <item
+            android:id="@+id/Admin_Payment"
+
+            android:title="Payment Records" /> 
+
+        <item
+            android:id="@+id/Admin_Settings"
+
+            android:title="Settings" />
+
+        <item
+            android:id="@+id/Admin_CreateUser"
+
+            android:title="CreateUser" />
+
+        <item
+            android:id="@+id/Admin_Logout"
+
+            android:title="Log out" />
+
+    </group>
+
+</menu>

@@ -1,0 +1,96 @@
+<!doctype html>
+	<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+		<script src="/main.js"></script>
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	</head>
+
+	<body>
+		<h3>sql testing</h3>
+
+		<button onclick="getJson()">Test function</button>
+		<div id="test-data"></div>
+		<br>
+		<div class="row">
+			<div class="col-md-4">
+				<h4>Maual inseration</h4>
+				First name: <input id="first_name" type="text" name="FirstName" value=""><br>
+				Last name: <input id="last_name" type="text" name="LastName" value=""><br>
+				Age: <input id="age" type="text" name="age" value=""><br>
+				Adress: <input id="address" type="text" name="address" value=""><br>
+				Phone: <input id="phone" type="text" name="phone" value=""><br>
+				<button onclick="EnterField()">Submit</button>
+				<div id="confirmation"></div>
+				<br>
+				<br>
+				<br>
+				<button onclick="GetValues()">Get Values</button>
+			</div>
+				
+			<div class = "col-md-4">
+				<h4>Random Generation/Sorting</h4>
+				<button onclick="GenerateRandom()">Add 50 random values</button>
+				<br><br>
+				<button onclick="DeleteAll()">Delete all entries</button>
+				<br><br>
+				Sort options:
+				<select name="sortby" id="orderselection">
+				  <option value="firstName">first name</option>
+				  <option value="lastName">last name</option>
+				  <option value="age">age</option>
+				</select>
+				<select name="sortby2" id="orderselectiondirection">
+				  <option value="increasing">increasing</option>
+				  <option value="decreasin">decreasing</option>
+				</select>
+
+				<br>
+				<button onclick="GetOrdered()">Submit Ordering</button>
+			</div>
+
+			<div class = "col-md-4">
+				<h4>Filters</h4>
+				<div id="filters">
+					<div id = "filter1">
+						<select name="filterOf" id="filterOf">
+						  <option value="firstName">first name</option>
+						  <option value="lastName">last name</option>
+						  <option value="age">age</option>
+						</select>
+
+						<select name="filterBy" id="filterBy">
+						  <option value="filtercontains">contains</option>
+						  <option value="filteris">is (==)</option>
+						  <option value="filterstartswith">starts with</option>
+						  <option value="filterendswith">ends with</option>
+						</select>
+
+						<input id="filterValue" type="text" name="filterValue" value=""><br>
+					</div>
+
+				</div>
+				<br>
+				<button onclick="AddFilter()">Add filter</button>
+				<br>
+				<br>
+				<br>
+				<button onclick="SearchFilterd()">Search</button>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<br>
+		
+		<br>
+		<br>
+		<br>
+		<div id="myTable">
+			
+		</div>
+	</body>
+	
+</html>

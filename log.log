@@ -1,0 +1,235 @@
+*   [1;34mcbdaf9d[m - [1;32m(2 hours ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m (HEAD -> master, origin/master, origin/HEAD)[m
+|\  
+| *   [1;34m3568569[m - [1;32m(2 hours ago)[m [37mMerge branch 'cleanup' into dev[m [2;37m- Cyrille Gindreau[m[1;33m (origin/dev, dev)[m
+| |\  
+| | * [1;34mfe475cf[m - [1;32m(3 hours ago)[m [37mupgraded play services dependencies to v9.8.0[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/  
+|/|   
+* | [1;34m9f6623c[m - [1;32m(3 hours ago)[m [37mupgraded project to use sdk v25 and added Rickeys' files[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* |   [1;34m061ed52[m - [1;32m(3 hours ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \  
+| |/  
+| *   [1;34m4eb9074[m - [1;32m(3 hours ago)[m [37mMerge branch 'cleanup' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\  
+| | * [1;34m178f840[m - [1;32m(4 hours ago)[m [37mfixed merge conflicts with jacobs branch, upgraded to AS2.2.2, cleaned project and rebuilt[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/  
+|/|   
+* | [1;34mf67e672[m - [1;32m(4 hours ago)[m [37mbegin repo cleanup[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* |   [1;34m078d8a1[m - [1;32m(4 days ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \  
+| |/  
+| *   [1;34m293bdc0[m - [1;32m(4 days ago)[m [37mMerge branch 'postPresentation' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\  
+| | * [1;34m0776c7b[m - [1;32m(4 days ago)[m [37mchanges from presentation[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m0c494b5[m - [1;32m(4 days ago)[m [37mjust making a saftey branch[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* | |   [1;34m25165c0[m - [1;32m(4 days ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \ \  
+| |/ /  
+| * |   [1;34mb9b3efe[m - [1;32m(4 days ago)[m [37mFixing Confilcts[m [2;37m- jbakarich[m[1;33m[m
+| |\ \  
+| * | | [1;34m93c7d74[m - [1;32m(4 days ago)[m [37mDesign work on parent home, admin home, and parent profile[m [2;37m- jbakarich[m[1;33m[m
+* | | |   [1;34mfa23adc[m - [1;32m(4 days ago)[m [37mMerge branch 'release'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \ \ \  
+| * \ \ \   [1;34m8f916d5[m - [1;32m(4 days ago)[m [37mMerge branch 'dev' into release[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \ \ \  
+| | | |/ /  
+| | |/| /   
+| | |_|/    
+| |/| |     
+| | * |   [1;34m3c9ce96[m - [1;32m(4 days ago)[m [37mMerge branch 'release' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | |\ \  
+| | | |/  
+| | |/|   
+| * | |   [1;34m5371bbc[m - [1;32m(4 days ago)[m [37mMerge branch 'hotfix-2-claenderviews' into release[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \ \  
+| | * | | [1;34m91d8ad8[m - [1;32m(4 days ago)[m [37mchanged location of create user button in admin menu[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | | [1;34m1adaae7[m - [1;32m(4 days ago)[m [37mupdated calender views[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/ / /  
+| * | |   [1;34mc1ad216[m - [1;32m(4 days ago)[m [37mMerge branch 'hotfix-1-createusermessage' into release[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \ \  
+| | |_|/  
+| |/| |   
+| | * | [1;34m17a5e28[m - [1;32m(4 days ago)[m [37mtoast message shows confirmation when server database has been updated[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/ /  
+| * | [1;34m07ca025[m - [1;32m(4 days ago)[m [37mworking for release[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m4f23801[m - [1;32m(4 days ago)[m [37madded listener to button[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m427eb55[m - [1;32m(4 days ago)[m [37mcreated onclick listener[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m0fcff2c[m - [1;32m(4 days ago)[m [37minital relealse (buggy)[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34me69339e[m - [1;32m(4 days ago)[m [37mgot list view working, cards are now dynamically created on admin home screen[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m1456d5e[m - [1;32m(4 days ago)[m [37mviews[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m7e7b46d[m - [1;32m(4 days ago)[m [37mnot the most graceful rewind but alas, we are fixed[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m5d92a0d[m - [1;32m(4 days ago)[m [37mrewinding time[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m32a3ede[m - [1;32m(4 days ago)[m [37mgot a list view working from database[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34md6a5519[m - [1;32m(5 days ago)[m [37mfirst tests at creating dynamic layouts (Yeah, nothing works)[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m9402e2d[m - [1;32m(5 days ago)[m [37msetup database on phone to mirror server database[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * |   [1;34m9750200[m - [1;32m(5 days ago)[m [37mMerge branch 'dev' into networking[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | |/  
+* | | [1;34m01e0483[m - [1;32m(4 days ago)[m [37mno sure[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* | |   [1;34me686caf[m - [1;32m(5 days ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \ \  
+| | |/  
+| |/|   
+| | | *   [1;34m2cb4716[m - [1;32m(4 days ago)[m [37mWIP on recview: 3961c1a Merge branch 'profiles' into dev[m [2;37m- Cyrille Gindreau[m[1;33m (refs/stash)[m
+| | | |\  
+| | |/ /  
+| |/| |   
+| | | * [1;34m6d688b3[m - [1;32m(4 days ago)[m [37mindex on recview: 3961c1a Merge branch 'profiles' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | |/  
+| |/|   
+| * |   [1;34m3961c1a[m - [1;32m(5 days ago)[m [37mMerge branch 'profiles' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | * | [1;34m121162e[m - [1;32m(6 days ago)[m [37mpopulated profiles[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m9ff1856[m - [1;32m(6 days ago)[m [37mmenus are now based on a switch[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m420651f[m - [1;32m(6 days ago)[m [37madded profile pages to admin and parent sections[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | |   [1;34m247d87e[m - [1;32m(5 days ago)[m [37mMerge branch 'networking' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \ \  
+| | | |/  
+| | |/|   
+| | * | [1;34ma9feb73[m - [1;32m(5 days ago)[m [37madmins now get all parent records on login[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m48ad5d4[m - [1;32m(5 days ago)[m [37mdatabase is now sent to users on login correctly[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m619c738[m - [1;32m(5 days ago)[m [37mmodularized base cleanup[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34me3f3806[m - [1;32m(5 days ago)[m [37madded toDict functions for models and finished it for User.[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m2756fb4[m - [1;32m(5 days ago)[m [37mfixed problem with the url persisting through the app modularized models into its own file[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m073710e[m - [1;32m(6 days ago)[m [37madded option to create an admin and give correct privliges[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m7e6c96b[m - [1;32m(6 days ago)[m [37mlogging in now sends the users id number (useful for querying data later..)[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | |   [1;34m0564775[m - [1;32m(6 days ago)[m [37mMerge branch 'networking' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \ \  
+| | |/ /  
+| | * | [1;34m4a26a15[m - [1;32m(6 days ago)[m [37mfixed new user creation[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34mef2b556[m - [1;32m(6 days ago)[m [37mfixed login (But there are no users so you'll always end up with invalid login)[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m7f99ed0[m - [1;32m(6 days ago)[m [37mfilled out more of the database import and fixed some bugs with logging out[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m21f85b7[m - [1;32m(6 days ago)[m [37madded server call for updating the data base in the main activity[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * | [1;34m3635c8c[m - [1;32m(6 days ago)[m [37murl now saved from login and passed to other frags/activites to keep everything uniform[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | |/  
+| * | [1;34m56c440e[m - [1;32m(6 days ago)[m [37mprepping for merge[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * |   [1;34m866dc73[m - [1;32m(6 days ago)[m [37mMerge branch 'networking' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | |/  
+| | * [1;34mcef4485[m - [1;32m(6 days ago)[m [37madded create user page[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m58c550f[m - [1;32m(7 days ago)[m [37madded create user fragment adn res and attached it to the admin section[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m33067a2[m - [1;32m(7 days ago)[m [37mlogin makes request to server and checks the database if that user/password combo exists, if it does, returns information about the user, otherwise returns invaild[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34ma8ef819[m - [1;32m(7 days ago)[m [37madded a checkbox to login to use or not use the server (for testing purposes)[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m0892763[m - [1;32m(7 days ago)[m [37m adding server to project (this will need to be removed but i didn't want to make a new repo) also cleaned up the activity[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34ma145639[m - [1;32m(7 days ago)[m [37mapp can now send data[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34me49b3ff[m - [1;32m(7 days ago)[m [37mapp can now recieve data from server[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m22def91[m - [1;32m(7 days ago)[m [37mimported volley and sent ping to local server[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/  
+| *   [1;34m7bf9d74[m - [1;32m(7 days ago)[m [37mMerge branch 'logout' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\  
+| | * [1;34mdf14d9a[m - [1;32m(7 days ago)[m [37mcreated logout button on both admin and parent menus[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * |   [1;34ma7ac69c[m - [1;32m(7 days ago)[m [37mMerge branch 'login' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | |/  
+| | * [1;34mb2cc78b[m - [1;32m(13 days ago)[m [37mmore parent homescreen work[m [2;37m- Jacob Bakarich[m[1;33m[m
+| | * [1;34m2ca7442[m - [1;32m(2 weeks ago)[m [37mrefining parent home screen[m [2;37m- Jacob Bakarich[m[1;33m[m
+| | * [1;34m8dba26a[m - [1;32m(2 weeks ago)[m [37mLogin persistance finished[m [2;37m- Jacob Bakarich[m[1;33m[m
+| | *   [1;34mbe3a22c[m - [1;32m(2 weeks ago)[m [37mMerge branch 'dev' of https://github.com/jbakarich/NurseryApp into dev[m [2;37m- Jacob Bakarich[m[1;33m[m
+| | |\  
+| | |/  
+| |/|   
+| * |   [1;34m83b36fd[m - [1;32m(2 weeks ago)[m [37mMerge branch 'dev' of https://github.com/jbakarich/NurseryApp into dev[m [2;37m- lilyosorno[m[1;33m[m
+| |\ \  
+| | * | [1;34m87867ef[m - [1;32m(2 weeks ago)[m [37mtest[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | | [1;34m79ff952[m - [1;32m(2 weeks ago)[m [37mchanged spacing[m [2;37m- lilyosorno[m[1;33m[m
+|/ / /  
+* | |   [1;34m53d32bb[m - [1;32m(3 weeks ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \ \  
+| |/ /  
+| * |   [1;34mce699ad[m - [1;32m(3 weeks ago)[m [37mMerge branch 'adminhome' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | * | [1;34mdc432b3[m - [1;32m(3 weeks ago)[m [37mcreated cards for admin home screen[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/ /  
+| * |   [1;34m6f3a39e[m - [1;32m(3 weeks ago)[m [37mMerge branch 'client-home' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | | *   [1;34m3c523f7[m - [1;32m(3 weeks ago)[m [37mMerge branch 'client-home' into dev[m [2;37m- Jacob Bakarich[m[1;33m[m
+| | | |\  
+| | |/ /  
+| |/| /   
+| | |/    
+| | * [1;34m3a6381c[m - [1;32m(3 weeks ago)[m [37mWork on Client Home card view started[m [2;37m- Jacob Bakarich[m[1;33m[m
+| |/  
+|/|   
+* |   [1;34m3149005[m - [1;32m(3 weeks ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \  
+| |/  
+| *   [1;34m7cdae1a[m - [1;32m(3 weeks ago)[m [37mMerge branch 'pages' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\  
+| | * [1;34m623f029[m - [1;32m(3 weeks ago)[m [37mfixed login bugs[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m1d70a3d[m - [1;32m(3 weeks ago)[m [37mcreated login activity that starts the main if user logs in correctly[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m946ad0d[m - [1;32m(3 weeks ago)[m [37mmaking login info change page selection[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m7c899a6[m - [1;32m(3 weeks ago)[m [37mworking on database control[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* | |   [1;34m2d3598f[m - [1;32m(3 weeks ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \ \  
+| |/ /  
+| * |   [1;34m57b379e[m - [1;32m(3 weeks ago)[m [37mMerge branch 'pages' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | |/  
+| | * [1;34m623d919[m - [1;32m(3 weeks ago)[m [37mmodified the database[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* | |   [1;34m5883fd5[m - [1;32m(3 weeks ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\ \ \  
+| |/ /  
+| * |   [1;34me4ecc1e[m - [1;32m(3 weeks ago)[m [37mMerge branch 'pages' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | |/  
+| | * [1;34m4226f97[m - [1;32m(3 weeks ago)[m [37mlinked all the parent pages. to switch between parent and admin views, you must change the isAdmin varible in in both AA_MainActivity and AA_LoginActivity. Also, you must change line 72 in AA_MainActivity(there should be a default view for before a login has occured)[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| | * [1;34m885d5c6[m - [1;32m(3 weeks ago)[m [37mlinked all admin pages[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/  
+|/|   
+* | [1;34m8fe0278[m - [1;32m(3 weeks ago)[m [37mRenamed files![m [2;37m- lilyosorno[m[1;33m[m
+|/  
+* [1;34m8f07011[m - [1;32m(4 weeks ago)[m [37masdfghjkl[m [2;37m- Cyrille Gindreau[m[1;33m[m
+*   [1;34m38425e7[m - [1;32m(4 weeks ago)[m [37mfixed gradle conflict[m [2;37m- Jacob Bakarich[m[1;33m[m
+|\  
+| * [1;34m47ce340[m - [1;32m(4 weeks ago)[m [37mrefreshing dev from master[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * [1;34mf8e0879[m - [1;32m(4 weeks ago)[m [37mfirst attempt and android pay[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| *   [1;34m999618e[m - [1;32m(4 weeks ago)[m [37mMerge branch 'lost' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\  
+| | * [1;34m1698576[m - [1;32m(4 weeks ago)[m [37mhad to rewind a little..[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * |   [1;34m575e74f[m - [1;32m(5 weeks ago)[m [37mMerge branch 'dev' of https://github.com/jbakarich/NurseryApp into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | * | [1;34m240e4a5[m - [1;32m(5 weeks ago)[m [37mAdded Android Pay functionalities incl Constants class paymentactivity class and payment xml[m [2;37m- Rick[m[1;33m[m
+| | |/  
+| * |   [1;34ma6d7f4b[m - [1;32m(5 weeks ago)[m [37mMerge branch 'home' into dev[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\ \  
+| | |/  
+| |/|   
+| | * [1;34mbb4d296[m - [1;32m(5 weeks ago)[m [37mnew grid system[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/  
+* | [1;34ma6c4ada[m - [1;32m(4 weeks ago)[m [37mintial renaming of package[m [2;37m- Jacob Bakarich[m[1;33m[m
+|/  
+* [1;34m9bba50c[m - [1;32m(7 weeks ago)[m [37mfinished merging splash into project[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* [1;34m6975df9[m - [1;32m(7 weeks ago)[m [37mattempting merge with splash screen project[m [2;37m- Cyrille Gindreau[m[1;33m[m
+*   [1;34mdfe4a34[m - [1;32m(7 weeks ago)[m [37mMerge branch 'master' into splashscreen[m [2;37m- Cyrille Gindreau[m[1;33m[m
+|\  
+| * [1;34m56b1830[m - [1;32m(7 weeks ago)[m [37medited fragments to return layout of attendence page[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * [1;34m7d557ab[m - [1;32m(7 weeks ago)[m [37mupdated gradle, created Attendence Fragment[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * [1;34m0b67258[m - [1;32m(7 weeks ago)[m [37mupdated android studio and project, uncommented Lilys code[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| *   [1;34ma79e4e4[m - [1;32m(7 weeks ago)[m [37mMerge branch 'dev'[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |\  
+| * | [1;34m6d8401f[m - [1;32m(7 weeks ago)[m [37madding Lilys attendece page[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34mf9cd50e[m - [1;32m(7 weeks ago)[m [37mcleaning[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34mbf90140[m - [1;32m(7 weeks ago)[m [37mloose file[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34med23f1f[m - [1;32m(7 weeks ago)[m [37mgitignore update[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m6a1435e[m - [1;32m(7 weeks ago)[m [37mmodified git ignore[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* | | [1;34ma33ab00[m - [1;32m(7 weeks ago)[m [37mplayin around[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/  
+|/|   
+* | [1;34m0abb28d[m - [1;32m(7 weeks ago)[m [37mremoved all files from repo that should be ignored[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* | [1;34me7bc0cb[m - [1;32m(7 weeks ago)[m [37mAdded gitingore from master to dev to help with merge process[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* | [1;34mebdff9e[m - [1;32m(7 weeks ago)[m [37mResolved Conflict[m [2;37m- Jacob Bakarich[m[1;33m[m
+* |   [1;34m849ab4c[m - [1;32m(7 weeks ago)[m [37mResolved Conflict[m [2;37m- Jacob Bakarich[m[1;33m[m
+|\ \  
+| * | [1;34mb3b6a4d[m - [1;32m(8 weeks ago)[m [37mCreated "mainpage" and relinked menu item to it.[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| * | [1;34m663a62c[m - [1;32m(8 weeks ago)[m [37muntracked files from branching[m [2;37m- Cyrille Gindreau[m[1;33m[m
+| |/  
+* | [1;34m5054eab[m - [1;32m(7 weeks ago)[m [37mMerge with dev[m [2;37m- Jacob Bakarich[m[1;33m[m
+* | [1;34m08ee4a2[m - [1;32m(7 weeks ago)[m [37mLogin Progress[m [2;37m- Jacob Bakarich[m[1;33m[m
+* | [1;34m6f0c1c8[m - [1;32m(8 weeks ago)[m [37mbegin working on SQLite database, set default login page[m [2;37m- Jacob Bakarich[m[1;33m[m
+|/  
+* [1;34m36407af[m - [1;32m(8 weeks ago)[m [37mAdded new app packages with new name[m [2;37m- Jacob Bakarich[m[1;33m[m
+* [1;34m8b1b827[m - [1;32m(8 weeks ago)[m [37mAll references of "com.example.jacob.NurseryApp" has been renamed/moved to "team3.nmsu.NurseryApp"[m [2;37m- Jacob Bakarich[m[1;33m[m
+* [1;34m4e9a9c3[m - [1;32m(9 weeks ago)[m [37mhello git![m [2;37m- Cyrille Gindreau[m[1;33m[m
+* [1;34m2418153[m - [1;32m(9 weeks ago)[m [37mhello git[m [2;37m- Cyrille Gindreau[m[1;33m[m
+* [1;34m893a9fe[m - [1;32m(9 weeks ago)[m [37mNursery App[m [2;37m- jbakarich[m[1;33m[m
+* [1;34mb751df0[m - [1;32m(9 weeks ago)[m [37m:neckbeard: Added .gitattributes[m [2;37m- jbakarich[m[1;33m[m
