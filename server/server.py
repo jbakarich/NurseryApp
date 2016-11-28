@@ -64,7 +64,8 @@ class Root(object):
             address2=b['address2'],
             phone=b['phone'],
             email=b['email'],
-            pin=1234
+            pin=1234,
+            creationdate=int(time.mktime(datetime.datetime.now().timetuple()))
         ))
         self.db.commit()
         return json.dumps({"added": "Successful"}, indent=2)
@@ -103,9 +104,21 @@ class Root(object):
         parents = self.db.query(models.User)
         for x in parents:
             if x.toDict()['username'] == b['name']:
-                parent = x
+                newObj = {
+                    "user": x.toDict()
+                }
                 break
-        return json.dumps(parent.toDict(), indent=4)
+        if newObj:
+            attendance = self.db.query(models.Attendance)
+            newObj['attendencerecords'] = []
+            lastDate = 0
+            for y in attendance:
+                if y.toDict()['user'] == newObj['user']['username']:
+                    if lastDate < y.toDict()['date']:
+                        lastDate = y.toDict()['date']
+        newObj['lastcheckin'] = lastDate
+
+        return json.dumps(newObj, indent=4)
 
     @cherrypy.expose
     def CheckIn(self, **kwargs):
