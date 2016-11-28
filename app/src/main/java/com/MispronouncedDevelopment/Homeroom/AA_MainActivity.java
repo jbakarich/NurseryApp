@@ -60,8 +60,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         FragmentManager fragmentManager = getFragmentManager();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-
-        if (prefs.getString("isAdmin", "False") == "True") {
+        String isAdmin = prefs.getString("isAdmin", "Falese");
+        Log.d(TAG, isAdmin + " is what we got");
+        if (isAdmin.equals("True")) {
+            Log.d(TAG, "Making admin view");
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
@@ -69,6 +71,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
             GetCards();
         } else {
+            Log.d(TAG, "Making parent view");
             setContentView(R.layout.parent_main);
             toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
@@ -179,7 +182,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(prefs.getString("isAdmin", "False") == "True" ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(prefs.getString("isAdmin", "False").equals("True") ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

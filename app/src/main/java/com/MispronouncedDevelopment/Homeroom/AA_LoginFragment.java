@@ -111,7 +111,9 @@ public class AA_LoginFragment extends Fragment {
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("USERID", myId);
+            editor.remove("isAdmin");
             editor.putString("isAdmin", isAdmin);
+            Log.d(TAG, "isAdmin is " + isAdmin);
             editor.commit();
         }catch(JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);

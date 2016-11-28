@@ -28,8 +28,11 @@ class Root(object):
         b = json.loads(rawData)
         results = self.db.query(models.User).all()
         response = {}
+        AdminExist = False
         for x in results:
             curUser = x.toDict()
+            if curUser['isAdmin'] is True:
+                AdminExist = True
             if(curUser['username'] == b['username'] and curUser['pin'] == b['password']):
                 response = {
                     "name": curUser['firstname'],
@@ -39,10 +42,28 @@ class Root(object):
                     response['isAdmin'] = "True"
                 else:
                     response['isAdmin'] = "False"
+        if AdminExist is False:
+            print "\n\nMade new admin!\n"
+            self.db.add(models.User(
+                firstname="admin",
+                isAdmin=True,
+                lastname="admin",
+                childname="admin",
+                username='admin',
+                address1='address1',
+                address2='address2',
+                phone=1234567890,
+                email='email',
+                pin=1234,
+                creationdate=int(time.mktime(datetime.datetime.now().timetuple()))
+            ))
+        self.db.commit()
         if len(response) is 0:
             response = {
                 "name": "invalid"
             }
+        print "Returning: \n"
+        print json.dumps(response, indent=2)
         return json.dumps(response, indent=2)
 
     @cherrypy.expose
