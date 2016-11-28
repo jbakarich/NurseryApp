@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,12 +46,12 @@ public class Admin_ProfileFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String childname = prefs.getString("childname", "Josh");
 
-        GetCards(childname);
+        GetProfile(childname);
 
         return myView;
     }
 
-    void GetCards(String childname) {
+    void GetProfile(String childname) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String url = prefs.getString("url", "Wrong!") + "RequestProfile";
 
@@ -89,12 +90,19 @@ public class Admin_ProfileFragment extends Fragment {
         TextView address2 = (TextView) getView().findViewById(R.id.admin_profileAddress2);
         TextView email = (TextView) getView().findViewById(R.id.admin_profileEmail);
 
+        TextView lastcheckin = (TextView) getView().findViewById(R.id.admin_profile_lastCheckin);
+        TextView membersince = (TextView) getView().findViewById(R.id.admin_profile_memberSince);
+
+
         try {
-            firstName.setText(response.getString("username"));
-            phone.setText(response.getString("phone"));
-            address1.setText(response.getString("address1"));
-            address2.setText(response.getString("address2"));
-            email.setText(response.getString("email"));
+            JSONObject parentInfo = response.getJSONObject("user");
+            firstName.setText(parentInfo.getString("username"));
+            phone.setText(parentInfo.getString("phone"));
+            address1.setText(parentInfo.getString("address1"));
+            address2.setText(parentInfo.getString("address2"));
+            email.setText(parentInfo.getString("email"));
+            lastcheckin.setText(response.getString("lastcheckin"));
+            membersince.setText(parentInfo.getString("creationdate"));
 
         } catch (JSONException e) {
             Log.d(TAG, "err in response:" + e.toString());

@@ -10,26 +10,20 @@ import android.util.Log;
 public class AA_LoginActivity extends AppCompatActivity{
     private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     String url ="http://192.168.0.5:8080/";//this is the location of wherever the server is running.
-   public DB_Manager myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         android.app.FragmentManager fragmentManager = getFragmentManager();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isAdmin = prefs.getString("isAdmin", "False") == "True";
+        Log.d(TAG, "isAdmin = " + isAdmin);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove("url");
         editor.putString("url", url);
         editor.apply();
-        myDB = new DB_Manager(this);
-        myDB.testData();
-        Log.d(TAG, "Made it here");
         int userID = prefs.getInt("USERID", -1);
-        Log.d(TAG, "USERID = " + userID);
         if(userID != -1){
-            boolean isAdmin = myDB.getIsAdmin(userID);
-            Log.d(TAG, "isAdmin = " + isAdmin);
-
             if (isAdmin) {
                 setContentView(R.layout.admin_main);
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();

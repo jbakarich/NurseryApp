@@ -83,7 +83,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dmin_profile_memberSince"
+                android:id="@+id/admin_profile_memberSince"
                 android:padding="8dp"
                 android:textSize="14sp"
                 android:text="Member since October 17, 2016" />
@@ -91,7 +91,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dmin_profile_lastCheckin"
+                android:id="@+id/admin_profile_lastCheckin"
                 android:padding="8dp"
                 android:textSize="14sp"
                 android:text="Last check-in was October 29, 2016"/>
