@@ -33,7 +33,7 @@ import java.util.Map;
 public class Parent_SettingsFragment extends Fragment {
     View myView;
     Button submitBtn;
-    EditText passwordA, passwordB;
+    EditText passwordA, passwordB, oldPassword;
     private String TAG = "parent settings";
 
     @Nullable
@@ -45,6 +45,7 @@ public class Parent_SettingsFragment extends Fragment {
         submitBtn = (Button) myView.findViewById(R.id.submitenewpassword);
         passwordA = (EditText) myView.findViewById(R.id.passwordA);
         passwordB = (EditText) myView.findViewById(R.id.passwordB);
+        oldPassword = (EditText) myView.findViewById(R.id.oldPassword);
 
         submitBtn.setOnClickListener(
                 new View.OnClickListener() {
@@ -63,6 +64,7 @@ public class Parent_SettingsFragment extends Fragment {
                         Log.d(TAG, name);
                         params.put("name", name);
                         params.put("password", passwordA.getText().toString());
+                        params.put("oldpassword", oldPassword.getText().toString());
 
                         String url = prefs.getString("url", "Wrong again!")+"PasswordChange";
                         Log.d(TAG, "Making request to " + url);
@@ -86,7 +88,7 @@ public class Parent_SettingsFragment extends Fragment {
                 if(response.has("success")) {
                     toast = Toast.makeText(getActivity(), "Password changed successfully", Toast.LENGTH_SHORT);
                 } else {
-                    toast = Toast.makeText(getActivity(), "An error has occurred with something", Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(getActivity(), "Your old password wasn't correct", Toast.LENGTH_SHORT);
                 }
                 toast.show();
             }

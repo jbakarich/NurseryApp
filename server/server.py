@@ -183,14 +183,14 @@ class Root(object):
     def PasswordChange(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "\n\nb = \n{}\n".format(b)
         parents = self.db.query(models.User)
         for x in parents:
-            print "checking {} vs. {}".format(x.toDict()['username'], b['name'])
             if x.toDict()['username'] == b['name']:
                 print "found correct parent"
-                x.pin = b['password']
-                return json.dumps({"success": "success"}, indent=2)
+                
+                if x.toDict()['pin'] == b['oldpassword']:
+                    x.pin = b['password']
+                    return json.dumps({"success": "success"}, indent=2)
         return json.dumps({"failure": "failure"}, indent=2)
 
 
