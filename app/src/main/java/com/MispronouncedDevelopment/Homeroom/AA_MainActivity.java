@@ -1,6 +1,7 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,7 +18,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -57,7 +57,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         DrawerLayout drawer;
         NavigationView navigationView;
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String isAdmin = prefs.getString("isAdmin", "Falese");
@@ -123,7 +123,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (item.getItemId()) {
 
@@ -194,12 +194,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         Map<String, String> params = new HashMap<>();
         params.put("id", prefs.getInt("id", -1) + "");
 
-        RequestCards(url, params);
-    }
-
-    void RequestCards(String url, Map<String, String> data) {
-
-        JSONObject obj = new JSONObject(data);
+        JSONObject obj = new JSONObject(params);
+        Log.d(TAG, "Trying call to: " + url);
 
         JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
             @Override

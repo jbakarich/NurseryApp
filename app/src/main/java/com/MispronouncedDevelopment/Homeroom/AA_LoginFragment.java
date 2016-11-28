@@ -1,10 +1,8 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -16,7 +14,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -52,8 +51,6 @@ public class AA_LoginFragment extends Fragment {
         editName = (EditText) myView.findViewById(R.id.editUserNameText);
         editPin = (EditText) myView.findViewById(R.id.EditUserPIN);
         loginButton = (Button) myView.findViewById(R.id.loginButton);
-        myCheckbox = (CheckBox) myView.findViewById(R.id.serverCheckBox);
-
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -129,7 +126,7 @@ public class AA_LoginFragment extends Fragment {
         toast = Toast.makeText(context, "Welcome back " + name, Toast.LENGTH_SHORT);
         toast.show();
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
         if (isAdmin.equals("True")) {
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();

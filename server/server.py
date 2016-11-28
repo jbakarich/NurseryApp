@@ -93,6 +93,7 @@ class Root(object):
 
     @cherrypy.expose
     def AdminHome(self, **kwargs):
+        print "were here!"
         allParents = self.db.query(models.User)
         toReturn = {
             "children": [],
