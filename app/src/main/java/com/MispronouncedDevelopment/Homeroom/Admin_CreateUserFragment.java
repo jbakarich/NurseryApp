@@ -1,6 +1,7 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;

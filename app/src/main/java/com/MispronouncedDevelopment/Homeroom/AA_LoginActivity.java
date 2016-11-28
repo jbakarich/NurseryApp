@@ -9,6 +9,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+
 import android.view.View;
 import android.widget.CheckBox;
 
@@ -38,7 +41,7 @@ public class AA_LoginActivity extends AppCompatActivity{
             throw sqle;
         }
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         boolean loginStatus = getDefaultLoginStatus("login", this);
         String loginType =  getDefaultLoginType("type", this);

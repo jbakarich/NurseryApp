@@ -1,7 +1,9 @@
 package com.MispronouncedDevelopment.Homeroom;
 
 import android.app.Activity;
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,7 +19,7 @@ import android.widget.TextView;
 /**
  * Created by Cyrille on 11/10/16.
  */
-public class myAdapter extends ArrayAdapter<String> {
+public class myAdapter extends ArrayAdapter<String>  {
     private final Context context;
     private final String[] values;
 
@@ -38,8 +40,9 @@ public class myAdapter extends ArrayAdapter<String> {
         View.OnClickListener viewProfile = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
-                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();
+               // FragmentManager fragmentManager = getSupportFragmentManager();
+               // fragmentManager = ((Activity) context).getFragmentManager();
+               // fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_ProfileFragment()).commit();
             }
         };
 

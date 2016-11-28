@@ -1,7 +1,8 @@
 package com.MispronouncedDevelopment.Homeroom;
 
 import android.app.AlertDialog;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -127,7 +128,7 @@ public class AA_LoginFragment extends Fragment {
     public void successfulLogin(String type) {
 
         String loginType;
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
         if (type.equals("ADMIN")) {
             Log.d(TAG, "Admin success");
@@ -203,7 +204,7 @@ public class AA_LoginFragment extends Fragment {
 
         String loginType;
 
-        android.app.FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getFragmentManager();
 
         if (isAdmin.equals("True")) {
             Log.d(TAG, "Admin success");

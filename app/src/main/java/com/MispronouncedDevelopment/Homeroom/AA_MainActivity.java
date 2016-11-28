@@ -1,6 +1,7 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -98,7 +99,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             throw sqle;
         }
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (myType.equals("admin")) {
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
@@ -152,7 +153,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (item.getItemId()) {
 
@@ -178,7 +179,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
                 break;
             case R.id.Parent_Attendence:
-                CaldroidFragment caldroidFragment = new CaldroidFragment();
+                /*CaldroidFragment caldroidFragment = new CaldroidFragment();
                 Bundle args = new Bundle();
                 Calendar cal = Calendar.getInstance();
                 args.putInt(CaldroidFragment.MONTH, cal.get(Calendar.MONTH) + 1);
@@ -186,7 +187,8 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 caldroidFragment.setArguments(args);
                 FragmentTransaction t = getSupportFragmentManager().beginTransaction();
                 t.replace(R.id.parent_content_frame, caldroidFragment);
-                t.commit();
+                t.commit();*/
+                fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
                 break;
             case R.id.Parent_Payment:
                 Intent myPaymentIntent = new Intent(this, AndroidPay.class);
