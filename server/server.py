@@ -109,13 +109,10 @@ class Root(object):
 
             lastDate = 0
             for y in attendenceRecords:
-                lastDate = 0
                 if y.toDict()['user'] == newuser['username']:
                     if lastDate < y.toDict()['date']:
                         lastDate = y.toDict()['date']
             newobj['lastcheckin'] = lastDate
-            print "adding:"
-            print newobj
             toReturn["children"].append(newobj)
         print json.dumps(toReturn, indent=4)
         return json.dumps(toReturn, indent=4)
@@ -175,7 +172,7 @@ class Root(object):
         records = self.db.query(models.Attendance)
         for y in records:
             if y.toDict()['ischeckedin'] is True and y.toDict()['user'] == b['name']:
-                y.CheckOut = datetime.time()
+                y.checkout = int(time.mktime(datetime.datetime.now().timetuple()))
                 y.ischeckedin = False
                 return "Attendence logged"
         return "error finding record"
