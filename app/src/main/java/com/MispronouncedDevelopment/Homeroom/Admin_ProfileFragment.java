@@ -46,12 +46,12 @@ public class Admin_ProfileFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String childname = prefs.getString("childname", "Josh");
 
-        GetCards(childname);
+        GetProfile(childname);
 
         return myView;
     }
 
-    void GetCards(String childname) {
+    void GetProfile(String childname) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String url = prefs.getString("url", "Wrong!") + "RequestProfile";
 
