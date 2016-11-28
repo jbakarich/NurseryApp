@@ -34,10 +34,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -237,7 +240,18 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
             for (int i = 0; i < ids.length; i++) {
                 editor.putString("id"+i+"name", childCards.get(i).name);
-                editor.putString("id"+i+"date", childCards.get(i).date +"");
+
+
+                //taken from http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
+                long unixSeconds = childCards.get(i).date;
+                Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
+                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss z"); // the format of your date
+                sdf.setTimeZone(TimeZone.getTimeZone("GMT-6")); // give a timezone reference for formating (see comment at the bottom
+                String formattedDate = sdf.format(date);
+
+                editor.putString("id"+i+"date", formattedDate);
+
+
             }
             editor.apply();
 

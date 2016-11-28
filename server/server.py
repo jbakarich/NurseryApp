@@ -95,6 +95,7 @@ class Root(object):
     def AdminHome(self, **kwargs):
         print "were here!"
         allParents = self.db.query(models.User)
+        attendenceRecords = self.db.query(models.Attendance)
         toReturn = {
             "children": [],
         }
@@ -106,7 +107,6 @@ class Root(object):
                 "username": newuser['username']
             }
 
-            attendenceRecords = self.db.query(models.Attendance)
             lastDate = 0
             for y in attendenceRecords:
                 lastDate = 0
@@ -114,9 +114,10 @@ class Root(object):
                     if lastDate < y.toDict()['date']:
                         lastDate = y.toDict()['date']
             newobj['lastcheckin'] = lastDate
-
+            print "adding:"
+            print newobj
             toReturn["children"].append(newobj)
-
+        print json.dumps(toReturn, indent=4)
         return json.dumps(toReturn, indent=4)
 
     @cherrypy.expose
@@ -187,7 +188,7 @@ class Root(object):
         for x in parents:
             if x.toDict()['username'] == b['name']:
                 print "found correct parent"
-                
+
                 if x.toDict()['pin'] == b['oldpassword']:
                     x.pin = b['password']
                     return json.dumps({"success": "success"}, indent=2)
