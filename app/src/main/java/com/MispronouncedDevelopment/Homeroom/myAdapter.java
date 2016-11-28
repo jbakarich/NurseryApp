@@ -66,7 +66,6 @@ public class myAdapter extends ArrayAdapter<String> {
         View.OnClickListener checkin = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "You checked");
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
                 String url;
                 if(checkBox.isChecked()){

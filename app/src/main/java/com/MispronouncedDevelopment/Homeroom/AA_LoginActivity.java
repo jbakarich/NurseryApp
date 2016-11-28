@@ -17,7 +17,6 @@ public class AA_LoginActivity extends AppCompatActivity{
         android.app.FragmentManager fragmentManager = getFragmentManager();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isAdmin = prefs.getString("isAdmin", "False") == "True";
-        Log.d(TAG, "isAdmin = " + isAdmin);
         SharedPreferences.Editor editor = prefs.edit();
         editor.remove("url");
         editor.putString("url", url);

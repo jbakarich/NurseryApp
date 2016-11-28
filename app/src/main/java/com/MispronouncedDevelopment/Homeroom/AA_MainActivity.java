@@ -218,8 +218,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     }
 
     void UpdateCards(JSONObject response) {
-        Log.d(TAG, "got a response: " + response.toString());
-
         List<HomeCard> childCards = new ArrayList<>();
         final ListView listview = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();

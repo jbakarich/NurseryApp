@@ -113,7 +113,6 @@ public class AA_LoginFragment extends Fragment {
             editor.putInt("USERID", myId);
             editor.remove("isAdmin");
             editor.putString("isAdmin", isAdmin);
-            Log.d(TAG, "isAdmin is " + isAdmin);
             editor.commit();
         }catch(JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
@@ -133,10 +132,8 @@ public class AA_LoginFragment extends Fragment {
         android.app.FragmentManager fragmentManager = getFragmentManager();
 
         if (isAdmin.equals("True")) {
-            Log.d(TAG, "Admin success");
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            Log.d(TAG, "parent success");
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
         }
 

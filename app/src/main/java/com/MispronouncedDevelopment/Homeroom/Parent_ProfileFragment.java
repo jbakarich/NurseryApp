@@ -75,7 +75,6 @@ public class Parent_ProfileFragment extends Fragment {
     }
 
     void UpdateProfile(JSONObject response) {
-        Log.d(TAG, "got a response: " + response.toString());
 
         TextView firstName = (TextView) getView().findViewById(R.id.parent_profileName);
         TextView phone = (TextView) getView().findViewById(R.id.parent_profilePhone);
@@ -85,7 +84,6 @@ public class Parent_ProfileFragment extends Fragment {
 
         TextView lastcheckin = (TextView) getView().findViewById(R.id.parent_profile_lastCheckin);
         TextView membersince = (TextView) getView().findViewById(R.id.parent_profile_memberSince);
-
 
         try {
             JSONObject parentInfo = response.getJSONObject("user");
