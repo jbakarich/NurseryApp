@@ -61,13 +61,11 @@ public class Parent_SettingsFragment extends Fragment {
                         Map<String, String> params = new HashMap<>();
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         String name = prefs.getString("username", "Josh");
-                        Log.d(TAG, name);
                         params.put("name", name);
                         params.put("password", passwordA.getText().toString());
                         params.put("oldpassword", oldPassword.getText().toString());
 
                         String url = prefs.getString("url", "Wrong again!")+"PasswordChange";
-                        Log.d(TAG, "Making request to " + url);
                         MakeRequest(url, params);
                     }
 
@@ -84,7 +82,6 @@ public class Parent_SettingsFragment extends Fragment {
             @Override
             public void onResponse(JSONObject response) {
                 Toast toast;
-                Log.d(TAG, response.toString());
                 if(response.has("success")) {
                     toast = Toast.makeText(getActivity(), "Password changed successfully", Toast.LENGTH_SHORT);
                 } else {
