@@ -41,7 +41,6 @@ public class AA_LoginFragment extends Fragment {
     EditText editName, editPin;
     CheckBox myCheckbox;
 
-    DB_Manager myDB;
     SharedPreferences prefs;
 
 
@@ -55,7 +54,6 @@ public class AA_LoginFragment extends Fragment {
         loginButton = (Button) myView.findViewById(R.id.loginButton);
         myCheckbox = (CheckBox) myView.findViewById(R.id.serverCheckBox);
 
-        myDB = new DB_Manager(getActivity());
 
         prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -69,57 +67,15 @@ public class AA_LoginFragment extends Fragment {
 
 
                     public void onClick(View v) {
-                        String userName = editName.getText().toString();
-                        String PIN = editPin.getText().toString();
-                        if(myCheckbox.isChecked()){
-                            Map<String, String> params = new HashMap<>();
-                            params.put("username", editName.getText().toString());
-                            params.put("password", editPin.getText().toString());
-                            String newUrl = prefs.getString("url", "Wrong!")+"CheckLogin";
-                            MakeRequest(newUrl, params);
-                        } else {
-                            //to be deleted in live state:
-                            Context context = getActivity();
-                            Cursor res = myDB.getLoginData();
-                            boolean success = false;
-                            while (res.moveToNext()) {
-                                //Not sure how correct this is!
-                                if (userName.matches(res.getString(1).toLowerCase()) && PIN.matches(res.getString(2).toLowerCase())) {
-                                    Toast toast = Toast.makeText(context, "Logged in as " + userName, Toast.LENGTH_SHORT);
-                                    toast.show();
-                                    successfulLogin(res.getString(4));
-                                    success = true;
-                                    break;
-                                }
-                            }
-                            if (!success) {
-                                Toast toast = Toast.makeText(context, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
-                                toast.show();
-                            }
-                        }
+                        Map<String, String> params = new HashMap<>();
+                        params.put("username", editName.getText().toString());
+                        params.put("password", editPin.getText().toString());
+                        String newUrl = prefs.getString("url", "Wrong!")+"CheckLogin";
+                        MakeRequest(newUrl, params);
                     }
 
                 }
         );
-    }
-
-    public void successfulLogin(String type) {
-
-        android.app.FragmentManager fragmentManager = getFragmentManager();
-
-        if (type.equals("ADMIN")) {
-            Log.d(TAG, "Admin success");
-            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
-        } else {
-            Log.d(TAG, "parent success");
-            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
-        }
-
-        Context context = getActivity();
-
-        Intent myIntent = new Intent(context, AA_MainActivity.class);
-        startActivity(myIntent);
-        context.startActivity(myIntent);
     }
 
     void MakeRequest(String url, Map<String, String> data){
@@ -155,6 +111,7 @@ public class AA_LoginFragment extends Fragment {
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.putInt("USERID", myId);
+            editor.putString("isAdmin", isAdmin);
             editor.commit();
         }catch(JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);

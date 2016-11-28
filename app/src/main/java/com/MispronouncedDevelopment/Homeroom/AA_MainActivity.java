@@ -42,7 +42,6 @@ import java.util.Map;
 
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
-    DB_Manager myDB;
     SharedPreferences prefs;
     private String parentName = "";
     /**
@@ -58,18 +57,17 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         DrawerLayout drawer;
         NavigationView navigationView;
 
-        myDB = new DB_Manager(this);
-
         FragmentManager fragmentManager = getFragmentManager();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-        if (myDB.getIsAdmin(prefs.getInt("USERID", -1))) {
+        if (prefs.getString("isAdmin", "False") == "True") {
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
             navigationView = (NavigationView) findViewById(R.id.admin_nav_view);
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
+            GetCards();
         } else {
             setContentView(R.layout.parent_main);
             toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
@@ -86,7 +84,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        GetCards();
+
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -95,7 +93,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = myDB.getIsAdmin(prefs.getInt("USERID", -1)) ? (DrawerLayout) findViewById(R.id.admin_drawer_layout) : (DrawerLayout) findViewById(R.id.parent_drawer_layout);
+        DrawerLayout drawer = prefs.getString("isAdmin", "False") == "True" ? (DrawerLayout) findViewById(R.id.admin_drawer_layout) : (DrawerLayout) findViewById(R.id.parent_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -181,7 +179,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 Log.d(TAG, "Error in the menu switch");
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(myDB.getIsAdmin(prefs.getInt("USERID", -1)) ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
+        DrawerLayout drawer = (DrawerLayout) findViewById(prefs.getString("isAdmin", "False") == "True" ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
