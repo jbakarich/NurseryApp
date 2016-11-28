@@ -107,7 +107,7 @@ public class Admin_CreateUserFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(context, "An error has occured", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, "An error has occurred", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });

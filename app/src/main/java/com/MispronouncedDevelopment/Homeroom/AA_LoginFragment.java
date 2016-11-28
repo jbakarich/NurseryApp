@@ -107,7 +107,10 @@ public class AA_LoginFragment extends Fragment {
             name =  response.getString("name");
 
             SharedPreferences.Editor editor = prefs.edit();
+            editor.remove("USERID");
             editor.putInt("USERID", myId);
+            editor.remove("username");
+            editor.putString("username", name);
             editor.remove("isAdmin");
             editor.putString("isAdmin", isAdmin);
             editor.commit();
