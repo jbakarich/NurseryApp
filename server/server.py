@@ -89,6 +89,34 @@ class Root(object):
         return json.dumps({"added": "Successful"}, indent=2)
 
     @cherrypy.expose
+    def EditProfile(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print "we got this:"
+        print json.dumps(b, indent=2)
+        allParents = self.db.query(models.User)
+        for x in allParents:
+            if x.toDict()['username'] == b['username']:
+                if x.toDict()['pin'] != b['password']:
+                    return json.dumps({"badpassword": "badpassword"}, indent=4)
+                if b['firstname'] != "":
+                    x.firstname = b['firstname']
+                if b['lastname'] != "":
+                    x.lastname = b['lastname']
+                if b['childname'] != "":
+                    x.childname = b['childname']
+                if b['phone'] != "":
+                    x.phone = b['phone']
+                if b['address1'] != "":
+                    x.address1 = b['address1']
+                if b['address2'] != "":
+                    x.address2 = b['address2']
+                if b['email'] != "":
+                    x.email = b['email']
+                return json.dumps({"success": "success"}, indent=4)
+        return json.dumps({"error": "error"}, indent=4)
+
+    @cherrypy.expose
     def AddActivity(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
@@ -156,20 +184,22 @@ class Root(object):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         parents = self.db.query(models.User)
+        newObj = {}
         for x in parents:
             if x.toDict()['username'] == b['name']:
                 newObj = {
                     "user": x.toDict()
                 }
                 break
-        if newObj:
-            attendance = self.db.query(models.Attendance)
-            newObj['attendencerecords'] = []
-            lastDate = 0
-            for y in attendance:
-                if y.toDict()['user'] == newObj['user']['username']:
-                    if lastDate < y.toDict()['date']:
-                        lastDate = y.toDict()['date']
+        if "user" not in newObj:
+            return json.dumps({"error": "error"}, indent=4)
+        attendance = self.db.query(models.Attendance)
+        newObj['attendencerecords'] = []
+        lastDate = 0
+        for y in attendance:
+            if y.toDict()['user'] == newObj['user']['username']:
+                if lastDate < y.toDict()['date']:
+                    lastDate = y.toDict()['date']
         newObj['lastcheckin'] = lastDate
 
         return json.dumps(newObj, indent=4)
