@@ -35,17 +35,6 @@ android:id="@+id/child5Card">
             android:layout_alignStart="@+id/ProfileButton5"
             android:layout_marginBottom="12dp" />
 
-        <Button
-            android:text="Submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/CheckinBtn"
-            android:backgroundTint="@android:color/background_light"
-            android:background="@android:color/background_light"
-            android:layout_alignParentBottom="true"
-            android:layout_toEndOf="@+id/ProfileButton5"
-            android:textColor="@color/colorPrimary" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
