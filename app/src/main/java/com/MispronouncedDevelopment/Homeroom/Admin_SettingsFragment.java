@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -32,8 +33,9 @@ import java.util.Map;
 public class Admin_SettingsFragment extends Fragment {
 
     View myView;
-    Button submitBtn;
-    EditText passwordA, passwordB, oldPassword;
+    Button passwordSubmit, activitySubmit;
+    EditText passwordA, passwordB, oldPassword, activityDescription;
+    TimePicker activityClock;
     private String TAG = "admin settings";
 
     @Nullable
@@ -41,12 +43,12 @@ public class Admin_SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.admin_settings, container, false);
 
-        submitBtn = (Button) myView.findViewById(R.id.submitenewpassword);
+        passwordSubmit = (Button) myView.findViewById(R.id.submitenewpassword);
         passwordA = (EditText) myView.findViewById(R.id.passwordA);
         passwordB = (EditText) myView.findViewById(R.id.passwordB);
         oldPassword = (EditText) myView.findViewById(R.id.oldPassword);
 
-        submitBtn.setOnClickListener(
+        passwordSubmit.setOnClickListener(
                 new View.OnClickListener() {
 
 
@@ -70,10 +72,57 @@ public class Admin_SettingsFragment extends Fragment {
 
                 }
         );
+
+        activitySubmit = (Button) myView.findViewById(R.id.submitnewactivity);
+        activityDescription = (EditText) myView.findViewById(R.id.activity_description);
+        activityClock = (TimePicker) myView.findViewById(R.id.activityTime);
+
+        activitySubmit.setOnClickListener(
+                new View.OnClickListener() {
+
+
+                    public void onClick(View v) {
+
+                        Map<String, String> params = new HashMap<>();
+
+                        params.put("name", activityDescription.getText().toString());
+                        String time = activityClock.getHour() + " : " + activityClock.getMinute();
+                        params.put("time", time);
+
+                        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                        String url = prefs.getString("url", "Wrong again!")+"AddActivity";
+                        SubmitActivity(url, params);
+                    }
+
+                }
+        );
         return myView;
+    }
 
+    void SubmitActivity(String url, Map<String, String> data){
+        JSONObject obj = new JSONObject(data);
 
+        JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Toast toast;
+                if(response.has("success")) {
+                    toast = Toast.makeText(getActivity(), "Activity submitted successfully", Toast.LENGTH_SHORT);
+                } else {
+                    toast = Toast.makeText(getActivity(), "This message should never show", Toast.LENGTH_SHORT);
+                }
+                toast.show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast toast = Toast.makeText(getActivity(), "Error with the server", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
 
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(request);
     }
 
     void MakeRequest(String url, Map<String, String> data) {

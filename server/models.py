@@ -87,3 +87,21 @@ class Attendance(Base):
             "ischeckedin": self.ischeckedin
         }
         return data
+
+
+class Activity(Base):
+
+    __tablename__ = "activites"
+
+    id = Column(Integer, primary_key=True)
+
+    name = Column(String())
+    time = Column(Integer())
+
+    def toDict(self):
+        data = {
+            "name": self.name,
+            "time": self.time
+        }
+        return data
+

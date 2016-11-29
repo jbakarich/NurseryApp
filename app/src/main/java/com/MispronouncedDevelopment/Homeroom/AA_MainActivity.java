@@ -1,6 +1,5 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -80,6 +80,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
             navigationView = (NavigationView) findViewById(R.id.parent_nav_view);
             fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+            GetParentHome();
         }
 
         setSupportActionBar(toolbar);
@@ -127,7 +128,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         switch (item.getItemId()) {
-
 //          Admin menus
             case R.id.Admin_Home:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
@@ -188,6 +188,52 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
+    void GetParentHome() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String url = prefs.getString("url", "Wrong!") + "ParentHome";
+
+        Map<String, String> params = new HashMap<>();
+        params.put("name", prefs.getString("username", "josh"));
+
+        JSONObject obj = new JSONObject(params);
+        Log.d(TAG, "Trying call to: " + url);
+
+        JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                UpdateHome(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                ShowError(error.toString());
+            }
+        });
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request);
+    }
+
+    void UpdateHome(JSONObject response) {
+        TextView lastcheckin = (TextView) findViewById(R.id.lastcheckinText);
+        TextView activityNameText = (TextView) findViewById(R.id.activitiesTitleText);
+        TextView activityTimeText = (TextView) findViewById(R.id.ActivityTimeText);
+        int time = 0;
+        int activityTime = 0;
+        String activityName = "";
+        try {
+            time = response.getInt("lastcheckin");
+            activityTime = response.getInt("time");
+            activityName = response.getString("name");
+        } catch (JSONException e) {
+            Log.d(TAG, "err in response:" + e.toString());
+        }
+
+        activityNameText.setText(activityName);
+        activityTimeText.setText(formatTime(activityTime));
+        lastcheckin.setText(formatTime(time));
+    }
+
     void GetCards() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String url = prefs.getString("url", "Wrong!") + "AdminHome";
@@ -222,7 +268,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         try {
             JSONArray parents = response.getJSONArray("children");
             ids = new String[parents.length()];
-            for(int i = 0; i < parents.length(); i++) {
+            for (int i = 0; i < parents.length(); i++) {
 
                 JSONObject cur = parents.getJSONObject(i);
 
@@ -232,25 +278,18 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
                 childCards.add(newCard);
                 list.add(newCard.name);
-                ids[i] = i+"";
+                ids[i] = i + "";
             }
 
             SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = mySPrefs.edit();
 
             for (int i = 0; i < ids.length; i++) {
-                editor.putString("id"+i+"name", childCards.get(i).name);
+                editor.putString("id" + i + "name", childCards.get(i).name);
 
+                String formattedDate = formatTime(childCards.get(i).date);
 
-                //taken from http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
-                long unixSeconds = childCards.get(i).date;
-                Date date = new Date(unixSeconds*1000L); // *1000 is to convert seconds to milliseconds
-                SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); // the format of your date
-                sdf.setTimeZone(TimeZone.getTimeZone("GMT-6")); // give a timezone reference for formating (see comment at the bottom
-                String formattedDate = sdf.format(date);
-
-                editor.putString("id"+i+"date", formattedDate);
-
+                editor.putString("id" + i + "date", formattedDate);
 
             }
             editor.apply();
@@ -273,8 +312,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 }
 
             });
-
-
         } catch (JSONException e) {
             Log.d(TAG, "err in response:" + e.toString());
         }
@@ -323,12 +360,15 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         client.disconnect();
     }
 
-    public void setParentName(String newName){
-        parentName = newName;
-    }
 
-    public String getParentName(){
-        return parentName;
+    public static String formatTime(int cur) {
+        //taken from http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
+        long unixSeconds = cur;
+        Date date = new Date(unixSeconds * 1000L); // *1000 is to convert seconds to milliseconds
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss"); // the format of your date
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT-6")); // give a timezone reference for formating (see comment at the bottom
+        String formattedDate = sdf.format(date);
+        return formattedDate;
     }
 }
 
