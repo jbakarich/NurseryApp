@@ -67,7 +67,38 @@ public class Admin_CreateUserFragment extends Fragment {
                     public void onClick(View v) {
                         Log.d(TAG, "Creating params");
                         Map<String, String> params = new HashMap<>();
-
+                        if(firstname.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(lastname.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(username.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(childname.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(address1.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(address2.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(phone.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(email.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
                         params.put("firstname", firstname.getText().toString());
                         params.put("lastname", lastname.getText().toString());
                         params.put("username", username.getText().toString());
@@ -92,6 +123,12 @@ public class Admin_CreateUserFragment extends Fragment {
                 }
         );
     }
+
+    void ThrowError(){
+        Toast toast = Toast.makeText(getContext(), "All fields must be entered.", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
 
     void MakeRequest(String url, Map<String, String> data){
         Log.d(TAG, "Making request to " + url);
