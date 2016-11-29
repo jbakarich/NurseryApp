@@ -66,7 +66,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         String isAdmin = prefs.getString("isAdmin", "Falese");
         Log.d(TAG, isAdmin + " is what we got");
         if (isAdmin.equals("True")) {
-            Log.d(TAG, "Making admin view");
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.admin_drawer_layout);
@@ -74,7 +73,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
             GetCards();
         } else {
-            Log.d(TAG, "Making parent view");
             setContentView(R.layout.parent_main);
             toolbar = (Toolbar) findViewById(R.id.parent_toolbar);
             drawer = (DrawerLayout) findViewById(R.id.parent_drawer_layout);
