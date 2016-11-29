@@ -85,6 +85,12 @@ public class Admin_SettingsFragment extends Fragment {
 
                         Map<String, String> params = new HashMap<>();
 
+                        if(activityDescription.getText().toString().equals("")){
+                            Toast toast = Toast.makeText(getContext(), "All fields must be entered.", Toast.LENGTH_SHORT);
+                            toast.show();
+                            return;
+                        }
+
                         params.put("name", activityDescription.getText().toString());
                         String time = activityClock.getHour() + " : " + activityClock.getMinute();
                         params.put("time", time);
