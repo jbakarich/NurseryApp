@@ -109,8 +109,8 @@ public class Parent_ProfileFragment extends Fragment {
             address1.setText(parentInfo.getString("address1"));
             address2.setText(parentInfo.getString("address2"));
             email.setText(parentInfo.getString("email"));
-            lastcheckin.setText(response.getString("lastcheckin"));
-            membersince.setText(parentInfo.getString("creationdate"));
+            lastcheckin.setText(AA_MainActivity.formatTime(response.getInt("lastcheckin")));
+            membersince.setText(AA_MainActivity.formatTime(parentInfo.getInt("creationdate")));
 
         } catch (JSONException e) {
             Log.d(TAG, "err in response:" + e.toString());
