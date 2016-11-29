@@ -89,6 +89,34 @@ class Root(object):
         return json.dumps({"added": "Successful"}, indent=2)
 
     @cherrypy.expose
+    def EditProfile(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print "we got this:"
+        print json.dumps(b, indent=2)
+        allParents = self.db.query(models.User)
+        for x in allParents:
+            if x.toDict()['username'] == b['username']:
+                if x.toDict()['pin'] != b['password']:
+                    return json.dumps({"badpassword": "badpassword"}, indent=4)
+                if b['firstname'] is not "":
+                    x.firstname = b['firstname']
+                if b['lastname'] is not "":
+                    x.lastname = b['lastname']
+                if b['childname'] is not "":
+                    x.childname = b['childname']
+                if b['phone'] is not "":
+                    x.phone = b['phone']
+                if b['address1'] is not "":
+                    x.address1 = b['address1']
+                if b['address2'] is not "":
+                    x.address2 = b['address2']
+                if b['email'] is not "":
+                    x.email = b['email']
+                return json.dumps({"success": "success"}, indent=4)
+        return json.dumps({"error": "error"}, indent=4)
+
+    @cherrypy.expose
     def AddActivity(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)

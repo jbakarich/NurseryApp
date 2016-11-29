@@ -41,7 +41,6 @@ public class Parent_SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.parent_settings, container, false);
 
-
         submitBtn = (Button) myView.findViewById(R.id.submitenewpassword);
         passwordA = (EditText) myView.findViewById(R.id.passwordA);
         passwordB = (EditText) myView.findViewById(R.id.passwordB);

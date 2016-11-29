@@ -34,6 +34,15 @@
                 android:id="@+id/parent_profileName"
                 android:textSize="24sp" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="Billy"
+                android:ems="10"
+                android:id="@+id/parent_childName"
+                android:textSize="18sp" />
+
             <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +72,15 @@
                     android:ems="10"
                     android:id="@+id/parent_profileAddress2"
                     android:layout_width="match_parent" />
+
+                <Button
+                    android:text="Edit Profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/parent_editProfile"
+                    android:background="@color/white"
+                    android:textColor="@color/colorPrimaryDark"
+                    style="@style/Widget.AppCompat.Button.Borderless"/>
 
             </GridLayout>
         </LinearLayout>
