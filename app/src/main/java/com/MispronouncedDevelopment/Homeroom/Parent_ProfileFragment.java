@@ -39,9 +39,9 @@ public class Parent_ProfileFragment extends Fragment {
         myView = inflater.inflate(R.layout.parent_profile, container, false);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String childname = prefs.getString("childname", "Josh");
+        String name = prefs.getString("username", "Josh");
 
-        GetProfile(childname);
+        GetProfile(name);
 
         Button editProfile = (Button) myView.findViewById(R.id.parent_editProfile);
         editProfile.setOnClickListener(new View.OnClickListener() {
@@ -58,12 +58,12 @@ public class Parent_ProfileFragment extends Fragment {
         return myView;
     }
 
-    void GetProfile(String childname) {
+    void GetProfile(String name) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String url = prefs.getString("url", "Wrong!") + "RequestProfile";
 
         Map<String, String> params = new HashMap<>();
-        params.put("name", childname);
+        params.put("name", name);
 
         RequestProfile(url, params);
     }
