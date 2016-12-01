@@ -35,7 +35,7 @@ class Root(object):
                 AdminExist = True
             if(curUser['username'] == b['username'] and curUser['pin'] == b['password']):
                 response = {
-                    "name": curUser['firstname'],
+                    "name": curUser['username'],
                     "id": curUser['id']
                 }
                 if curUser['isAdmin']:

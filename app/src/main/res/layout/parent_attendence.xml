@@ -29,33 +29,22 @@
         android:background="@color/white">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last Checked In:"
-            android:id="@+id/LastCheckedInText"
-            android:background="@color/white"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="29dp"
-            android:textSize="20sp" />
-
-        <TextView
             android:text="--"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="23dp"
-            android:id="@+id/LastAttendedText"
+            android:id="@+id/LastCheckedInDateText"
             android:layout_below="@+id/LastCheckedIn"
             android:layout_centerHorizontal="true"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:textAlignment="center" />
 
         <Button
             android:text="Call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/LastAttendedText"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="17dp"
-            android:id="@+id/ParentAttendenceCallButton" />
+            android:id="@+id/ParentAttendenceCallButton"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 </LinearLayout>
