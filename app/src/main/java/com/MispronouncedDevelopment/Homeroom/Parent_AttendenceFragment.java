@@ -88,16 +88,7 @@ public class Parent_AttendenceFragment extends Fragment {
                 ColorDrawable background1 = new ColorDrawable(Color.GREEN);
                 ColorDrawable background2 = new ColorDrawable(Color.RED);
 
-                final CaldroidListener listener = new CaldroidListener() {
 
-                    @Override
-                    public void onSelectDate(Date date, View view) {
-
-                        String toast = "NAME was checked in at TIME on DATE";
-                        Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
-                    }
-
-                };
 
                 int lastcheckinDate = 0;
                 try {
@@ -123,6 +114,17 @@ public class Parent_AttendenceFragment extends Fragment {
                     Log.d(TAG, "error in response: " + e.toString());
                 }
 
+//                final CaldroidListener listener = new CaldroidListener() {
+//
+//                    @Override
+//                    public void onSelectDate(Date date, View view) {
+//
+//                        String toast = "NAME was checked in at TIME on DATE";
+//                        Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                };
+
                 Button callButton = (Button)myView.findViewById(R.id.ParentAttendenceCallButton); //onClick Listener for Call Button
                 callButton.setOnClickListener(new View.OnClickListener() {
                                                   @Override
@@ -134,11 +136,11 @@ public class Parent_AttendenceFragment extends Fragment {
                                               }
                 );
 
-                TextView lastcheckin = (TextView) getView().findViewById(R.id.LastCheckedIn);
-                lastcheckin.setText(AA_MainActivity.formatTime(lastcheckinDate));
+//                TextView lastcheckin = (TextView) myView.findViewById(R.id.LastCheckedIn);
+//                lastcheckin.setText(AA_MainActivity.formatTime(lastcheckinDate));
 
                 parentAttendenceCalFragment.setBackgroundDrawableForDates(CheckInDates);
-                parentAttendenceCalFragment.setCaldroidListener(listener);
+//                parentAttendenceCalFragment.setCaldroidListener(listener);
                 getActivity().getSupportFragmentManager().beginTransaction().replace( R.id.cal_container , parentAttendenceCalFragment ).commit();
 
             }

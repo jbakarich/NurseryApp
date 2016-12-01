@@ -14,7 +14,7 @@
         <item
             android:id="@+id/Parent_Payment"
 
-            android:title="Payment Records" />
+            android:title="Make a payment" />
 
         <item
             android:id="@+id/Parent_Settings"
