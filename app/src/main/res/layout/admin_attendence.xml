@@ -1,22 +1,61 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/Admin_Attendence">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <DatePicker
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="105dp"
-        android:id="@+id/datePicker"
-        android:background="@android:color/holo_blue_bright"
-        android:headerBackground="@android:color/holo_blue_bright"
-        android:calendarViewShown="false"
-        android:clickable="true" />
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/cal_container"
+        android:layout_weight="0.4"/>
 
-
-    <CalendarView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/calendarView" />
+        android:layout_height="1dp"
+        android:id="@+id/imageView_divider"
+        android:layout_below="@+id/container_caldroid"
+        android:focusableInTouchMode="false"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_weight="0.1"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:layout_below="@+id/imageView_divider"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Checked In:"
+            android:id="@+id/LastCheckedIn"
+            android:background="@color/white"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="29dp"
+            android:textSize="20sp" />
+
+        <TextView
+            android:text="--"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:id="@+id/LastAttendedText"
+            android:layout_below="@+id/LastCheckedIn"
+            android:layout_centerHorizontal="true"
+            android:textSize="24sp" />
+
+        <Button
+            android:text="Call"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/LastAttendedText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="17dp"
+            android:id="@+id/ParentAttendenceCallButton" />
+    </RelativeLayout>
 </LinearLayout>
