@@ -71,12 +71,6 @@ public class Parent_PaymentFragment extends Fragment {
 
 
 
-        parentPaymentCalFragment.setBackgroundDrawableForDates(CheckInDates);
-        parentPaymentCalFragment.setCaldroidListener(listener);
-        getActivity().getSupportFragmentManager().beginTransaction().replace( R.id.payment_cal_container , parentPaymentCalFragment).commit();
-
-
-
 
 
         return myView;
