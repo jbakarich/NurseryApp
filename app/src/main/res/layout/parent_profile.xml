@@ -115,21 +115,6 @@
                 android:text="Last check-in was October 29, 2016"/>
 
 
-
-            <Button
-                android:text="View history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/parent_attendenceHistoryButton"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimaryDark"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_alignParentBottom="true"
-                android:layout_alignEnd="@+id/attendenceTitle" />
-
-
-
-
         </GridLayout>
     </android.support.v7.widget.CardView>
 
