@@ -265,6 +265,22 @@ class Root(object):
                     return json.dumps({"success": "success"}, indent=2)
         return json.dumps({"failure": "failure"}, indent=2)
 
+    @cherrypy.expose
+    def GetAttendence(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        dates = self.db.query(models.Attendance)
+        datesArr = []
+        for x in dates:
+            if b["username"] == x.toDict()["user"]:
+                datesArr.append({
+                    "checkinTime": x.toDict()['checkin'],
+                    "checkoutTime": x.toDict()['checkout']
+                    })
+        return json.dumps(datesArr, indent=4)
+
+
+
 
 def get_cp_config():
     return {
