@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Column
 from sqlalchemy.types import String, Integer, Date, Boolean
-from sqlalchemy.orm import relationship
 from base import Base
 
 
@@ -20,8 +19,7 @@ class User(Base):
     address1 = Column(String())
     address2 = Column(String())
     email = Column(String())
-    attendanceHistory = relationship("Attendance", back_populates="user")
-    paymentHistory = relationship("Payment", back_populates="user")
+    creationdate = Column(String())
 
     def toDict(self):
         data = {
@@ -35,14 +33,9 @@ class User(Base):
             "phone": self.phone,
             "address1": self.address1,
             "address2": self.address2,
-            "email": self.email
+            "email": self.email,
+            "creationdate": self.creationdate
         }
-        data['attendenceRecords'] = []
-        for x in self.attendanceHistory:
-            data['attendenceRecords'].append(x.toDict())
-        data['paymentRecords'] = []
-        for x in self.paymentHistory:
-            data['paymentRecords'].append(x.toDict())
         return data
 
 
@@ -51,9 +44,8 @@ class Payment(Base):
     __tablename__ = "payment"
 
     id = Column(Integer, primary_key=True)
-    user = relationship("User", back_populates="paymentHistory")
-    user_id = Column(Integer, ForeignKey('user.id'))
-
+    username = Column(String())
+    userid = Column(Integer())
     amount = Column(Integer())
     date = Column(Date())
     isPaid = Column(Boolean())
@@ -75,18 +67,39 @@ class Attendance(Base):
     __tablename__ = "attendance"
 
     id = Column(Integer, primary_key=True)
-    user = relationship("User", back_populates="attendanceHistory")
-    user_id = Column(Integer, ForeignKey('user.id'))
+    username = Column(String())
+    userid = Column(String())
 
-    date = Column(Date())
-    attended = Column(Boolean())
+    date = Column(Integer())
+    checkin = Column(Integer())
+    checkout = Column(Integer())
+    ischeckedin = Column(Boolean())
 
     def toDict(self):
         data = {
             "id": self.id,
-            "user": self.user,
-            "user_id": self.user_id,
+            "user": self.username,
+            "userid": self.userid,
             "date": self.date,
-            "attended": self.attended
+            "checkin": self.checkin,
+            "checkout": self.checkout,
+            "ischeckedin": self.ischeckedin
+        }
+        return data
+
+
+class Activity(Base):
+
+    __tablename__ = "activites"
+
+    id = Column(Integer, primary_key=True)
+
+    name = Column(String())
+    time = Column(Integer())
+
+    def toDict(self):
+        data = {
+            "name": self.name,
+            "time": self.time
         }
         return data

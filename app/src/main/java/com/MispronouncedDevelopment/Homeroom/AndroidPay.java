@@ -1,9 +1,10 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-        import android.app.Fragment;
+        import android.content.Context;
         import android.content.Intent;
+        import android.graphics.Color;
+        import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
-        import android.support.v4.app.FragmentActivity;
         import android.support.v7.app.AppCompatActivity;
         import android.view.View;
         import android.widget.Toast;
@@ -26,6 +27,12 @@ package com.MispronouncedDevelopment.Homeroom;
         import com.google.android.gms.wallet.fragment.WalletFragmentMode;
         import com.google.android.gms.wallet.fragment.WalletFragmentOptions;
         import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
+        import com.roomorama.caldroid.CaldroidFragment;
+        import com.roomorama.caldroid.CaldroidListener;
+
+        import java.text.DateFormat;
+        import java.util.Date;
+        import java.util.HashMap;
 
 
 /**
@@ -35,9 +42,6 @@ package com.MispronouncedDevelopment.Homeroom;
 
 public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
 
-
-
-
     private SupportWalletFragment mWalletFragment;
     private MaskedWallet mMaskedWallet;
     public static final int MASKED_WALLET_REQUEST_CODE = 888;
@@ -46,16 +50,10 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
     public static final int FULL_WALLET_REQUEST_CODE = 889;
     private FullWallet mFullWallet;
 
-
-
-
     @Override
     public void onConnectionFailed(ConnectionResult result) {
         // GoogleApiClient failed to connect, we should log the error and retry
     }
-
-
-
 
     public void requestFullWallet(View view) {
         if (mMaskedWallet == null) {
@@ -67,13 +65,53 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                 FULL_WALLET_REQUEST_CODE);
     }
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        View myView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parent_payment_history);
+
+        final Context context = this;
+
+
+//        CaldroidFragment parentPaymentCalFragment = new CaldroidFragment(); //initialize Caldroid Fragment
+//        Bundle args = new Bundle();
+//        args.putInt( CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY );//pass default arguments
+//        parentPaymentCalFragment.setArguments( args );
+
+//        DateFormat df = DateFormat.getDateInstance();
+//        HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
+//        ColorDrawable background = new ColorDrawable(Color.LTGRAY);
+
+//        final CaldroidListener listener = new CaldroidListener() {
+//
+//            @Override
+//            public void onSelectDate(Date date, View view) {
+//
+//                String toast = "Payment Of AMOUNT on DATE";
+//                Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
+//            }
+//
+//        };
+//
+//        try {
+//
+//            CheckInDates.put(df.parse("November 29, 2016"), background);
+//
+//
+//        }catch(java.text.ParseException e){;}
+
+
+
+
+
+
+
+//        parentPaymentCalFragment.setBackgroundDrawableForDates(CheckInDates);
+//        parentPaymentCalFragment.setCaldroidListener(listener);
+//        this.getSupportFragmentManager().beginTransaction().replace( R.id.payment_cal_container , parentPaymentCalFragment).commit();
+
+
 
 
 
@@ -83,16 +121,11 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                 .findFragmentByTag(WALLET_FRAGMENT_ID);
 
 
-
-
         if (mWalletFragment == null) {
             // Wallet fragment style
             WalletFragmentStyle walletFragmentStyle = new WalletFragmentStyle()
                     .setBuyButtonText(WalletFragmentStyle.BuyButtonText.BUY_WITH)
                     .setBuyButtonWidth(WalletFragmentStyle.Dimension.MATCH_PARENT);
-
-
-
 
             // Wallet fragment options
             WalletFragmentOptions walletFragmentOptions = WalletFragmentOptions.newBuilder()
@@ -102,9 +135,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                     .setMode(WalletFragmentMode.BUY_BUTTON)
                     .build();
 
-
-
-
             // Initialize the WalletFragment
             WalletFragmentInitParams.Builder startParamsBuilder =
                     WalletFragmentInitParams.newBuilder()
@@ -113,8 +143,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                             .setAccountName("Google I/O Codelab");
             mWalletFragment = SupportWalletFragment.newInstance(walletFragmentOptions);
             mWalletFragment.initialize(startParamsBuilder.build());
-
-
 
 
             // Add the WalletFragment to the UI
@@ -131,9 +159,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                         .build())
                 .build();
     }
-
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -173,8 +198,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
     }
 
 
-
-
     private MaskedWalletRequest generateMaskedWalletRequest() {
         // This is just an example publicKey for the purpose of this codelab.
         // To learn how to generate your own visit:
@@ -186,8 +209,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                                 PaymentMethodTokenizationType.NETWORK_TOKEN)
                         .addParameter("publicKey", publicKey)
                         .build();
-
-
 
 
         MaskedWalletRequest maskedWalletRequest =
@@ -212,13 +233,7 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                         .build();
         return maskedWalletRequest;
 
-
-
-
     }
-
-
-
 
     private FullWalletRequest generateFullWalletRequest(String googleTransactionId) {
         FullWalletRequest fullWalletRequest = FullWalletRequest.newBuilder()

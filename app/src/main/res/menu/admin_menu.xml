@@ -4,20 +4,17 @@
     <group android:checkableBehavior="single">
 
         <item
-
-            android:title="This is the admin menu" />
-        <item
             android:id="@+id/Admin_Home"
 
             android:title="Home" />
-        <item
-            android:id="@+id/Admin_Attendence"
+        <!--<item-->
+            <!--android:id="@+id/Admin_Attendence"-->
 
-            android:title="Attendence" />
-        <item
-            android:id="@+id/Admin_Payment"
+            <!--android:title="Attendence" />-->
+        <!--<item-->
+            <!--android:id="@+id/Admin_Payment"-->
 
-            android:title="Payment Records" /> 
+            <!--android:title="Payment Records" /> -->
 
         <item
             android:id="@+id/Admin_Settings"

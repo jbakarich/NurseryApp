@@ -2,9 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
 
-            android:title="This is the parent menu" />
         <item
             android:id="@+id/Parent_Home"
 
@@ -16,7 +14,7 @@
         <item
             android:id="@+id/Parent_Payment"
 
-            android:title="Payment Records" />
+            android:title="Make a payment" />
 
         <item
             android:id="@+id/Parent_Settings"
@@ -24,14 +22,14 @@
             android:title="Settings" />
 
         <item
-            android:id="@+id/Parent_Logout"
-
-            android:title="Log out" />
-
-        <item
             android:id="@+id/Parent_Profile"
 
             android:title="My Profile" />
+
+        <item
+            android:id="@+id/Parent_Logout"
+
+            android:title="Log out" />
     </group>
 
 </menu>

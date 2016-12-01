@@ -1,9 +1,7 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -15,6 +13,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -67,7 +67,38 @@ public class Admin_CreateUserFragment extends Fragment {
                     public void onClick(View v) {
                         Log.d(TAG, "Creating params");
                         Map<String, String> params = new HashMap<>();
-
+                        if(firstname.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(lastname.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(username.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(childname.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(address1.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(address2.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(phone.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
+                        if(email.getText().toString().equals("")){
+                            ThrowError();
+                            return;
+                        }
                         params.put("firstname", firstname.getText().toString());
                         params.put("lastname", lastname.getText().toString());
                         params.put("username", username.getText().toString());
@@ -93,6 +124,12 @@ public class Admin_CreateUserFragment extends Fragment {
         );
     }
 
+    void ThrowError(){
+        Toast toast = Toast.makeText(getContext(), "All fields must be entered.", Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+
     void MakeRequest(String url, Map<String, String> data){
         Log.d(TAG, "Making request to " + url);
         final Context context = getActivity();
@@ -107,7 +144,7 @@ public class Admin_CreateUserFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast toast = Toast.makeText(context, "An error has occured", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(context, "An error has occurred", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });

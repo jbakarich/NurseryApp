@@ -2,223 +2,203 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/call_button">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/call_button">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_margin="8dp"
+                android:id="@+id/client_home_attendenceCard">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:text="Wednesday, October 26, 2016"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lastcheckinText"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="20sp"
+                        android:textAlignment="viewStart"
+                        android:layout_below="@+id/lastcheckinTitle"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="13dp" />
+
+                    <TextView
+                        android:text="Attendence"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/attendenceTitle"
+                        android:maxLines="3"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignStart="@+id/lastcheckinTitle" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lastcheckinTitle"
+                        android:maxLines="3"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAllCaps="false"
+                        android:textSize="20sp"
+                        android:textAlignment="inherit"
+                        android:layout_marginStart="11dp"
+                        android:text="Last Check In:"
+                        android:layout_below="@+id/attendenceTitle"
+                        android:layout_alignParentStart="true" />
 
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:layout_margin="8dp"
-        android:id="@+id/client_home_cardview">
+                    <Button
+                        android:text="History"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/attendaceHistoryCardButton"
+                        android:background="@color/white"
+                        android:textColor="@color/colorPrimaryDark"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignEnd="@+id/attendenceTitle" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:text="Wednesday, October 26, 2016"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lastCheckInDateText"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="20sp"
-                android:textAlignment="viewStart"
-                android:layout_below="@+id/ActivityCardText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp" />
-
-            <TextView
-                android:text="Attendence"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/activitiesCardTitle"
-                android:maxLines="3"
-                android:padding="8dp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/ActivityCardText" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ActivityCardText"
-                android:maxLines="3"
-                android:padding="8dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                android:textAlignment="inherit"
-                android:layout_marginStart="11dp"
-                android:text="Last Check In:"
-                android:layout_below="@+id/activitiesCardTitle"
-                android:layout_alignParentStart="true" />
-
-            <Button
-                android:text="Call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/callButton"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimaryDark"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/paymentHistoryCardButton" />
-
-            <Button
-                android:text="History"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/attendaceHistoryCardButton"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimaryDark"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_alignParentBottom="true"
-                android:layout_alignEnd="@+id/activitiesCardTitle" />
-
-            <Button
-                android:text="Call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/attendenceCallButton"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimaryDark"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_alignParentBottom="true"
-                android:layout_alignEnd="@+id/ActivityCardText"
-                android:layout_toEndOf="@+id/callButton" />
+                    <Button
+                        android:text="Call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/attendenceCallButton"
+                        android:background="@color/white"
+                        android:textColor="@color/colorPrimaryDark"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_alignParentBottom="true"
+                        android:layout_toEndOf="@+id/attendaceHistoryCardButton" />
 
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:layout_margin="8dp"
-        android:id="@+id/client_home_cardview">
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:layout_margin="8dp"
+                android:id="@+id/client_home_paymentcard">
 
-            <TextView
-                android:text="Monday, November 1, 2016"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lastPaymentDateText"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="20sp"
-                android:textAlignment="viewStart"
-                android:layout_below="@+id/ActivityCardText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <TextView
-                android:text="Payment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/activitiesCardTitle"
-                android:maxLines="3"
-                android:padding="8dp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/ActivityCardText" />
+                    <TextView
+                        android:text="Payment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/PaymentTitle"
+                        android:maxLines="3"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@+id/makePaymentButton" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ActivityCardText"
-                android:maxLines="3"
-                android:padding="8dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                android:textAlignment="inherit"
-                android:layout_marginStart="11dp"
-                android:text="Next Payment Due:"
-                android:layout_below="@+id/activitiesCardTitle"
-                android:layout_alignParentStart="true" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/nextPaymentTitle"
+                        android:maxLines="3"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAllCaps="false"
+                        android:textSize="20sp"
+                        android:textAlignment="inherit"
+                        android:layout_marginStart="11dp"
+                        android:text="Next Payment Due:"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/PaymentTitle"
+                        android:layout_marginTop="11dp" />
 
-            <Button
-                android:text="Make Payment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/makePaymentButton"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimaryDark"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_alignParentBottom="true"
-                android:layout_toEndOf="@+id/paymentHistoryCardButton" />
+                    <TextView
+                        android:text="Monday, December 5, 2016"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lastPaymentDateText"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="20sp"
+                        android:textAlignment="viewStart"
+                        android:layout_below="@+id/PaymentTitle"
+                        android:layout_centerHorizontal="true" />
 
-            <Button
-                android:text="History"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/paymentHistoryCardButton"
-                android:background="@color/white"
-                android:textColor="@color/colorPrimaryDark"
-                style="@style/Widget.AppCompat.Button.Borderless"
-                android:layout_alignParentBottom="true"
-                android:layout_alignStart="@+id/ActivityCardText" />
+                    <Button
+                        android:text="Make Payment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/makePaymentButton"
+                        android:background="@color/white"
+                        android:textColor="@color/colorPrimaryDark"
+                        style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_marginStart="21dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentStart="true" />
 
 
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="175dp"
-        android:layout_margin="8dp"
-        android:id="@+id/client_home_cardview">
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_margin="8dp"
+                android:id="@+id/client_home_activitycard">
 
-            <TextView
-                android:text="Activities"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/activitiesCardTitle"
-                android:maxLines="3"
-                android:padding="8dp"
-                android:textColor="?android:attr/textColorSecondary"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/ActivityCardText" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ActivityCardText"
-                android:maxLines="3"
-                android:padding="8dp"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textAllCaps="false"
-                android:textSize="20sp"
-                android:textAlignment="inherit"
-                android:layout_marginStart="11dp"
-                android:text="Upcoming Activites:"
-                android:layout_below="@+id/activitiesCardTitle"
-                android:layout_alignParentStart="true" />
+                    <TextView
+                        android:text="Activities"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/activitiesTitle"
+                        android:maxLines="3"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignStart="@+id/lastcheckinTitle" />
 
-            <TextView
-                android:text="Naptime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lastCheckInDateText"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="20sp"
-                android:textAlignment="viewStart"
-                android:layout_below="@+id/ActivityCardText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="13dp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/activitiesTitleText"
+                        android:maxLines="3"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorPrimary"
+                        android:textAllCaps="false"
+                        android:textSize="20sp"
+                        android:textAlignment="inherit"
+                        android:layout_marginStart="11dp"
+                        android:text="Upcoming Activites:"
+                        android:layout_below="@+id/activitiesTitle"
+                        android:layout_alignParentStart="true" />
 
-
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                    <TextView
+                        android:text="Naptime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/ActivityTimeText"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="20sp"
+                        android:textAlignment="viewStart"
+                        android:layout_below="@+id/activitiesTitleText"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="20dp" />
 
 
-</LinearLayout>
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
     </ScrollView>
