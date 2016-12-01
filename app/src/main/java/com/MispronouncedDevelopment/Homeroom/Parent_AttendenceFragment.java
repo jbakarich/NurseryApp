@@ -136,8 +136,8 @@ public class Parent_AttendenceFragment extends Fragment {
                                               }
                 );
 
-//                TextView lastcheckin = (TextView) myView.findViewById(R.id.LastCheckedIn);
-//                lastcheckin.setText(AA_MainActivity.formatTime(lastcheckinDate));
+                TextView lastcheckin = (TextView) myView.findViewById(R.id.LastCheckedInDateText);
+                lastcheckin.setText("Last Checked in:\n"+AA_MainActivity.formatTime(lastcheckinDate));
 
                 parentAttendenceCalFragment.setBackgroundDrawableForDates(CheckInDates);
 //                parentAttendenceCalFragment.setCaldroidListener(listener);
