@@ -65,6 +65,7 @@ public class AA_LoginFragment extends Fragment {
 
 
                     public void onClick(View v) {
+
                         Map<String, String> params = new HashMap<>();
                         params.put("username", editName.getText().toString());
                         params.put("password", editPin.getText().toString());
