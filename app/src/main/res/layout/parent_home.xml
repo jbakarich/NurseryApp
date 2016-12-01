@@ -105,6 +105,17 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:text="Payment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/PaymentTitle"
+                        android:maxLines="3"
+                        android:padding="8dp"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:layout_alignParentTop="true"
+                        android:layout_toStartOf="@+id/makePaymentButton" />
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/nextPaymentTitle"
@@ -116,8 +127,20 @@
                         android:textAlignment="inherit"
                         android:layout_marginStart="11dp"
                         android:text="Next Payment Due:"
+                        android:layout_alignParentTop="true"
+                        android:layout_toEndOf="@+id/PaymentTitle"
+                        android:layout_marginTop="11dp" />
+
+                    <TextView
+                        android:text="Monday, December 5, 2016"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/lastPaymentDateText"
+                        android:textColor="?android:attr/textColorSecondary"
+                        android:textSize="20sp"
+                        android:textAlignment="viewStart"
                         android:layout_below="@+id/PaymentTitle"
-                        android:layout_alignParentStart="true" />
+                        android:layout_centerHorizontal="true" />
 
                     <Button
                         android:text="Make Payment"
@@ -127,42 +150,9 @@
                         android:background="@color/white"
                         android:textColor="@color/colorPrimaryDark"
                         style="@style/Widget.AppCompat.Button.Borderless"
+                        android:layout_marginStart="21dp"
                         android:layout_alignParentBottom="true"
-                        android:layout_toEndOf="@+id/paymentHistoryButton" />
-
-                    <Button
-                        android:text="History"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/paymentHistoryButton"
-                        android:background="@color/white"
-                        android:textColor="@color/colorPrimaryDark"
-                        style="@style/Widget.AppCompat.Button.Borderless"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignStart="@+id/nextPaymentTitle" />
-
-                    <TextView
-                        android:text="Monday, November 1, 2016"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/lastPaymentDateText"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:textSize="20sp"
-                        android:textAlignment="viewStart"
-                        android:layout_below="@+id/nextPaymentTitle"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="14dp" />
-
-                    <TextView
-                        android:text="Payment"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/PaymentTitle"
-                        android:maxLines="3"
-                        android:padding="8dp"
-                        android:textColor="?android:attr/textColorSecondary"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@+id/makePaymentButton" />
+                        android:layout_alignParentStart="true" />
 
 
                 </RelativeLayout>
