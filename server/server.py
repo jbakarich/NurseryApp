@@ -17,7 +17,6 @@ STATIC = os.path.join(PATH, 'static')
 
 
 class Root(object):
-
     @property
     def db(self):
         return cherrypy.request.db
