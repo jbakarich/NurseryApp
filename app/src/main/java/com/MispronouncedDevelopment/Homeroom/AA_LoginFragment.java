@@ -59,15 +59,17 @@ public class AA_LoginFragment extends Fragment {
     }
 
     public void login() {
+
         loginButton.setOnClickListener(
                 new View.OnClickListener() {
 
 
                     public void onClick(View v) {
+
                         Map<String, String> params = new HashMap<>();
                         params.put("username", editName.getText().toString());
                         params.put("password", editPin.getText().toString());
-                        String newUrl = prefs.getString("url", "Wrong!")+"CheckLogin";
+                        String newUrl = prefs.getString("url", "Wrong!") + "CheckLogin";
                         MakeRequest(newUrl, params);
                     }
 
@@ -75,7 +77,7 @@ public class AA_LoginFragment extends Fragment {
         );
     }
 
-    void MakeRequest(String url, Map<String, String> data){
+    void MakeRequest(String url, Map<String, String> data) {
 
         JSONObject obj = new JSONObject(data);
 
@@ -95,7 +97,7 @@ public class AA_LoginFragment extends Fragment {
         queue.add(request);
     }
 
-    void doLogin(JSONObject response){
+    void doLogin(JSONObject response) {
         Context context = getActivity();
         Toast toast;
 
@@ -104,7 +106,7 @@ public class AA_LoginFragment extends Fragment {
         try {
             myId = response.getInt("id");
             isAdmin = response.getString("isAdmin");
-            name =  response.getString("name");
+            name = response.getString("name");
 
             SharedPreferences.Editor editor = prefs.edit();
             editor.remove("USERID");
@@ -114,13 +116,13 @@ public class AA_LoginFragment extends Fragment {
             editor.remove("isAdmin");
             editor.putString("isAdmin", isAdmin);
             editor.commit();
-        }catch(JSONException ex) {
+        } catch (JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
             Log.d(TAG, "The data that came back to us was: " + response.toString());
             toast.show();
             return;//quit early
         }
-        if(name.equals("invalid")){
+        if (name.equals("invalid")) {
             toast = Toast.makeText(context, "Incorrect Login or PIN", Toast.LENGTH_SHORT);
             toast.show();
             return;//quit early
@@ -134,7 +136,7 @@ public class AA_LoginFragment extends Fragment {
         if (isAdmin.equals("True")) {
             fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_HomeFragment()).commit();
         } else {
-            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Parent_HomeFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.default_content_frame, new  Parent_HomeFragment()).commit();
         }
 
         Intent myIntent = new Intent(context, AA_MainActivity.class);
@@ -142,7 +144,24 @@ public class AA_LoginFragment extends Fragment {
         context.startActivity(myIntent);
     }
 
-    void ShowError(String error){
+    void ShowError(String error) {
         Log.d(TAG, "There was an error: " + error);
     }
+
+    public void bypass()
+    {
+
+        Context context = getActivity();
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_AttendenceFragment()).commit();
+        Intent myIntent = new Intent(context, AA_MainActivity.class);
+        startActivity(myIntent);
+        context.startActivity(myIntent);
+
+        return;
+    }
+
+
+
+
 }

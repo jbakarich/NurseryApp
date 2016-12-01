@@ -1,5 +1,6 @@
 package com.MispronouncedDevelopment.Homeroom;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
@@ -23,6 +24,7 @@ public class Parent_HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.parent_home, container, false);
+
         
         Parent_HomeFragment();
 
@@ -31,6 +33,9 @@ public class Parent_HomeFragment extends Fragment {
     }
 
     public void Parent_HomeFragment(){
+
+        final Context context = this.getContext();
+
 
         Button attendaceHistory = (Button) myView.findViewById(R.id.attendaceHistoryCardButton);
         Button callButton = (Button)myView.findViewById(R.id.attendenceCallButton);
@@ -66,12 +71,10 @@ public class Parent_HomeFragment extends Fragment {
         paymentHistroy.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
-                                              FragmentManager fragmentManager = getFragmentManager();
-                                              fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_PaymentFragment()).commit();
-
+                                              Intent myPaymentIntent = new Intent(context, AndroidPay.class);
+                                              startActivity(myPaymentIntent);
                                           }
                                       }
-
 
         );
 
