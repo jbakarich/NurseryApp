@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey
-from sqlalchemy.types import String, Integer, Date, Boolean, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column
+from sqlalchemy.types import String, Integer, Date, Boolean
 from base import Base
 
 
@@ -104,4 +103,3 @@ class Activity(Base):
             "time": self.time
         }
         return data
-
