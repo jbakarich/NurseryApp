@@ -205,6 +205,16 @@ class Root(object):
         return json.dumps(newObj, indent=4)
 
     @cherrypy.expose
+    def getPhone(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                return json.dumps({"phonenumber": x.toDict()['phone']}, indent=4)
+        return json.dumps({"failure": "failure"}, indent=4)
+
+    @cherrypy.expose
     def CheckIn(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
