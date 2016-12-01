@@ -1,6 +1,9 @@
 package com.MispronouncedDevelopment.Homeroom;
 
+        import android.content.Context;
         import android.content.Intent;
+        import android.graphics.Color;
+        import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
         import android.support.v7.app.AppCompatActivity;
         import android.view.View;
@@ -24,6 +27,12 @@ package com.MispronouncedDevelopment.Homeroom;
         import com.google.android.gms.wallet.fragment.WalletFragmentMode;
         import com.google.android.gms.wallet.fragment.WalletFragmentOptions;
         import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
+        import com.roomorama.caldroid.CaldroidFragment;
+        import com.roomorama.caldroid.CaldroidListener;
+
+        import java.text.DateFormat;
+        import java.util.Date;
+        import java.util.HashMap;
 
 
 /**
@@ -58,8 +67,54 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        View myView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parent_payment_history);
+
+        final Context context = this;
+
+
+        CaldroidFragment parentPaymentCalFragment = new CaldroidFragment(); //initialize Caldroid Fragment
+        Bundle args = new Bundle();
+        args.putInt( CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY );//pass default arguments
+        parentPaymentCalFragment.setArguments( args );
+
+        DateFormat df = DateFormat.getDateInstance();
+        HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
+        ColorDrawable background = new ColorDrawable(Color.LTGRAY);
+
+        final CaldroidListener listener = new CaldroidListener() {
+
+            @Override
+            public void onSelectDate(Date date, View view) {
+
+                String toast = "Payment Of AMOUNT on DATE";
+                Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
+            }
+
+        };
+
+        try {
+
+            CheckInDates.put(df.parse("November 29, 2016"), background);
+
+
+        }catch(java.text.ParseException e){;}
+
+
+
+
+
+
+
+        parentPaymentCalFragment.setBackgroundDrawableForDates(CheckInDates);
+        parentPaymentCalFragment.setCaldroidListener(listener);
+        this.getSupportFragmentManager().beginTransaction().replace( R.id.payment_cal_container , parentPaymentCalFragment).commit();
+
+
+
+
+
 
         // Check if WalletFragment exists
         mWalletFragment = (SupportWalletFragment) getSupportFragmentManager()

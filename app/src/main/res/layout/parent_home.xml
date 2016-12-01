@@ -170,7 +170,7 @@
 
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="175dp"
+                android:layout_height="150dp"
                 android:layout_margin="8dp"
                 android:id="@+id/client_home_activitycard">
 
@@ -214,7 +214,7 @@
                         android:textAlignment="viewStart"
                         android:layout_below="@+id/activitiesTitleText"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="13dp" />
+                        android:layout_marginTop="20dp" />
 
 
                 </RelativeLayout>
