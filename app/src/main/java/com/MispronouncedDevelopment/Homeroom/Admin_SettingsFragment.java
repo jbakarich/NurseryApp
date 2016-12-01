@@ -92,7 +92,7 @@ public class Admin_SettingsFragment extends Fragment {
                         }
 
                         params.put("name", activityDescription.getText().toString());
-                        String time = activityClock.getHour() + " : " + activityClock.getMinute();
+                        String time = 1480550400 + (activityClock.getHour()*3600) + (activityClock.getMinute()*60) + "";
                         params.put("time", time);
 
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
