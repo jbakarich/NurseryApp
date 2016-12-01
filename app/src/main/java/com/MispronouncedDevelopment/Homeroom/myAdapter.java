@@ -1,6 +1,8 @@
 package com.MispronouncedDevelopment.Homeroom;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -22,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -48,6 +51,7 @@ public class myAdapter extends ArrayAdapter<String> {
         final TextView childName = (TextView) rowView.findViewById(R.id.childName);
         TextView childDate = (TextView) rowView.findViewById(R.id.childDate);
         Button profileBtn = (Button) rowView.findViewById(R.id.viewProfileBtn);
+        Button callBtn = (Button) rowView.findViewById(R.id.callBtn);
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
 
         View.OnClickListener viewProfile = new View.OnClickListener() {
@@ -95,6 +99,45 @@ public class myAdapter extends ArrayAdapter<String> {
             }
         };
 
+        View.OnClickListener callParent = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String url = prefs.getString("url", "Wrong!")+"getPhone";
+                Map<String, String> params = new HashMap<>();
+                params.put("name", childName.getText()+"");
+
+                JSONObject obj = new JSONObject(params);
+                JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "got phone number");
+                        Intent callIntent = new Intent(Intent.ACTION_CALL);
+                        try {
+                            callIntent.setData(Uri.parse("tel:" + response.getString("phonenumber").toString()));
+                        } catch (JSONException e){
+                            Log.d(TAG, e.toString());
+                        }
+                        Activity myAct = (AA_MainActivity) getContext();
+                        try{
+                            myAct.startActivity(callIntent);
+                        } catch(SecurityException e){
+                            Log.d(TAG, "User didn't give permission to use phone!");
+                        }
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, error.toString());
+                    }
+                });
+
+                RequestQueue queue = Volley.newRequestQueue(getContext());
+                queue.add(request);
+            }
+        };
+
+        callBtn.setOnClickListener(callParent);
         profileBtn.setOnClickListener(viewProfile);
         checkBox.setOnClickListener(checkin);
         SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());

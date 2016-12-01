@@ -205,6 +205,16 @@ class Root(object):
         return json.dumps(newObj, indent=4)
 
     @cherrypy.expose
+    def getPhone(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                return json.dumps({"phonenumber": x.toDict()['phone']}, indent=4)
+        return json.dumps({"failure": "failure"}, indent=4)
+
+    @cherrypy.expose
     def CheckIn(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
@@ -254,6 +264,29 @@ class Root(object):
                     x.pin = b['password']
                     return json.dumps({"success": "success"}, indent=2)
         return json.dumps({"failure": "failure"}, indent=2)
+
+    @cherrypy.expose
+    def GetAttendence(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        dates = self.db.query(models.Attendance)
+        datesArr = {
+            "data": []
+        }
+        print "\n\nwe got:\n{}".format(b)
+        for x in dates:
+            print "comapring {} to {}".format(b['username'], x.toDict()['user'])
+            if b["username"] == x.toDict()["user"]:
+                print "here"
+                datesArr['data'].append({
+                    "checkinTime": x.toDict()['checkin'],
+                    "checkoutTime": x.toDict()['checkout']
+                })
+        print "we are returning:"
+        print json.dumps(datesArr, indent=4)
+        return json.dumps(datesArr, indent=4)
+
+
 
 
 def get_cp_config():
