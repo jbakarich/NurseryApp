@@ -1,5 +1,7 @@
 package com.MispronouncedDevelopment.Homeroom;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.SharedPreferences;
@@ -44,6 +46,8 @@ public class Parent_ProfileFragment extends Fragment {
         GetProfile(name);
 
         Button editProfile = (Button) myView.findViewById(R.id.parent_editProfile);
+        Button makePayment = (Button) myView.findViewById(R.id.parent_paymentButton);
+
         editProfile.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
@@ -51,6 +55,19 @@ public class Parent_ProfileFragment extends Fragment {
                                                     fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_EditProfileFragment()).commit();
                                                 }
                                }
+
+
+        );
+
+        makePayment.setOnClickListener(new View.OnClickListener() {
+                                           @Override
+                                           public void onClick(View v) {
+
+                                               Context context = getActivity();
+                                               Intent myPaymentIntent = new Intent(context, AndroidPay.class);
+                                               startActivity(myPaymentIntent);
+                                           }
+                                       }
 
 
         );

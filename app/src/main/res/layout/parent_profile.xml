@@ -148,18 +148,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/parent_profile_lastPayment"
-                android:padding="8dp"
-                android:textSize="14sp"
-                android:text="Last payment was made October 12, 2016" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/parent_profile_nextPayment"
                 android:padding="8dp"
                 android:textSize="14sp"
-                android:text="The next payment will be due November 1, 2016"/>
+                android:text="The next payment will be due December 5, 2016"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -167,21 +159,20 @@
                 android:id="@+id/parent_profile_paymentDue"
                 android:padding="8dp"
                 android:textSize="14sp"
-                android:text="Parent currently owes $76.93"/>
+                android:text="Outstanding Balance of $76.93"/>
 
 
             <Button
-                android:text="View history"
+                android:text="Make Payment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/parent_paymentHistoryButton"
+                android:padding="10dp"
+                android:id="@+id/parent_paymentButton"
                 android:background="@color/white"
                 android:textColor="@color/colorPrimaryDark"
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_alignParentBottom="true"
                 android:layout_alignEnd="@+id/attendenceTitle" />
-
-
 
 
         </GridLayout>
