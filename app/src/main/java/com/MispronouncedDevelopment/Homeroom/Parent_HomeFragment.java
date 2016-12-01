@@ -32,19 +32,14 @@ public class Parent_HomeFragment extends Fragment {
 
     public void Parent_HomeFragment(){
 
-
         Button attendaceHistory = (Button) myView.findViewById(R.id.attendaceHistoryCardButton);
-
         Button callButton = (Button)myView.findViewById(R.id.attendenceCallButton);
-
-        Button paymentHistroy = (Button)myView.findViewById(R.id.paymentHistoryCardButton);
-
+        Button paymentHistroy = (Button)myView.findViewById(R.id.paymentHistoryButton);
         Button makePaymentButton = (Button)myView.findViewById(R.id.makePaymentButton);
 
         attendaceHistory.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
-
                                                     FragmentManager fragmentManager = getFragmentManager();
 
 

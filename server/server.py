@@ -43,7 +43,6 @@ class Root(object):
                 else:
                     response['isAdmin'] = "False"
         if AdminExist is False:
-            print "\n\nMade new admin!\n"
             self.db.add(models.User(
                 firstname="admin",
                 isAdmin=True,
@@ -62,8 +61,6 @@ class Root(object):
             response = {
                 "name": "invalid"
             }
-        print "Returning: \n"
-        print json.dumps(response, indent=2)
         return json.dumps(response, indent=2)
 
     @cherrypy.expose
@@ -92,9 +89,48 @@ class Root(object):
         return json.dumps({"added": "Successful"}, indent=2)
 
     @cherrypy.expose
-    def AdminHome(self, **kwargs):
-        print "were here!"
+    def EditProfile(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        print "we got this:"
+        print json.dumps(b, indent=2)
         allParents = self.db.query(models.User)
+        for x in allParents:
+            if x.toDict()['username'] == b['username']:
+                if x.toDict()['pin'] != b['password']:
+                    return json.dumps({"badpassword": "badpassword"}, indent=4)
+                if b['firstname'] != "":
+                    x.firstname = b['firstname']
+                if b['lastname'] != "":
+                    x.lastname = b['lastname']
+                if b['childname'] != "":
+                    x.childname = b['childname']
+                if b['phone'] != "":
+                    x.phone = b['phone']
+                if b['address1'] != "":
+                    x.address1 = b['address1']
+                if b['address2'] != "":
+                    x.address2 = b['address2']
+                if b['email'] != "":
+                    x.email = b['email']
+                return json.dumps({"success": "success"}, indent=4)
+        return json.dumps({"error": "error"}, indent=4)
+
+    @cherrypy.expose
+    def AddActivity(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        self.db.add(models.Activity(
+            name=b['name'],
+            time=b['time']
+        ))
+        self.db.commit()
+        return json.dumps({"success": "success"}, indent=4)
+
+    @cherrypy.expose
+    def AdminHome(self, **kwargs):
+        allParents = self.db.query(models.User)
+        attendenceRecords = self.db.query(models.Attendance)
         toReturn = {
             "children": [],
         }
@@ -106,17 +142,41 @@ class Root(object):
                 "username": newuser['username']
             }
 
-            attendenceRecords = self.db.query(models.Attendance)
             lastDate = 0
             for y in attendenceRecords:
-                lastDate = 0
                 if y.toDict()['user'] == newuser['username']:
                     if lastDate < y.toDict()['date']:
                         lastDate = y.toDict()['date']
             newobj['lastcheckin'] = lastDate
-
             toReturn["children"].append(newobj)
+        print json.dumps(toReturn, indent=4)
+        return json.dumps(toReturn, indent=4)
 
+    @cherrypy.expose
+    def ParentHome(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        attendenceRecords = self.db.query(models.Attendance)
+        activityRecords = self.db.query(models.Activity)
+        lastCheckin = 0
+        for x in attendenceRecords:
+            if b['name'] == x.toDict()['user']:
+                if lastCheckin < x.toDict()['checkout']:
+                    lastCheckin = x.toDict()['checkout']
+        latestActivity = "naptime"
+        activityTime = 9999999999
+        curTime = time.mktime(datetime.datetime.now().timetuple())
+        for y in activityRecords:
+            rec = y.toDict()
+            if rec['time'] > curTime and rec['time'] < activityTime:
+                activityTime = rec['time']
+                latestActivity = rec['name']
+
+        toReturn = {
+            "name": latestActivity,
+            "time": activityTime,
+            "lastcheckin": lastCheckin
+        }
         return json.dumps(toReturn, indent=4)
 
     @cherrypy.expose
@@ -124,20 +184,22 @@ class Root(object):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         parents = self.db.query(models.User)
+        newObj = {}
         for x in parents:
             if x.toDict()['username'] == b['name']:
                 newObj = {
                     "user": x.toDict()
                 }
                 break
-        if newObj:
-            attendance = self.db.query(models.Attendance)
-            newObj['attendencerecords'] = []
-            lastDate = 0
-            for y in attendance:
-                if y.toDict()['user'] == newObj['user']['username']:
-                    if lastDate < y.toDict()['date']:
-                        lastDate = y.toDict()['date']
+        if "user" not in newObj:
+            return json.dumps({"error": "error"}, indent=4)
+        attendance = self.db.query(models.Attendance)
+        newObj['attendencerecords'] = []
+        lastDate = 0
+        for y in attendance:
+            if y.toDict()['user'] == newObj['user']['username']:
+                if lastDate < y.toDict()['date']:
+                    lastDate = y.toDict()['date']
         newObj['lastcheckin'] = lastDate
 
         return json.dumps(newObj, indent=4)
@@ -174,10 +236,24 @@ class Root(object):
         records = self.db.query(models.Attendance)
         for y in records:
             if y.toDict()['ischeckedin'] is True and y.toDict()['user'] == b['name']:
-                y.CheckOut = datetime.time()
+                y.checkout = int(time.mktime(datetime.datetime.now().timetuple()))
                 y.ischeckedin = False
                 return "Attendence logged"
         return "error finding record"
+
+    @cherrypy.expose
+    def PasswordChange(self, **kwargs):
+        rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
+        b = json.loads(rawData)
+        parents = self.db.query(models.User)
+        for x in parents:
+            if x.toDict()['username'] == b['name']:
+                print "found correct parent"
+
+                if x.toDict()['pin'] == b['oldpassword']:
+                    x.pin = b['password']
+                    return json.dumps({"success": "success"}, indent=2)
+        return json.dumps({"failure": "failure"}, indent=2)
 
 
 def get_cp_config():

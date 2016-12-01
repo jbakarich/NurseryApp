@@ -1,6 +1,5 @@
-from sqlalchemy import Column, ForeignKey
-from sqlalchemy.types import String, Integer, Date, Boolean, DateTime
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column
+from sqlalchemy.types import String, Integer, Date, Boolean
 from base import Base
 
 
@@ -85,5 +84,22 @@ class Attendance(Base):
             "checkin": self.checkin,
             "checkout": self.checkout,
             "ischeckedin": self.ischeckedin
+        }
+        return data
+
+
+class Activity(Base):
+
+    __tablename__ = "activites"
+
+    id = Column(Integer, primary_key=True)
+
+    name = Column(String())
+    time = Column(Integer())
+
+    def toDict(self):
+        data = {
+            "name": self.name,
+            "time": self.time
         }
         return data

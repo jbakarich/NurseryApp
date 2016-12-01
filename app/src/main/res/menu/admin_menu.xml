@@ -4,9 +4,6 @@
     <group android:checkableBehavior="single">
 
         <item
-
-            android:title="This is the admin menu" />
-        <item
             android:id="@+id/Admin_Home"
 
             android:title="Home" />

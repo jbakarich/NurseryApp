@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -38,19 +39,31 @@ public class Parent_ProfileFragment extends Fragment {
         myView = inflater.inflate(R.layout.parent_profile, container, false);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String childname = prefs.getString("childname", "Josh");
+        String name = prefs.getString("username", "Josh");
 
-        GetProfile(childname);
+        GetProfile(name);
+
+        Button editProfile = (Button) myView.findViewById(R.id.parent_editProfile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    FragmentManager fragmentManager = getFragmentManager();
+                                                    fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_EditProfileFragment()).commit();
+                                                }
+                               }
+
+
+        );
 
         return myView;
     }
 
-    void GetProfile(String childname) {
+    void GetProfile(String name) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String url = prefs.getString("url", "Wrong!") + "RequestProfile";
 
         Map<String, String> params = new HashMap<>();
-        params.put("name", childname);
+        params.put("name", name);
 
         RequestProfile(url, params);
     }
@@ -78,6 +91,7 @@ public class Parent_ProfileFragment extends Fragment {
     void UpdateProfile(JSONObject response) {
 
         TextView firstName = (TextView) getView().findViewById(R.id.parent_profileName);
+        TextView childName = (TextView) getView().findViewById(R.id.parent_childName);
         TextView phone = (TextView) getView().findViewById(R.id.parent_profilePhone);
         TextView address1 = (TextView) getView().findViewById(R.id.parent_profileAddress1);
         TextView address2 = (TextView) getView().findViewById(R.id.parent_profileAddress2);
@@ -88,13 +102,15 @@ public class Parent_ProfileFragment extends Fragment {
 
         try {
             JSONObject parentInfo = response.getJSONObject("user");
-            firstName.setText(parentInfo.getString("username"));
+            String name = parentInfo.getString("firstname") + " " + parentInfo.getString("lastname");
+            firstName.setText(name);
+            childName.setText(parentInfo.getString("childname"));
             phone.setText(parentInfo.getString("phone"));
             address1.setText(parentInfo.getString("address1"));
             address2.setText(parentInfo.getString("address2"));
             email.setText(parentInfo.getString("email"));
-            lastcheckin.setText(response.getString("lastcheckin"));
-            membersince.setText(parentInfo.getString("creationdate"));
+            lastcheckin.setText(AA_MainActivity.formatTime(response.getInt("lastcheckin")));
+            membersince.setText(AA_MainActivity.formatTime(parentInfo.getInt("creationdate")));
 
         } catch (JSONException e) {
             Log.d(TAG, "err in response:" + e.toString());
