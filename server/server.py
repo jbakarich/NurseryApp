@@ -270,13 +270,20 @@ class Root(object):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
         dates = self.db.query(models.Attendance)
-        datesArr = []
+        datesArr = {
+            "data": []
+        }
+        print "\n\nwe got:\n{}".format(b)
         for x in dates:
+            print "comapring {} to {}".format(b['username'], x.toDict()['user'])
             if b["username"] == x.toDict()["user"]:
-                datesArr.append({
+                print "here"
+                datesArr['data'].append({
                     "checkinTime": x.toDict()['checkin'],
                     "checkoutTime": x.toDict()['checkout']
-                    })
+                })
+        print "we are returning:"
+        print json.dumps(datesArr, indent=4)
         return json.dumps(datesArr, indent=4)
 
 
