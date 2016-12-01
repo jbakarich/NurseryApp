@@ -146,7 +146,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
 //            Parent menus
             case R.id.Parent_Home:
+
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+                GetParentHome();
                 break;
             case R.id.Parent_Attendence:
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
