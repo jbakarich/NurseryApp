@@ -59,6 +59,7 @@ public class AA_LoginFragment extends Fragment {
     }
 
     public void login() {
+
         loginButton.setOnClickListener(
                 new View.OnClickListener() {
 
