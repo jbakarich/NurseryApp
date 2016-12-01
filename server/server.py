@@ -166,8 +166,11 @@ class Root(object):
         latestActivity = "naptime"
         activityTime = 9999999999
         curTime = time.mktime(datetime.datetime.now().timetuple())
+        print "\n\nstart activity loop:\n"
         for y in activityRecords:
             rec = y.toDict()
+            print "checking activity:"
+            print json.dumps(y.toDict())
             if rec['time'] > curTime and rec['time'] < activityTime:
                 activityTime = rec['time']
                 latestActivity = rec['name']
@@ -177,6 +180,7 @@ class Root(object):
             "time": activityTime,
             "lastcheckin": lastCheckin
         }
+        print json.dumps(toReturn, indent=2)
         return json.dumps(toReturn, indent=4)
 
     @cherrypy.expose
