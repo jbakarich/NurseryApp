@@ -74,42 +74,42 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
         final Context context = this;
 
 
-        CaldroidFragment parentPaymentCalFragment = new CaldroidFragment(); //initialize Caldroid Fragment
-        Bundle args = new Bundle();
-        args.putInt( CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY );//pass default arguments
-        parentPaymentCalFragment.setArguments( args );
+//        CaldroidFragment parentPaymentCalFragment = new CaldroidFragment(); //initialize Caldroid Fragment
+//        Bundle args = new Bundle();
+//        args.putInt( CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY );//pass default arguments
+//        parentPaymentCalFragment.setArguments( args );
 
-        DateFormat df = DateFormat.getDateInstance();
-        HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
-        ColorDrawable background = new ColorDrawable(Color.LTGRAY);
+//        DateFormat df = DateFormat.getDateInstance();
+//        HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
+//        ColorDrawable background = new ColorDrawable(Color.LTGRAY);
 
-        final CaldroidListener listener = new CaldroidListener() {
-
-            @Override
-            public void onSelectDate(Date date, View view) {
-
-                String toast = "Payment Of AMOUNT on DATE";
-                Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
-            }
-
-        };
-
-        try {
-
-            CheckInDates.put(df.parse("November 29, 2016"), background);
-
-
-        }catch(java.text.ParseException e){;}
-
-
+//        final CaldroidListener listener = new CaldroidListener() {
+//
+//            @Override
+//            public void onSelectDate(Date date, View view) {
+//
+//                String toast = "Payment Of AMOUNT on DATE";
+//                Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
+//            }
+//
+//        };
+//
+//        try {
+//
+//            CheckInDates.put(df.parse("November 29, 2016"), background);
+//
+//
+//        }catch(java.text.ParseException e){;}
 
 
 
 
 
-        parentPaymentCalFragment.setBackgroundDrawableForDates(CheckInDates);
-        parentPaymentCalFragment.setCaldroidListener(listener);
-        this.getSupportFragmentManager().beginTransaction().replace( R.id.payment_cal_container , parentPaymentCalFragment).commit();
+
+
+//        parentPaymentCalFragment.setBackgroundDrawableForDates(CheckInDates);
+//        parentPaymentCalFragment.setCaldroidListener(listener);
+//        this.getSupportFragmentManager().beginTransaction().replace( R.id.payment_cal_container , parentPaymentCalFragment).commit();
 
 
 

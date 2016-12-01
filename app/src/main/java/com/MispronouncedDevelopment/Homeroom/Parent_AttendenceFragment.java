@@ -108,7 +108,7 @@ public class Parent_AttendenceFragment extends Fragment {
 //                                CheckInDates.put(df.parse("November 12, 2016"), background1);
                                 CheckInDates.put(df.parse(formatDate(newDate.getInt("checkoutTime"))), background1);
                             } else if (newDate.has("checkinTime")) {
-                                //use different color 
+                                //use different color
                                 CheckInDates.put(df.parse(newDate.getInt("checkoutTime")+""), background2);
                             }
                         } catch (ParseException o){
