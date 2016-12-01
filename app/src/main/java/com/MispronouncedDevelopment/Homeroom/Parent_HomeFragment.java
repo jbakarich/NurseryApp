@@ -39,7 +39,6 @@ public class Parent_HomeFragment extends Fragment {
 
         Button attendaceHistory = (Button) myView.findViewById(R.id.attendaceHistoryCardButton);
         Button callButton = (Button)myView.findViewById(R.id.attendenceCallButton);
-        Button paymentHistroy = (Button)myView.findViewById(R.id.paymentHistoryButton);
         Button makePaymentButton = (Button)myView.findViewById(R.id.makePaymentButton);
 
         attendaceHistory.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +67,7 @@ public class Parent_HomeFragment extends Fragment {
 
         );
 
-        paymentHistroy.setOnClickListener(new View.OnClickListener() {
+        makePaymentButton.setOnClickListener(new View.OnClickListener() {
                                           @Override
                                           public void onClick(View v) {
                                               Intent myPaymentIntent = new Intent(context, AndroidPay.class);

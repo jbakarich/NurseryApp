@@ -131,12 +131,12 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
                 GetCards();
                 break;
-            case R.id.Admin_Attendence:
-                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
-                break;
-            case R.id.Admin_Payment:
-                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
-                break;
+//            case R.id.Admin_Attendence:
+//                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
+//                break;
+//            case R.id.Admin_Payment:
+//                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
+//                break;
             case R.id.Admin_Settings:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
                 break;
@@ -146,7 +146,9 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
 //            Parent menus
             case R.id.Parent_Home:
+
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
+                GetParentHome();
                 break;
             case R.id.Parent_Attendence:
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();

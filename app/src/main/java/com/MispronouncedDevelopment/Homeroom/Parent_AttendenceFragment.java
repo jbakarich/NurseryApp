@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
@@ -84,32 +85,26 @@ public class Parent_AttendenceFragment extends Fragment {
 
                 HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
                 DateFormat df = DateFormat.getDateInstance();
-                ColorDrawable background1 = new ColorDrawable(Color.GREEN);
+                ColorDrawable background1 = new ColorDrawable(Color.rgb(51, 153, 255));
                 ColorDrawable background2 = new ColorDrawable(Color.RED);
 
-                final CaldroidListener listener = new CaldroidListener() {
 
-                    @Override
-                    public void onSelectDate(Date date, View view) {
 
-                        String toast = "NAME was checked in at TIME on DATE";
-                        Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
-                    }
-
-                };
-
+                int lastcheckinDate = 0;
                 try {
                     JSONArray myArr = response.getJSONArray("data");
 
                     for (int i = 0; i < myArr.length(); i++) {
                         JSONObject newDate = myArr.getJSONObject(i);
                         try {
-                            if (newDate.has("checkoutTime")) {
-//                                CheckInDates.put(df.parse("November 12, 2016"), background1);
+                            if (newDate.has("checkoutTime") && newDate.getInt("checkoutTime") > 10) {
+                                if(newDate.getInt("checkoutTime") > lastcheckinDate){
+                                    lastcheckinDate = newDate.getInt("checkoutTime");
+                                }
                                 CheckInDates.put(df.parse(formatDate(newDate.getInt("checkoutTime"))), background1);
                             } else if (newDate.has("checkinTime")) {
                                 //use different color
-                                CheckInDates.put(df.parse(newDate.getInt("checkoutTime")+""), background2);
+                                CheckInDates.put(df.parse(formatDate(newDate.getInt("checkoutTime"))), background2);
                             }
                         } catch (ParseException o){
                             Log.d(TAG, "from parsing: " + o.toString());
@@ -118,6 +113,17 @@ public class Parent_AttendenceFragment extends Fragment {
                 } catch(JSONException e){
                     Log.d(TAG, "error in response: " + e.toString());
                 }
+
+//                final CaldroidListener listener = new CaldroidListener() {
+//
+//                    @Override
+//                    public void onSelectDate(Date date, View view) {
+//
+//                        String toast = "NAME was checked in at TIME on DATE";
+//                        Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                };
 
                 Button callButton = (Button)myView.findViewById(R.id.ParentAttendenceCallButton); //onClick Listener for Call Button
                 callButton.setOnClickListener(new View.OnClickListener() {
@@ -130,8 +136,11 @@ public class Parent_AttendenceFragment extends Fragment {
                                               }
                 );
 
+                TextView lastcheckin = (TextView) myView.findViewById(R.id.LastCheckedInDateText);
+                lastcheckin.setText("Last Checked in:\n"+AA_MainActivity.formatTime(lastcheckinDate));
+
                 parentAttendenceCalFragment.setBackgroundDrawableForDates(CheckInDates);
-                parentAttendenceCalFragment.setCaldroidListener(listener);
+//                parentAttendenceCalFragment.setCaldroidListener(listener);
                 getActivity().getSupportFragmentManager().beginTransaction().replace( R.id.cal_container , parentAttendenceCalFragment ).commit();
 
             }
