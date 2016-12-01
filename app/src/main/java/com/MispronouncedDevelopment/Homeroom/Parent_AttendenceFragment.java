@@ -85,7 +85,7 @@ public class Parent_AttendenceFragment extends Fragment {
 
                 HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
                 DateFormat df = DateFormat.getDateInstance();
-                ColorDrawable background1 = new ColorDrawable(Color.GREEN);
+                ColorDrawable background1 = new ColorDrawable(Color.rgb(51, 153, 255));
                 ColorDrawable background2 = new ColorDrawable(Color.RED);
 
 
@@ -97,14 +97,14 @@ public class Parent_AttendenceFragment extends Fragment {
                     for (int i = 0; i < myArr.length(); i++) {
                         JSONObject newDate = myArr.getJSONObject(i);
                         try {
-                            if (newDate.has("checkoutTime")) {
+                            if (newDate.has("checkoutTime") && newDate.getInt("checkoutTime") > 10) {
                                 if(newDate.getInt("checkoutTime") > lastcheckinDate){
                                     lastcheckinDate = newDate.getInt("checkoutTime");
                                 }
                                 CheckInDates.put(df.parse(formatDate(newDate.getInt("checkoutTime"))), background1);
                             } else if (newDate.has("checkinTime")) {
                                 //use different color
-                                CheckInDates.put(df.parse(newDate.getInt("checkoutTime")+""), background2);
+                                CheckInDates.put(df.parse(formatDate(newDate.getInt("checkoutTime"))), background2);
                             }
                         } catch (ParseException o){
                             Log.d(TAG, "from parsing: " + o.toString());
