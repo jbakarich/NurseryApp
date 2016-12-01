@@ -1,6 +1,8 @@
 package com.MispronouncedDevelopment.Homeroom;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Context;
@@ -48,6 +50,7 @@ public class myAdapter extends ArrayAdapter<String> {
         final TextView childName = (TextView) rowView.findViewById(R.id.childName);
         TextView childDate = (TextView) rowView.findViewById(R.id.childDate);
         Button profileBtn = (Button) rowView.findViewById(R.id.viewProfileBtn);
+        Button callBtn = (Button) rowView.findViewById(R.id.callBtn);
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
 
         View.OnClickListener viewProfile = new View.OnClickListener() {
@@ -95,6 +98,21 @@ public class myAdapter extends ArrayAdapter<String> {
             }
         };
 
+        View.OnClickListener callParent = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:123456789"));
+                Activity myAct = (AA_MainActivity) getContext();
+                try{
+                    myAct.startActivity(callIntent);
+                } catch(SecurityException e){
+                    Log.d(TAG, "User didn't give permission to use phone!");
+                }
+            }
+        };
+
+        callBtn.setOnClickListener(viewProfile);
         profileBtn.setOnClickListener(viewProfile);
         checkBox.setOnClickListener(checkin);
         SharedPreferences mySPrefs = PreferenceManager.getDefaultSharedPreferences(getContext());

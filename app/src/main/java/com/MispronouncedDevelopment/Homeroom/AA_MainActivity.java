@@ -393,7 +393,6 @@ class HomeCard{
         id = newId;
     }
 
-    public int getDate(){ return date; }
 }
 
 
