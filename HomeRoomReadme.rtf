@@ -1,0 +1,38 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1504\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;\csgray\c100000;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Welcome to Homeroom, an app to ease day to day management of children in a daycare center.\
+\
+To begin, you\'92ll need Android Studio. Get it.\
+While you wait for it download, go ahead on clone this repo from GitHub here:\
+\
+https://github.com/jbakarich/NurseryApp.git\
+\
+This application is split into two main components: the App and the server. \
+To run the server, cd into the server directory within the Nursery app.\
+type python server.py\
+If you get any errors, this means you may not have all of the libraries or an incorrect version of python.\
+The server runs on python 2.7 and is untested on python 3.XX\
+Other libraries you may need are cherrypy and sqlalchemy. Both can be installed via home-brew or pip.\
+\
+The second part of the app, the app itself, needs android studio to run. Once downloaded, go ahead and open the NurseryApp in it. Most likely, you\'92ll be missing a ton of frameworks. When you first sync the project, android will ask you to download and install said libraries, do so now. Once the frameworks are all installed, you can either test right now on your own phone if it\'92s connected or you can download a virtual device and run it there. \
+\
+Side notes:\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 Version and package information can be found in build.gradle in the Gradle Scripts folder\
+You\'92ll need to know these if you download a virtual device to run the correct API\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 AA_LoginActivity.java has a hardcoded ip address, for the app to communicate to the server, you need to change this ip to the location of the server.\
+\
+All ui scripts are in res/layout and res/menu folders\
+\
+All Java scripts in java/com.MispronouncedDevelopment.Homeroom folder\
+\
+Activity and permissions information can be found in the AndroidManifest.xml\
+}
