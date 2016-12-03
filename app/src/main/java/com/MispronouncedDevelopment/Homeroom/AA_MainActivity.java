@@ -42,11 +42,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-
+/**
+ * AA_MAinActivity
+ * The 'heart' of the app.
+ * This class handles almost all user interaction for both parents and admins.
+ */
 public class AA_MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "MainActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     SharedPreferences prefs;
-    private String parentName = "";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -64,7 +66,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String isAdmin = prefs.getString("isAdmin", "Falese");
-        Log.d(TAG, isAdmin + " is what we got");
         if (isAdmin.equals("True")) {
             setContentView(R.layout.admin_main);
             toolbar = (Toolbar) findViewById(R.id.admin_toolbar);
@@ -119,6 +120,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         return super.onOptionsItemSelected(item);
     }
 
+    /*This handles all menu control for both sides of the app. */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -131,12 +133,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_HomeFragment()).commit();
                 GetCards();
                 break;
-//            case R.id.Admin_Attendence:
-//                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_AttendenceFragment()).commit();
-//                break;
-//            case R.id.Admin_Payment:
-//                fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_PaymentFragment()).commit();
-//                break;
             case R.id.Admin_Settings:
                 fragmentManager.beginTransaction().replace(R.id.admin_content_frame, new Admin_SettingsFragment()).commit();
                 break;
@@ -146,7 +142,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
 //            Parent menus
             case R.id.Parent_Home:
-
                 fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_HomeFragment()).commit();
                 GetParentHome();
                 break;
@@ -180,7 +175,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
                 context.startActivity(myLogoutIntent);
                 break;
             default:
-                Log.d(TAG, "Error in the menu switch");
+                Log.d("AA_MainActivity", "Error in the menu switch");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(prefs.getString("isAdmin", "False").equals("True") ? R.id.admin_drawer_layout : R.id.parent_drawer_layout);
@@ -188,6 +183,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         return true;
     }
 
+    /*Requests data on parent from the server */
     void GetParentHome() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String url = prefs.getString("url", "Wrong!") + "ParentHome";
@@ -196,7 +192,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         params.put("name", prefs.getString("username", "josh"));
 
         JSONObject obj = new JSONObject(params);
-        Log.d(TAG, "Trying call to: " + url);
 
         JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
             @Override
@@ -214,6 +209,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         queue.add(request);
     }
 
+    /*updates parent home screen if server request is successful*/
     void UpdateHome(JSONObject response) {
         TextView lastcheckin = (TextView) findViewById(R.id.lastcheckinText);
         TextView activityNameText = (TextView) findViewById(R.id.activitiesTitleText);
@@ -226,7 +222,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
             activityTime = response.getInt("time");
             activityName = response.getString("name");
         } catch (JSONException e) {
-            Log.d(TAG, "err in response:" + e.toString());
+            Log.d("MainActivity", "err in response:" + e.toString());
         }
 
         activityNameText.setText(activityName);
@@ -234,6 +230,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         lastcheckin.setText(formatTime(time));
     }
 
+    /*Requests all parent info from server*/
     void GetCards() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String url = prefs.getString("url", "Wrong!") + "AdminHome";
@@ -242,7 +239,6 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         params.put("id", prefs.getInt("id", -1) + "");
 
         JSONObject obj = new JSONObject(params);
-        Log.d(TAG, "Trying call to: " + url);
 
         JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
             @Override
@@ -260,6 +256,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         queue.add(request);
     }
 
+    /*Updates/populates admin home section with parent card data if request is successful*/
     void UpdateCards(JSONObject response) {
         List<HomeCard> childCards = new ArrayList<>();
         final ListView listview = (ListView) findViewById(R.id.listview);
@@ -313,13 +310,13 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
 
             });
         } catch (JSONException e) {
-            Log.d(TAG, "err in response:" + e.toString());
+            Log.d("MainActivity", "err in response:" + e.toString());
         }
     }
 
 
     void ShowError(String error) {
-        Log.d(TAG, "MakeRequest function: There was an error: " + error);
+        Log.d("Main Activity", "MakeRequest function: There was an error: " + error);
         //this probably occurs if there was a problem with the connection,
         //therefore we should probably try again in like 1 minute.
     }
@@ -360,7 +357,7 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
         client.disconnect();
     }
 
-
+    /*Formats time from unix timestamp to human readable date*/
     public static String formatTime(int cur) {
         //taken from http://stackoverflow.com/questions/17432735/convert-unix-time-stamp-to-date-in-java
         long unixSeconds = cur;
@@ -372,6 +369,10 @@ public class AA_MainActivity extends AppCompatActivity implements NavigationView
     }
 }
 
+/**
+ * HomeCard
+ * Simple data structure to hold data on cards for admin
+ */
 class HomeCard{
     String name;
     int date;
