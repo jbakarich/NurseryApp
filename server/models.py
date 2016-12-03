@@ -2,6 +2,8 @@ from sqlalchemy import Column
 from sqlalchemy.types import String, Integer, Date, Boolean
 from base import Base
 
+# Models for the database, each with a toDict() method that returns all of the info stored
+
 
 class User(Base):
 
