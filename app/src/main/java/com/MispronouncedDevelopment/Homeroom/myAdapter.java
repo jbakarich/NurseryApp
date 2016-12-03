@@ -31,12 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Cyrille on 11/10/16.
+ * myAdapter
+ * Handles the dynamic population of homecards on the admin home screen.
  */
 public class myAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[] values;
-    private final String TAG = "adapter";
 
     public myAdapter(Context context, String[] values) {
         super(context, R.layout.admin_homecard, values);
@@ -85,12 +85,12 @@ public class myAdapter extends ArrayAdapter<String> {
                 JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "User has checked in");
+                        Log.d("Adapter", "User has checked in");
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, error.toString());
+                        Log.d("Adapter", error.toString());
                     }
                 });
 
@@ -111,24 +111,23 @@ public class myAdapter extends ArrayAdapter<String> {
                 JsonObjectRequest request = new JsonObjectRequest(url, obj, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG, "got phone number");
                         Intent callIntent = new Intent(Intent.ACTION_CALL);
                         try {
                             callIntent.setData(Uri.parse("tel:" + response.getString("phonenumber").toString()));
                         } catch (JSONException e){
-                            Log.d(TAG, e.toString());
+                            Log.d("Adapter", e.toString());
                         }
                         Activity myAct = (AA_MainActivity) getContext();
                         try{
                             myAct.startActivity(callIntent);
                         } catch(SecurityException e){
-                            Log.d(TAG, "User didn't give permission to use phone!");
+                            Log.d("Adapter", "User didn't give permission to use phone!");
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, error.toString());
+                        Log.d("Adapter", error.toString());
                     }
                 });
 

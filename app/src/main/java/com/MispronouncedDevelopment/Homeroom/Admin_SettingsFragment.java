@@ -30,13 +30,16 @@ import java.util.Map;
  * Created by Cyrille on 10/24/16.
  */
 
+/**
+ * Admin_SettingsFragment
+ * Handles all settings and activity creation for admins
+ */
 public class Admin_SettingsFragment extends Fragment {
 
     View myView;
     Button passwordSubmit, activitySubmit;
     EditText passwordA, passwordB, oldPassword, activityDescription;
     TimePicker activityClock;
-    private String TAG = "admin settings";
 
     @Nullable
     @Override
@@ -105,6 +108,7 @@ public class Admin_SettingsFragment extends Fragment {
         return myView;
     }
 
+    /*Sends data to server about a new activity logged*/
     void SubmitActivity(String url, Map<String, String> data){
         JSONObject obj = new JSONObject(data);
 
@@ -126,11 +130,11 @@ public class Admin_SettingsFragment extends Fragment {
                 toast.show();
             }
         });
-
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         queue.add(request);
     }
 
+    /*Sends new/old passwords to server to update them.*/
     void MakeRequest(String url, Map<String, String> data) {
         JSONObject obj = new JSONObject(data);
 

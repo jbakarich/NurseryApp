@@ -14,7 +14,6 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,12 +27,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Cyrille on 11/7/16.
+ * Admin_CreateUserFragment
+ * Gets all data from create user page and sends it to the server.
  */
 
 public class Admin_CreateUserFragment extends Fragment {
     View myView;
-    String TAG = "CreateUserFragment";
     Button submitBtn;
     EditText firstname, lastname, username, childname, address1, address2, phone, email;
     CheckBox isAdmin;
@@ -53,7 +52,6 @@ public class Admin_CreateUserFragment extends Fragment {
         phone = (EditText) myView.findViewById(R.id.newUserPhone);
         email = (EditText) myView.findViewById(R.id.newUserEmail);
         isAdmin = (CheckBox) myView.findViewById(R.id.newUserIsAdmin);
-        Log.d(TAG, "Creating view");
 
         submitnewuser();
         return myView;
@@ -65,7 +63,6 @@ public class Admin_CreateUserFragment extends Fragment {
 
 
                     public void onClick(View v) {
-                        Log.d(TAG, "Creating params");
                         Map<String, String> params = new HashMap<>();
                         if(firstname.getText().toString().equals("")){
                             ThrowError();
@@ -131,7 +128,6 @@ public class Admin_CreateUserFragment extends Fragment {
 
 
     void MakeRequest(String url, Map<String, String> data){
-        Log.d(TAG, "Making request to " + url);
         final Context context = getActivity();
         JSONObject obj = new JSONObject(data);
 
