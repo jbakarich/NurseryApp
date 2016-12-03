@@ -1,7 +1,6 @@
 package com.MispronouncedDevelopment.Homeroom;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -25,12 +24,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Cyrille on 11/8/16.
+ * Admin_ProfileFragment
+ * Allows admin to view details about any of the parents.
  */
 
 public class Admin_ProfileFragment extends Fragment {
     View myView;
-    private String TAG = "Admin profile fragment";
 
     @Nullable
     @Override
@@ -55,6 +54,7 @@ public class Admin_ProfileFragment extends Fragment {
         RequestProfile(url, params);
     }
 
+    /*Makes a request to the server for user data*/
     void RequestProfile(String url, Map<String, String> data) {
 
         JSONObject obj = new JSONObject(data);
@@ -67,7 +67,7 @@ public class Admin_ProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, error.toString());
+                Log.d("Admin Profile", error.toString());
             }
         });
 
@@ -75,8 +75,8 @@ public class Admin_ProfileFragment extends Fragment {
         queue.add(request);
     }
 
+    /*On response from server, populates the profile page*/
     void UpdateProfile(JSONObject response) {
-        Log.d(TAG, "got a response: " + response.toString());
 
         TextView firstName = (TextView) getView().findViewById(R.id.admin_profileName);
         TextView phone = (TextView) getView().findViewById(R.id.admin_profilePhone);
@@ -98,7 +98,7 @@ public class Admin_ProfileFragment extends Fragment {
             membersince.setText("Member since: " + AA_MainActivity.formatTime(parentInfo.getInt("creationdate")));
 
         } catch (JSONException e) {
-            Log.d(TAG, "err in response:" + e.toString());
+            Log.d("Admin Profile", "err in response:" + e.toString());
         }
     }
 }

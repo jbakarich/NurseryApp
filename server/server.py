@@ -16,12 +16,15 @@ PATH = os.path.abspath(os.path.join(os.path.dirname(__file__)))
 STATIC = os.path.join(PATH, 'static')
 
 
-class Root(object):
+# Stores all server calls and database transactions.
 
+
+class Root(object):
     @property
     def db(self):
         return cherrypy.request.db
 
+    # checks to see if login credials match database
     @cherrypy.expose
     def CheckLogin(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -63,6 +66,7 @@ class Root(object):
             }
         return json.dumps(response, indent=2)
 
+    # adds a new user to the database and sets a default pin to 1234
     @cherrypy.expose
     def AddUser(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -88,12 +92,11 @@ class Root(object):
         self.db.commit()
         return json.dumps({"added": "Successful"}, indent=2)
 
+    # Edits database information for parents
     @cherrypy.expose
     def EditProfile(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
         b = json.loads(rawData)
-        print "we got this:"
-        print json.dumps(b, indent=2)
         allParents = self.db.query(models.User)
         for x in allParents:
             if x.toDict()['username'] == b['username']:
@@ -116,6 +119,7 @@ class Root(object):
                 return json.dumps({"success": "success"}, indent=4)
         return json.dumps({"error": "error"}, indent=4)
 
+    # Adds an activity to the database
     @cherrypy.expose
     def AddActivity(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -127,6 +131,7 @@ class Root(object):
         self.db.commit()
         return json.dumps({"success": "success"}, indent=4)
 
+    # Returns all data on parents
     @cherrypy.expose
     def AdminHome(self, **kwargs):
         allParents = self.db.query(models.User)
@@ -149,9 +154,9 @@ class Root(object):
                         lastDate = y.toDict()['date']
             newobj['lastcheckin'] = lastDate
             toReturn["children"].append(newobj)
-        print json.dumps(toReturn, indent=4)
         return json.dumps(toReturn, indent=4)
 
+    # Returns user home screen data.
     @cherrypy.expose
     def ParentHome(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -166,11 +171,8 @@ class Root(object):
         latestActivity = "naptime"
         activityTime = 9999999999
         curTime = time.mktime(datetime.datetime.now().timetuple())
-        print "\n\nstart activity loop:\n"
         for y in activityRecords:
             rec = y.toDict()
-            print "checking activity:"
-            print json.dumps(y.toDict())
             if rec['time'] > curTime and rec['time'] < activityTime:
                 activityTime = rec['time']
                 latestActivity = rec['name']
@@ -180,9 +182,9 @@ class Root(object):
             "time": activityTime,
             "lastcheckin": lastCheckin
         }
-        print json.dumps(toReturn, indent=2)
         return json.dumps(toReturn, indent=4)
 
+    # Returns the profile of a user.
     @cherrypy.expose
     def RequestProfile(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -208,6 +210,7 @@ class Root(object):
 
         return json.dumps(newObj, indent=4)
 
+    # Returns the phone number of the user
     @cherrypy.expose
     def getPhone(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -218,6 +221,7 @@ class Root(object):
                 return json.dumps({"phonenumber": x.toDict()['phone']}, indent=4)
         return json.dumps({"failure": "failure"}, indent=4)
 
+    # Handles the check in of a user.
     @cherrypy.expose
     def CheckIn(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -237,6 +241,7 @@ class Root(object):
                 return "success"
         return "error"
 
+    # Handles the check out of a user.
     @cherrypy.expose
     def CheckOut(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -255,6 +260,7 @@ class Root(object):
                 return "Attendence logged"
         return "error finding record"
 
+    # Handles a password change for both admins and parents.
     @cherrypy.expose
     def PasswordChange(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -262,13 +268,12 @@ class Root(object):
         parents = self.db.query(models.User)
         for x in parents:
             if x.toDict()['username'] == b['name']:
-                print "found correct parent"
-
                 if x.toDict()['pin'] == b['oldpassword']:
                     x.pin = b['password']
                     return json.dumps({"success": "success"}, indent=2)
         return json.dumps({"failure": "failure"}, indent=2)
 
+    # Gets all attendence records for a user.
     @cherrypy.expose
     def GetAttendence(self, **kwargs):
         rawData = cherrypy.request.body.read(int(cherrypy.request.headers['Content-Length']))
@@ -277,20 +282,13 @@ class Root(object):
         datesArr = {
             "data": []
         }
-        print "\n\nwe got:\n{}".format(b)
         for x in dates:
-            print "comapring {} to {}".format(b['username'], x.toDict()['user'])
             if b["username"] == x.toDict()["user"]:
-                print "here"
                 datesArr['data'].append({
                     "checkinTime": x.toDict()['checkin'],
                     "checkoutTime": x.toDict()['checkout']
                 })
-        print "we are returning:"
-        print json.dumps(datesArr, indent=4)
         return json.dumps(datesArr, indent=4)
-
-
 
 
 def get_cp_config():

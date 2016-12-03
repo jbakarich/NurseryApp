@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.support.v4.app.Fragment;
@@ -30,18 +29,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by jacob on 9/15/2016.
+ * AA_LoginFragment
+ * Default fragment for the login screen.
+ * On user submit, makes a call to the server to verify credentials. If successful, user info is returned and either the admin or parent sections is braught up.
  */
 public class AA_LoginFragment extends Fragment {
-    private static final String TAG = "LoginFrag";//Use this for logging. ex: Log.d(TAG, "my message");
     View myView;
 
     Button loginButton;
     EditText editName, editPin;
-    CheckBox myCheckbox;
 
     SharedPreferences prefs;
-
 
     @Nullable
     @Override
@@ -77,6 +75,7 @@ public class AA_LoginFragment extends Fragment {
         );
     }
 
+    /* makes the request to the server*/
     void MakeRequest(String url, Map<String, String> data) {
 
         JSONObject obj = new JSONObject(data);
@@ -97,6 +96,7 @@ public class AA_LoginFragment extends Fragment {
         queue.add(request);
     }
 
+    /*Given the server response, saves user data in the system prefs and makes the fragment and activity change*/
     void doLogin(JSONObject response) {
         Context context = getActivity();
         Toast toast;
@@ -118,7 +118,6 @@ public class AA_LoginFragment extends Fragment {
             editor.commit();
         } catch (JSONException ex) {
             toast = Toast.makeText(context, "There was an error with the data from the server.", Toast.LENGTH_SHORT);
-            Log.d(TAG, "The data that came back to us was: " + response.toString());
             toast.show();
             return;//quit early
         }
@@ -145,23 +144,6 @@ public class AA_LoginFragment extends Fragment {
     }
 
     void ShowError(String error) {
-        Log.d(TAG, "There was an error: " + error);
+        Log.d("LoginFragment", "There was an error: " + error);
     }
-
-    public void bypass()
-    {
-
-        Context context = getActivity();
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.default_content_frame, new Admin_AttendenceFragment()).commit();
-        Intent myIntent = new Intent(context, AA_MainActivity.class);
-        startActivity(myIntent);
-        context.startActivity(myIntent);
-
-        return;
-    }
-
-
-
-
 }

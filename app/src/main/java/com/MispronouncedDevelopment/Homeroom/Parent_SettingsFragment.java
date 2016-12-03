@@ -1,13 +1,10 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,14 +24,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Cyrille on 10/24/16.
+ * Parent_SettingsFragment
+ * Handles all setting information for parents.
  */
 
 public class Parent_SettingsFragment extends Fragment {
     View myView;
     Button submitBtn;
     EditText passwordA, passwordB, oldPassword;
-    private String TAG = "parent settings";
 
     @Nullable
     @Override
@@ -70,7 +67,6 @@ public class Parent_SettingsFragment extends Fragment {
 
                 }
         );
-
         return myView;
     }
 

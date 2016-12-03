@@ -7,8 +7,12 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * AA_LoginActivity
+ * Handles automatic log in and is the default activity when the app launches.
+ * NOTE: the url that is hard-coded here needs to be changed to the ip of wherever the server is being run from.
+ */
 public class AA_LoginActivity extends AppCompatActivity{
-    private static final String TAG = "LoginActivity";//Use this for logging. ex: Log.d(TAG, "my message");
     String url ="http://172.24.95.132:8080/";//this is the location of wherever the server is running.
 
     @Override
