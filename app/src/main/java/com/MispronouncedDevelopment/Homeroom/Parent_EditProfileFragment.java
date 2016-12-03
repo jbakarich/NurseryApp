@@ -29,12 +29,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Cyrille on 11/29/16.
+ * Parent_EditProfileFragment
+ * handles all transactions to server when a user wants to update their profile information.
  */
 
 public class Parent_EditProfileFragment extends Fragment {
     View myView;
-    String TAG = "EditProfileFragment";
     Button submitBtn;
     EditText firstname, lastname, childname, address1, address2, phone, email, password;
 
@@ -42,7 +42,6 @@ public class Parent_EditProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.parent_edit_profile, container, false);
-
 
         firstname = (EditText) myView.findViewById(R.id.editFirstName);
         lastname = (EditText) myView.findViewById(R.id.editLastName);
@@ -59,7 +58,6 @@ public class Parent_EditProfileFragment extends Fragment {
 
 
                     public void onClick(View v) {
-                        Log.d(TAG, "Creating params");
                         Map<String, String> params = new HashMap<>();
                         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                         params.put("firstname", firstname.getText().toString());
@@ -72,9 +70,7 @@ public class Parent_EditProfileFragment extends Fragment {
                         params.put("password", password.getText().toString());
                         params.put("username", prefs.getString("username", "josh"));
 
-
                         String url = prefs.getString("url", "Wrong again!");
-
                         MakeRequest(url+"EditProfile", params);
                     }
 
@@ -84,8 +80,8 @@ public class Parent_EditProfileFragment extends Fragment {
         return myView;
     }
 
+    /*Passes request to server*/
     void MakeRequest(String url, Map<String, String> data){
-        Log.d(TAG, "Making request to " + url);
         final Context context = getActivity();
         JSONObject obj = new JSONObject(data);
 

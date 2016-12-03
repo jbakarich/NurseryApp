@@ -14,7 +14,9 @@ import android.widget.Button;
 
 
 /**
- * Created by jacob on 9/15/2016.
+ * Parent_HomeFragment
+ * Handles some of the buttons on the parent home screen.
+ * NOTE: I'm unsure why, but android studio really wants that indentation so we left it..
  */
 public class Parent_HomeFragment extends Fragment {
 
@@ -24,18 +26,12 @@ public class Parent_HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.parent_home, container, false);
-
-        
         Parent_HomeFragment();
-
         return myView;
-
     }
 
     public void Parent_HomeFragment(){
-
         final Context context = this.getContext();
-
 
         Button attendaceHistory = (Button) myView.findViewById(R.id.attendaceHistoryCardButton);
         Button callButton = (Button)myView.findViewById(R.id.attendenceCallButton);
@@ -45,13 +41,9 @@ public class Parent_HomeFragment extends Fragment {
                                                 @Override
                                                 public void onClick(View v) {
                                                     FragmentManager fragmentManager = getFragmentManager();
-
-
                                                     fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_AttendenceFragment()).commit();
                                                 }
                                             }
-
-
         );
 
         callButton.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +55,6 @@ public class Parent_HomeFragment extends Fragment {
                                                     startActivity(intent);
                                                 }
                                             }
-
-
         );
 
         makePaymentButton.setOnClickListener(new View.OnClickListener() {
@@ -74,12 +64,6 @@ public class Parent_HomeFragment extends Fragment {
                                               startActivity(myPaymentIntent);
                                           }
                                       }
-
         );
-
-
-
-
-
     }
 }

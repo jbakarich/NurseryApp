@@ -36,7 +36,7 @@ package com.MispronouncedDevelopment.Homeroom;
 
 
 /**
- * Created by Rick on 11/8/2016.
+ * Handles all AndroidPay interaction.
  */
 
 
@@ -67,59 +67,12 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        View myView;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.parent_payment_history);
-
-        final Context context = this;
-
-
-//        CaldroidFragment parentPaymentCalFragment = new CaldroidFragment(); //initialize Caldroid Fragment
-//        Bundle args = new Bundle();
-//        args.putInt( CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY );//pass default arguments
-//        parentPaymentCalFragment.setArguments( args );
-
-//        DateFormat df = DateFormat.getDateInstance();
-//        HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
-//        ColorDrawable background = new ColorDrawable(Color.LTGRAY);
-
-//        final CaldroidListener listener = new CaldroidListener() {
-//
-//            @Override
-//            public void onSelectDate(Date date, View view) {
-//
-//                String toast = "Payment Of AMOUNT on DATE";
-//                Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
-//            }
-//
-//        };
-//
-//        try {
-//
-//            CheckInDates.put(df.parse("November 29, 2016"), background);
-//
-//
-//        }catch(java.text.ParseException e){;}
-
-
-
-
-
-
-
-//        parentPaymentCalFragment.setBackgroundDrawableForDates(CheckInDates);
-//        parentPaymentCalFragment.setCaldroidListener(listener);
-//        this.getSupportFragmentManager().beginTransaction().replace( R.id.payment_cal_container , parentPaymentCalFragment).commit();
-
-
-
-
-
 
         // Check if WalletFragment exists
         mWalletFragment = (SupportWalletFragment) getSupportFragmentManager()
                 .findFragmentByTag(WALLET_FRAGMENT_ID);
-
 
         if (mWalletFragment == null) {
             // Wallet fragment style
@@ -197,7 +150,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
         }
     }
 
-
     private MaskedWalletRequest generateMaskedWalletRequest() {
         // This is just an example publicKey for the purpose of this codelab.
         // To learn how to generate your own visit:
@@ -209,7 +161,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                                 PaymentMethodTokenizationType.NETWORK_TOKEN)
                         .addParameter("publicKey", publicKey)
                         .build();
-
 
         MaskedWalletRequest maskedWalletRequest =
                 MaskedWalletRequest.newBuilder()
@@ -232,7 +183,6 @@ public class AndroidPay extends AppCompatActivity implements GoogleApiClient.OnC
                         .setPaymentMethodTokenizationParameters(parameters)
                         .build();
         return maskedWalletRequest;
-
     }
 
     private FullWalletRequest generateFullWalletRequest(String googleTransactionId) {

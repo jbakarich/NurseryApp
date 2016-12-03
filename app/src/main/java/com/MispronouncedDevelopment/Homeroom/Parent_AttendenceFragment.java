@@ -48,10 +48,10 @@ import static android.R.attr.button;
 
 
 /**
- * Created by cyrille on 9/29/2016.
+ * Parent_AttendenceFragment
+ * Handles all caldroid transactions to create and populate calender views.
  */
 public class Parent_AttendenceFragment extends Fragment {
-    private String TAG = "parentAttendence";
     View myView;
 
     @Nullable
@@ -59,12 +59,12 @@ public class Parent_AttendenceFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         myView = inflater.inflate(R.layout.parent_attendence, container, false);
-        final Context context = this.getActivity();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         String url = prefs.getString("url", "Wrong!")+"GetAttendence";
@@ -81,14 +81,10 @@ public class Parent_AttendenceFragment extends Fragment {
                 args.putInt( CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.MONDAY );//pass default arguments
                 parentAttendenceCalFragment.setArguments( args );
 
-                Log.d(TAG, response.toString());
-
                 HashMap CheckInDates = new HashMap(); //hashmap for date background mapping
                 DateFormat df = DateFormat.getDateInstance();
                 ColorDrawable background1 = new ColorDrawable(Color.rgb(51, 153, 255));
                 ColorDrawable background2 = new ColorDrawable(Color.RED);
-
-
 
                 int lastcheckinDate = 0;
                 try {
@@ -107,23 +103,12 @@ public class Parent_AttendenceFragment extends Fragment {
                                 CheckInDates.put(df.parse(formatDate(newDate.getInt("checkoutTime"))), background2);
                             }
                         } catch (ParseException o){
-                            Log.d(TAG, "from parsing: " + o.toString());
+                            Log.d("Attendence", "from parsing: " + o.toString());
                         }
                     }
                 } catch(JSONException e){
-                    Log.d(TAG, "error in response: " + e.toString());
+                    Log.d("Attendence", "error in response: " + e.toString());
                 }
-
-//                final CaldroidListener listener = new CaldroidListener() {
-//
-//                    @Override
-//                    public void onSelectDate(Date date, View view) {
-//
-//                        String toast = "NAME was checked in at TIME on DATE";
-//                        Toast.makeText(context,  toast, Toast.LENGTH_SHORT).show();
-//                    }
-//
-//                };
 
                 Button callButton = (Button)myView.findViewById(R.id.ParentAttendenceCallButton); //onClick Listener for Call Button
                 callButton.setOnClickListener(new View.OnClickListener() {
@@ -140,14 +125,13 @@ public class Parent_AttendenceFragment extends Fragment {
                 lastcheckin.setText("Last Checked in:\n"+AA_MainActivity.formatTime(lastcheckinDate));
 
                 parentAttendenceCalFragment.setBackgroundDrawableForDates(CheckInDates);
-//                parentAttendenceCalFragment.setCaldroidListener(listener);
                 getActivity().getSupportFragmentManager().beginTransaction().replace( R.id.cal_container , parentAttendenceCalFragment ).commit();
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, error.toString());
+                Log.d("Attendence", error.toString());
             }
         });
 
@@ -157,6 +141,7 @@ public class Parent_AttendenceFragment extends Fragment {
         return myView;
     }
 
+    /*Converts unix timestamp to readable format for datetime class to read*/
     String formatDate(int unixTime){
 
         long unixSeconds = unixTime;
@@ -167,14 +152,9 @@ public class Parent_AttendenceFragment extends Fragment {
         int month = Integer.parseInt(formattedDate.substring(0, 2));
         int day = Integer.parseInt(formattedDate.substring(3, 5));
         int year = Integer.parseInt(formattedDate.substring(6, 10));
-        Log.d(TAG, "day: " + day);
-        Log.d(TAG, "month: " + month);
-        Log.d(TAG, "year: " + year);
         String[] months = {"January", "Febuary", "March", "April", "May", "June", "July", "Augest", "September", "October", "November", "December"};
         String finalDate = months[month-1] + " " + day + ", " + year;
-        Log.d(TAG, "final date = " + finalDate);
 
-//        "November 12, 2016"
         return finalDate;
     }
 }

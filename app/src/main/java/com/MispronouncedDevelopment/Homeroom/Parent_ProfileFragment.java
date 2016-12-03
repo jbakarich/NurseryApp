@@ -28,12 +28,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Cyrille on 11/8/16.
+ * Parent_ProfileFragment
+ * Handles the viewing of a parents profile
  */
 
 public class Parent_ProfileFragment extends Fragment {
     View myView;
-    private String TAG = "Parent Profile";
 
     @Nullable
     @Override
@@ -55,26 +55,21 @@ public class Parent_ProfileFragment extends Fragment {
                                                     fragmentManager.beginTransaction().replace(R.id.parent_content_frame, new Parent_EditProfileFragment()).commit();
                                                 }
                                }
-
-
         );
 
         makePayment.setOnClickListener(new View.OnClickListener() {
                                            @Override
                                            public void onClick(View v) {
-
                                                Context context = getActivity();
                                                Intent myPaymentIntent = new Intent(context, AndroidPay.class);
                                                startActivity(myPaymentIntent);
                                            }
                                        }
-
-
         );
-
         return myView;
     }
 
+    /*Makes request to server for profile data*/
     void GetProfile(String name) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String url = prefs.getString("url", "Wrong!") + "RequestProfile";
@@ -97,7 +92,7 @@ public class Parent_ProfileFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, error.toString());
+                Log.d("ProfileFragment", error.toString());
             }
         });
 
@@ -105,15 +100,14 @@ public class Parent_ProfileFragment extends Fragment {
         queue.add(request);
     }
 
+    /*Updates all parent info on parent home screen.*/
     void UpdateProfile(JSONObject response) {
-
         TextView firstName = (TextView) getView().findViewById(R.id.parent_profileName);
         TextView childName = (TextView) getView().findViewById(R.id.parent_childName);
         TextView phone = (TextView) getView().findViewById(R.id.parent_profilePhone);
         TextView address1 = (TextView) getView().findViewById(R.id.parent_profileAddress1);
         TextView address2 = (TextView) getView().findViewById(R.id.parent_profileAddress2);
         TextView email = (TextView) getView().findViewById(R.id.parent_profileEmail);
-
         TextView lastcheckin = (TextView) getView().findViewById(R.id.parent_profile_lastCheckin);
         TextView membersince = (TextView) getView().findViewById(R.id.parent_profile_memberSince);
 
@@ -130,7 +124,7 @@ public class Parent_ProfileFragment extends Fragment {
             membersince.setText("Member since: " +AA_MainActivity.formatTime(parentInfo.getInt("creationdate")));
 
         } catch (JSONException e) {
-            Log.d(TAG, "err in response:" + e.toString());
+            Log.d("Profile", "err in response:" + e.toString());
         }
     }
 }
