@@ -1,9 +1,6 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-        import android.content.Context;
         import android.content.Intent;
-        import android.graphics.Color;
-        import android.graphics.drawable.ColorDrawable;
         import android.os.Bundle;
         import android.support.v7.app.AppCompatActivity;
         import android.view.View;
@@ -27,13 +24,6 @@ package com.MispronouncedDevelopment.Homeroom;
         import com.google.android.gms.wallet.fragment.WalletFragmentMode;
         import com.google.android.gms.wallet.fragment.WalletFragmentOptions;
         import com.google.android.gms.wallet.fragment.WalletFragmentStyle;
-        import com.roomorama.caldroid.CaldroidFragment;
-        import com.roomorama.caldroid.CaldroidListener;
-
-        import java.text.DateFormat;
-        import java.util.Date;
-        import java.util.HashMap;
-
 
 /**
  * Handles all AndroidPay interaction.

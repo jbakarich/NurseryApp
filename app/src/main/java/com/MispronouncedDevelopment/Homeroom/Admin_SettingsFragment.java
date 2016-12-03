@@ -3,10 +3,8 @@ package com.MispronouncedDevelopment.Homeroom;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,10 +23,6 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * Created by Cyrille on 10/24/16.
- */
 
 /**
  * Admin_SettingsFragment

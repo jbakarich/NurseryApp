@@ -1,17 +1,12 @@
 package com.MispronouncedDevelopment.Homeroom;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.R.color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -20,15 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
@@ -38,13 +30,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.roomorama.caldroid.CaldroidFragment;
-import com.roomorama.caldroid.CaldroidListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import static android.R.attr.button;
 
 
 /**
